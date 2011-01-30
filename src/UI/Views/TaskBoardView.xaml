@@ -27,7 +27,7 @@
 			<GridSplitter Grid.Column="3" Width="3"/>
 			<TextBlock Grid.Column="4" TextAlignment="Center"><Run Text="Completed"/></TextBlock>
 		</Grid>
-    	<ItemsControl ItemsSource="{Binding Tasks}">
+    	<ItemsControl ItemsSource="{Binding Tasks}" x:Name="_itemsControl">
     		<ItemsControl.ItemTemplate>
     			<DataTemplate> 
     				<Grid>
@@ -39,9 +39,11 @@
     						<ColumnDefinition Width="3*" SharedSizeGroup="Completed"/>
     					</Grid.ColumnDefinitions>
                         
-    					<Border Margin="10" Background="Yellow" CornerRadius="5" Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=OneWay}" MinHeight="80">
+    					<Border Margin="10" Background="Yellow" CornerRadius="5" 
+                                x:Name="_border"
+                                Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="80">
     						<i:Interaction.Behaviors>
-    							<ei:MouseDragElementBehavior ConstrainToParentBounds="True"/>
+    							<ei:MouseDragElementBehavior ConstrainToParentBounds="True" DragFinished="MouseDragElementBehaviorOnDragFinished"/>
     						</i:Interaction.Behaviors>
     						<TextBlock TextAlignment="Center"><Run Text="Task"/></TextBlock>
     					</Border>
@@ -50,6 +52,18 @@
 						<GridSplitter Grid.Column="3" Width="3"/>
 						
     				</Grid>
+                    
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding State}" Value="InProgress">
+                            <Setter TargetName="_border" Property="Background" Value="Yellow"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding State}" Value="Complete">
+                            <Setter TargetName="_border" Property="Background" Value="Green"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding State}" Value="NotStarted">
+                            <Setter TargetName="_border" Property="Background" Value="Red"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                     
                     
     			</DataTemplate>

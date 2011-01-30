@@ -8,7 +8,7 @@ namespace Rogue.Ptb.UI.DesignTime
 {
 	public class DummyTaskViewModel
 	{
-		private readonly TaskState _state;
+		private TaskState _state;
 
 		public DummyTaskViewModel(TaskState state)
 		{
@@ -18,6 +18,7 @@ namespace Rogue.Ptb.UI.DesignTime
 		public TaskState State
 		{
 			get { return _state; }
+			set { _state = value; }
 		}
 	}
 }

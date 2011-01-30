@@ -10,25 +10,21 @@ namespace Rogue.Ptb.UI.ValueConverters
 {
 	public class TaskStateToColumnConverter : IValueConverter
 	{
+		private static readonly List<Tuple<TaskState, int>> _table = new List<Tuple<TaskState, int>>
+			{
+				Tuple.Create(TaskState.NotStarted, 0),
+				Tuple.Create(TaskState.InProgress, 2),
+				Tuple.Create(TaskState.Complete, 4),
+			};
+
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			var state = (TaskState) value;
-			switch (state)
-			{
-				case TaskState.Complete:
-					return 4;
-				case TaskState.InProgress:
-					return 2;
-				case TaskState.NotStarted:
-					return 0;
-			}
-
-			return 0;
+			return _table.Where(t => t.Item1.Equals(value)).First().Item2;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			throw new NotImplementedException();
+			return _table.Where(t => t.Item2.Equals(value)).First().Item1;
 		}
 	}
 }
