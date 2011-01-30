@@ -1,0 +1,59 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:design="clr-namespace:Rogue.Ptb.UI.DesignTime" xmlns:vc="clr-namespace:Rogue.Ptb.UI.ValueConverters" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" x:Class="Rogue.Ptb.UI.Views.TaskBoardView"
+             mc:Ignorable="d" d:DesignHeight="702" d:DesignWidth="789">
+    
+    <UserControl.Resources>
+    	<vc:TaskStateToColumnConverter x:Key="TaskStateToColumnConverter"/>
+        <ObjectDataProvider x:Key="DesignDataContext" d:IsDataSource="True" ObjectType="{x:Type design:DummyTaskBoardViewModel}"/>
+    </UserControl.Resources>
+    
+    <StackPanel d:DataContext="{StaticResource DesignDataContext}">
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="3*" SharedSizeGroup="NotStarted"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="3*" SharedSizeGroup="InProgress"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="3*" SharedSizeGroup="Completed"/>
+			</Grid.ColumnDefinitions>
+            
+			<TextBlock Grid.Column="0" TextAlignment="Center"><Run Text="Not started"/></TextBlock>
+			<GridSplitter Grid.Column="1" Width="3"/>
+			<TextBlock Grid.Column="2" TextAlignment="Center"><Run Text="In progress"/></TextBlock>
+			<GridSplitter Grid.Column="3" Width="3"/>
+			<TextBlock Grid.Column="4" TextAlignment="Center"><Run Text="Completed"/></TextBlock>
+		</Grid>
+    	<ItemsControl ItemsSource="{Binding Tasks}">
+    		<ItemsControl.ItemTemplate>
+    			<DataTemplate> 
+    				<Grid>
+    					<Grid.ColumnDefinitions>
+    						<ColumnDefinition Width="3*" SharedSizeGroup="NotStarted"/>
+    						<ColumnDefinition Width="3"/>
+    						<ColumnDefinition Width="3*" SharedSizeGroup="InProgress"/>
+    						<ColumnDefinition Width="3"/>
+    						<ColumnDefinition Width="3*" SharedSizeGroup="Completed"/>
+    					</Grid.ColumnDefinitions>
+                        
+    					<Border Margin="10" Background="Yellow" CornerRadius="5" Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=OneWay}" MinHeight="80">
+    						<i:Interaction.Behaviors>
+    							<ei:MouseDragElementBehavior ConstrainToParentBounds="True"/>
+    						</i:Interaction.Behaviors>
+    						<TextBlock TextAlignment="Center"><Run Text="Task"/></TextBlock>
+    					</Border>
+						
+						<GridSplitter Grid.Column="1" Width="3"/>
+						<GridSplitter Grid.Column="3" Width="3"/>
+						
+    				</Grid>
+                    
+                    
+    			</DataTemplate>
+    		</ItemsControl.ItemTemplate>
+    	</ItemsControl>
+	</StackPanel>
+</UserControl>
