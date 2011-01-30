@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 
-namespace UI
+namespace Rogue.Ptb.UI
 {
 	/// <summary>
 	/// Interaction logic for App.xaml
 	/// </summary>
-	public partial class App : Application
+	public partial class App
 	{
+		protected override void OnStartup(StartupEventArgs e)
+		{
+			base.OnStartup(e);
+
+			var bootstrapper = new Bootstrapper();
+
+			IShellView shellView = bootstrapper.Bootstrap();
+
+			shellView.Window.Show();
+		}
 	}
 }

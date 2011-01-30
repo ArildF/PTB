@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prototype", "Prototype\Prototype.csproj", "{159A7885-A512-4CEB-82E1-4E8B2AD1F6DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrototypeScreens", "Prototype\PrototypeScreens\PrototypeScreens.csproj", "{68AE4EBE-14C6-4C0C-B03E-09E70BC7FCE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{159A7885-A512-4CEB-82E1-4E8B2AD1F6DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{159A7885-A512-4CEB-82E1-4E8B2AD1F6DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{159A7885-A512-4CEB-82E1-4E8B2AD1F6DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{159A7885-A512-4CEB-82E1-4E8B2AD1F6DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68AE4EBE-14C6-4C0C-B03E-09E70BC7FCE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68AE4EBE-14C6-4C0C-B03E-09E70BC7FCE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68AE4EBE-14C6-4C0C-B03E-09E70BC7FCE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68AE4EBE-14C6-4C0C-B03E-09E70BC7FCE3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

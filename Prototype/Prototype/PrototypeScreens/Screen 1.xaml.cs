@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,16 +11,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UI
+namespace PrototypeScreens
 {
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Interaction logic for Screen_1.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class Screen_1 : UserControl
 	{
-		public MainWindow()
+		public Screen_1()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 		}
 	}
 }

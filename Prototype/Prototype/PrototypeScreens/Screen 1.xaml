@@ -1,0 +1,25 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Name="Screen_1_Name"
+	mc:Ignorable="d"
+	x:Class="PrototypeScreens.Screen_1"
+	Width="640" Height="480">
+
+	<Grid x:Name="LayoutRoot" Background="White">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="0.052*"/>
+			<RowDefinition Height="0.171*"/>
+			<RowDefinition Height="0.777*"/>
+		</Grid.RowDefinitions>
+		<ListBox HorizontalAlignment="Left" Margin="8,8,0,22.04" Style="{DynamicResource ListBox-Sketch}" Width="141" Grid.Row="1">
+			<ListBoxItem Style="{DynamicResource ListBoxItem-Sketch}" Width="76" Height="18.04" Content="Filter1"/>
+			<ListBoxItem Style="{DynamicResource ListBoxItem-Sketch}" Width="77" Height="21" Content="Filter2"/>
+		</ListBox>
+		<TextBlock HorizontalAlignment="Stretch" Margin="0" Style="{DynamicResource TitleCenter-Sketch}" Text="Personal Task Board" FontSize="26.667"/>
+		<TextBlock HorizontalAlignment="Left" Margin="19,0,0,0" Style="{DynamicResource TextBlock-Sketch}" VerticalAlignment="Bottom" Width="51" Height="14.04" Grid.Row="1"><Run Text="Filters"/><LineBreak/><Run Text=""/></TextBlock>
+		<Button HorizontalAlignment="Left" Margin="153,13,0,0" Style="{DynamicResource Button-Sketch}" Width="63" Content="Edit" Grid.Row="1" VerticalAlignment="Top" Height="21"/>
+		<Button HorizontalAlignment="Left" Margin="153,39.04,0,22.04" Style="{DynamicResource Button-Sketch}" Width="63" Content="New" Grid.Row="1"/>
+	</Grid>
+</UserControl>
