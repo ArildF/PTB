@@ -91,6 +91,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\DragGridElementBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="DesignTime\DummyTaskBoardViewModel.cs" />
     <Compile Include="DesignTime\DummyTaskViewModel.cs" />

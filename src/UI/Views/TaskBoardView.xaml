@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:design="clr-namespace:Rogue.Ptb.UI.DesignTime" xmlns:vc="clr-namespace:Rogue.Ptb.UI.ValueConverters" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" x:Class="Rogue.Ptb.UI.Views.TaskBoardView"
+             xmlns:design="clr-namespace:Rogue.Ptb.UI.DesignTime" xmlns:vc="clr-namespace:Rogue.Ptb.UI.ValueConverters" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:Behaviors="clr-namespace:Rogue.Ptb.UI.Behaviors" x:Class="Rogue.Ptb.UI.Views.TaskBoardView"
              mc:Ignorable="d" d:DesignHeight="702" d:DesignWidth="789">
     
     <UserControl.Resources>
@@ -31,6 +31,9 @@
     		<ItemsControl.ItemTemplate>
     			<DataTemplate> 
     				<Grid>
+						<i:Interaction.Behaviors>
+							<Behaviors:DragGridElementBehavior AllElementsDraggable="False"/>
+						</i:Interaction.Behaviors>
     					<Grid.ColumnDefinitions>
     						<ColumnDefinition Width="3*" SharedSizeGroup="NotStarted"/>
     						<ColumnDefinition Width="3"/>
@@ -40,14 +43,12 @@
     					</Grid.ColumnDefinitions>
                         
     					<Border Margin="10" Background="Yellow" CornerRadius="5" 
+								Behaviors:DragGridElementBehavior.Draggable="True"
                                 x:Name="_border"
                                 Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="80">
-    						<i:Interaction.Behaviors>
-    							<ei:MouseDragElementBehavior ConstrainToParentBounds="True" DragFinished="MouseDragElementBehaviorOnDragFinished"/>
-    						</i:Interaction.Behaviors>
-    						<TextBlock TextAlignment="Center"><Run Text="Task"/></TextBlock>
-    					</Border>
-						
+							<TextBlock TextAlignment="Center"><Run Text="Task"/></TextBlock>
+						</Border>
+
 						<GridSplitter Grid.Column="1" Width="3"/>
 						<GridSplitter Grid.Column="3" Width="3"/>
 						
