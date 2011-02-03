@@ -2,15 +2,27 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary" mc:Ignorable="d" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary" 
+			 mc:Ignorable="d" 
+			 xmlns:me="clr-namespace:Rogue.Ptb.UI.MarkupExtensions"
              d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Resources>
+		<Style TargetType="ribbon:RibbonButton">
+		</Style> 
+	</UserControl.Resources>
     <ribbon:Ribbon Grid.Row="0">
-        <ribbon:RibbonTab Header="File">
-
+        <ribbon:RibbonTab Header="Taskboard">
+        	<ribbon:RibbonGroup Header="Maintenance" Margin="0">
+        		<ribbon:RibbonButton Content="Create" Label="Create" Name="CreateTaskBoard"
+									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+									 Command="{me:ResolveCommand}"
+									/>
+        	</ribbon:RibbonGroup>
         </ribbon:RibbonTab>
-        <ribbon:RibbonTab Header="Filters">
 
-        </ribbon:RibbonTab>
+        <ribbon:RibbonTab Header="File"/>
+        <ribbon:RibbonTab Header="Filters"/>
 
     </ribbon:Ribbon>
 </UserControl>

@@ -2,6 +2,8 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using Rogue.Ptb.UI.Commands;
 
 namespace Rogue.Ptb.UI
 {
@@ -33,5 +35,10 @@ namespace Rogue.Ptb.UI
 	public interface IShellView
 	{
 		Window Window { get; }
+	}
+
+	public interface ICommandResolver
+	{
+		ICommand Resolve(CommandName commandName);
 	}
 }
