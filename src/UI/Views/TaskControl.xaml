@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Rogue.Ptb.UI.Views.TaskControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:Behaviors="clr-namespace:Rogue.Ptb.UI.Behaviors" xmlns:vc="clr-namespace:Rogue.Ptb.UI.ValueConverters" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Resources>
+		<vc:TaskStateToColumnConverter x:Key="TaskStateToColumnConverter"/>
+	</UserControl.Resources>
+	<UserControl.Template>
+		<ControlTemplate>
+			<Grid>
+				<i:Interaction.Behaviors>
+					<Behaviors:DragGridElementBehavior AllElementsDraggable="False"/>
+				</i:Interaction.Behaviors>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="3*" SharedSizeGroup="NotStarted"/>
+					<ColumnDefinition Width="3"/>
+					<ColumnDefinition Width="3*" SharedSizeGroup="InProgress"/>
+					<ColumnDefinition Width="3"/>
+					<ColumnDefinition Width="3*" SharedSizeGroup="Completed"/>
+				</Grid.ColumnDefinitions>
+
+				<Border Margin="10" BorderBrush="Yellow" CornerRadius="5" 
+									BorderThickness="2"
+									Background="White"
+									Behaviors:DragGridElementBehavior.Draggable="True"
+									x:Name="_border"
+									Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="80">
+					<TextBlock TextAlignment="Center"><Run Text="{Binding Title}"/></TextBlock>
+				</Border>
+
+				<GridSplitter Grid.Column="1" Width="3"/>
+				<GridSplitter Grid.Column="3" Width="3"/>
+
+			</Grid>
+
+			<ControlTemplate.Triggers>
+				<DataTrigger Binding="{Binding State}" Value="InProgress">
+					<Setter TargetName="_border" Property="BorderBrush" Value="Yellow"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding State}" Value="Complete">
+					<Setter TargetName="_border" Property="BorderBrush" Value="Green"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding State}" Value="NotStarted">
+					<Setter TargetName="_border" Property="BorderBrush" Value="Red"/>
+				</DataTrigger>
+			</ControlTemplate.Triggers>
+		</ControlTemplate>
+	</UserControl.Template>
+</UserControl>
