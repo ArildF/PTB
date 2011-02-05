@@ -8,6 +8,7 @@ namespace Rogue.Ptb.Core.Maps
 		{
 			Id(t => t.Id);
 			Map(t => t.Title);
+			Map(t => t.State);
 		}
 	}
 }

@@ -41,4 +41,6 @@ namespace Rogue.Ptb.UI
 	{
 		ICommand Resolve(CommandName commandName);
 	}
+
+	public interface ICommandEvent {}
 }

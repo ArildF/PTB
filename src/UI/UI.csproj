@@ -117,14 +117,18 @@
     </Compile>
     <Compile Include="Behaviors\DragGridElementBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="CommandRegistrationConvention.cs" />
+    <Compile Include="Registration\CommandEventRegistrationConvention.cs" />
+    <Compile Include="Registration\CommandRegistrationConvention.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\CommandName.cs" />
     <Compile Include="Commands\CommandResolver.cs" />
     <Compile Include="Commands\CreateTaskBoard.cs" />
+    <Compile Include="Commands\EventCommand.cs" />
     <Compile Include="Commands\GlobalCommandNames.cs" />
+    <Compile Include="Commands\OpenTaskBoard.cs" />
     <Compile Include="DesignTime\DummyTaskBoardViewModel.cs" />
     <Compile Include="DesignTime\DummyTaskViewModel.cs" />
+    <Compile Include="events.cs" />
     <Compile Include="interfaces.cs" />
     <Compile Include="MarkupExtensions\ResolveCommandExtension.cs" />
     <Compile Include="UIRegistry.cs" />

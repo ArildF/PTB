@@ -9,5 +9,10 @@ namespace Rogue.Ptb.Core
 	{
 		public virtual Guid Id { get; private set; }
 		public virtual string Title { get; set; }
+
+		public virtual TaskState State
+		{
+			get; private set;
+		}
 	}
 }

@@ -19,12 +19,22 @@ namespace Rogue.Ptb.Core
 
 		public void CreateNewDatabase(string path)
 		{
+			OpenDatabase(path, true);
+		}
+
+		public void OpenDatabase(string file)
+		{
+			OpenDatabase(file, false);
+		}
+
+		private void OpenDatabase(string path, bool createSchema)
+		{
 			if (_factory != null)
 			{
 				_factory.Close();
 			}
 
-			_factory = CreateSessionFactory(path, true);
+			_factory = CreateSessionFactory(path, createSchema);
 		}
 
 		public static ISessionFactory CreateSessionFactory(string path = "MyData.sdf", bool createSchema = false)
@@ -34,7 +44,7 @@ namespace Rogue.Ptb.Core
 			var factory = Fluently.Configure()
 				.Database(MsSqlCeConfiguration.Standard
 							.ConnectionString(c => c.Is(connString)))
-				.Mappings(mc => mc.FluentMappings.AddFromAssemblyOf<SessionFactoryFactory>())
+				.Mappings(mc => mc.FluentMappings.AddFromAssemblyOf<SessionFactoryProvider>())
 				.ExposeConfiguration(config =>
 				{
 					if (createSchema)

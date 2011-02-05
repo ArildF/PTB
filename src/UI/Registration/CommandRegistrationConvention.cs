@@ -3,7 +3,7 @@ using System.Windows.Input;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 
-namespace Rogue.Ptb.UI
+namespace Rogue.Ptb.UI.Registration
 {
 	internal class CommandRegistrationConvention : IRegistrationConvention
 	{

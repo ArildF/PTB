@@ -1,4 +1,5 @@
 ﻿using Rogue.Ptb.UI.Commands;
+using Rogue.Ptb.UI.Registration;
 using StructureMap.Configuration.DSL;
 
 namespace Rogue.Ptb.UI
@@ -13,6 +14,7 @@ namespace Rogue.Ptb.UI
 					scanner.WithDefaultConventions();
 
 					scanner.With(new CommandRegistrationConvention());
+					scanner.With(new CommandEventRegistrationConvention());
 				});
 
 			For<ICommandResolver>().Use<CommandResolver>();
