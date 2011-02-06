@@ -48,23 +48,27 @@ namespace Rogue.Ptb.UI.Behaviors
 		{
 			var gridRelativeStartPoint = e.GetPosition(AssociatedObject);
 
-			HitTestResult hitTestResult = null;
+			DependencyObject foundObject = null;
 			VisualTreeHelper.HitTest(AssociatedObject,
-				d => (AllElementsDraggable || GetDraggable(d)) ? HitTestFilterBehavior.ContinueSkipChildren : HitTestFilterBehavior.Continue,
-				htr =>
-				{
-					hitTestResult = htr;
-					return HitTestResultBehavior.Stop;
-				},
+				d =>
+					{
+						if (AllElementsDraggable || GetDraggable(d))
+						{
+							foundObject = d;
+							return HitTestFilterBehavior.Stop;
+						}
+						return HitTestFilterBehavior.Continue;
+					},
+				htr => HitTestResultBehavior.Continue,
 					new PointHitTestParameters(gridRelativeStartPoint)
 				);
 
-			if (hitTestResult == null)
+			if (foundObject == null)
 			{
 				return;
 			}
 
-			_movedObject = hitTestResult.VisualHit as UIElement;
+			_movedObject = foundObject as UIElement;
 
 			if (_movedObject == null || !(AllElementsDraggable || GetDraggable(_movedObject)))
 			{

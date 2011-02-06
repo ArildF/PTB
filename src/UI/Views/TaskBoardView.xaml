@@ -7,6 +7,7 @@
              mc:Ignorable="d" d:DesignHeight="702" d:DesignWidth="789">
     
     <UserControl.Resources>
+		<vc:TaskStateToColumnConverter x:Key="TaskStateToColumnConverter"/>
         <ObjectDataProvider x:Key="DesignDataContext" d:IsDataSource="True" ObjectType="{x:Type design:DummyTaskBoardViewModel}"/>
     </UserControl.Resources>
     
@@ -29,7 +30,27 @@
     	<ItemsControl ItemsSource="{Binding Tasks}" x:Name="_itemsControl">
     		<ItemsControl.ItemTemplate>
     			<DataTemplate>
-					<Views:TaskControl></Views:TaskControl>
+					<Grid>
+						<i:Interaction.Behaviors>
+							<Behaviors:DragGridElementBehavior AllElementsDraggable="False"/>
+						</i:Interaction.Behaviors>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="3*" SharedSizeGroup="NotStarted"/>
+							<ColumnDefinition Width="3"/>
+							<ColumnDefinition Width="3*" SharedSizeGroup="InProgress"/>
+							<ColumnDefinition Width="3"/>
+							<ColumnDefinition Width="3*" SharedSizeGroup="Completed"/>
+						</Grid.ColumnDefinitions>
+						<Views:TaskControl 
+							Behaviors:DragGridElementBehavior.Draggable="True"
+							Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Views:TaskControl>
+
+
+						<GridSplitter Grid.Column="1" Width="3"/>
+						<GridSplitter Grid.Column="3" Width="3"/>
+
+					</Grid>
+
 				</DataTemplate>
     		</ItemsControl.ItemTemplate>
     	</ItemsControl>
