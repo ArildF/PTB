@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
@@ -39,6 +41,18 @@ namespace Rogue.Ptb.Core
 
 		public static ISessionFactory CreateSessionFactory(string path = "MyData.sdf", bool createSchema = false)
 		{
+			path = Path.GetFullPath(path);
+
+			string configurationFile = Path.Combine(Path.GetDirectoryName(path), 
+				Path.GetFileNameWithoutExtension(path) + ".nhconfiguration");
+			var serializer = new BinaryFormatter();
+
+			if (!createSchema && File.Exists(configurationFile))
+			{
+				var configuration = (Configuration) serializer.Deserialize(File.OpenRead(configurationFile));
+
+				return Fluently.Configure(configuration).BuildSessionFactory();
+			}
 			string connString = String.Format("Data Source={0};Persist Security Info=False", path);
 
 			var factory = Fluently.Configure()
@@ -51,6 +65,8 @@ namespace Rogue.Ptb.Core
 					{
 						BuildSchema(config);
 					}
+
+					serializer.Serialize(File.OpenWrite(configurationFile), config);
 				})
 				//.Diagnostics(dc => dc.Enable().OutputToFile("Diagnostics.txt"))
 				.BuildSessionFactory();

@@ -9,6 +9,6 @@ namespace Rogue.Ptb.Core
 	{
 		NotStarted,
 		InProgress,
-		Complete
+		Complete,
 	}
 }
