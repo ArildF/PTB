@@ -36,12 +36,12 @@ namespace Rogue.Ptb.UI.Behaviors
 
 		protected override void OnAttached()
 		{
-			AssociatedObject.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
+			AssociatedObject.MouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
 		}
 
 		protected override void OnDetaching()
 		{
-			AssociatedObject.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
+			AssociatedObject.MouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
 		}
 
 		private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

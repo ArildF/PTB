@@ -15,6 +15,7 @@ namespace Rogue.Ptb.UI.ValueConverters
 				Tuple.Create(TaskState.NotStarted, 0),
 				Tuple.Create(TaskState.InProgress, 2),
 				Tuple.Create(TaskState.Complete, 4),
+				Tuple.Create(TaskState.Abandoned, 6),
 			};
 
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -32,6 +32,10 @@
 				<DataTrigger Binding="{Binding State}" Value="NotStarted">
 					<Setter TargetName="_border" Property="BorderBrush" Value="Red"/>
 				</DataTrigger>
+				<DataTrigger Binding="{Binding State}" Value="Abandoned">
+					<Setter TargetName="_border" Property="BorderBrush" Value="Black"/>
+					<Setter TargetName="_border" Property="Opacity" Value="0.5"/>
+				</DataTrigger>
 			</ControlTemplate.Triggers>
 		</ControlTemplate>
 	</UserControl.Template>
