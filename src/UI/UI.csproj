@@ -115,6 +115,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\CommandForEventBehavior.cs" />
     <Compile Include="Behaviors\DragGridElementBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Registration\CommandEventRegistrationConvention.cs" />
