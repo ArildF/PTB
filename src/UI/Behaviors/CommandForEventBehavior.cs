@@ -62,7 +62,7 @@ namespace Rogue.Ptb.UI.Behaviors
 					string.Format("Cannot find event '{0}' on type '{1}'", Event, AssociatedObject.GetType()));
 			}
 
-			var methodInfo = this.GetType().GetMethod("OnEvent", BindingFlags.NonPublic | BindingFlags.Instance);
+			var methodInfo = GetType().GetMethod("OnEvent", BindingFlags.NonPublic | BindingFlags.Instance);
 
 			var del = Delegate.CreateDelegate(eventInfo.EventHandlerType, this, methodInfo);
 			eventInfo.AddEventHandler(AssociatedObject, del);

@@ -29,6 +29,11 @@ namespace Rogue.Ptb.Core.Repositories
 			}
 		}
 
+		public void Save(T item)
+		{
+			SaveAll(new []{item});
+		}
+
 		public void Dispose()
 		{
 			_session.Flush();

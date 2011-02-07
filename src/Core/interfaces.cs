@@ -16,6 +16,8 @@ namespace Rogue.Ptb.Core
 	{
 		IQueryable<T> FindAll();
 		void SaveAll(IEnumerable<T> items);
+		void Save(T item);
+
 	}
 
 	public interface ITasksRepository : IRepository<Task>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using ReactiveUI;
 using Rogue.Ptb.Core;
@@ -18,22 +19,29 @@ namespace Rogue.Ptb.UI.ViewModels
 			_repositoryProvider = repositoryProvider;
 			_bus = bus;
 
-			Tasks = new ObservableCollection<TaskViewModel>();
+			Tasks = new ReactiveCollection<TaskViewModel>();
+
+			Tasks.ItemChanged
+				.Throttle(TimeSpan.FromSeconds(5))
+				.Where(c =>  _repository != null)
+				.Subscribe(task => OnSaveAllTasks(null));
+
+			Tasks.ChangeTrackingEnabled = true;
+
 			_bus.Listen<DatabaseChanged>().SubscribeOnDispatcher().Subscribe(OnDatabaseChanged);
 			_bus.Listen<CreateNewTask>().SubscribeOnDispatcher().Subscribe(OnCreateNewTask);
 			_bus.Listen<SaveAllTasks>().SubscribeOnDispatcher().Subscribe(OnSaveAllTasks);
-
-
 		}
 
-		public ObservableCollection<TaskViewModel> Tasks { get; private set; }
+		public ReactiveCollection<TaskViewModel> Tasks { get; private set; }
 
 		private void OnSaveAllTasks(SaveAllTasks ignored)
 		{
 			var tasks = Tasks.Select(t => t.Task);
 			_repository.SaveAll(tasks);
-
 		}
+
+		
 
 		private void OnDatabaseChanged(DatabaseChanged databaseChanged)
 		{

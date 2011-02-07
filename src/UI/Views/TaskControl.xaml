@@ -18,7 +18,11 @@
 					<Border.Effect>
 						<DropShadowEffect BlurRadius="10" ShadowDepth="10"/>
 					</Border.Effect>
-					<TextBlock TextAlignment="Center"><Run Text="{Binding Title}"/></TextBlock>
+					<TextBlock TextAlignment="Center">
+						<i:Interaction.Behaviors>
+							<Behaviors:CommandForEventBehavior Command="{Binding DoStuff}" Event="MouseDown"/>
+						</i:Interaction.Behaviors>
+						<Run Text="{Binding Title}"/></TextBlock>
 				</Border>
 
 				

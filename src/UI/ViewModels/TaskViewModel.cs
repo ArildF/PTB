@@ -1,36 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ReactiveUI;
+﻿using ReactiveUI;
 using Rogue.Ptb.Core;
+using System.Linq;
+using System;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
-	public class TaskViewModel : ReactiveObject
+	public class TaskViewModel : ViewModelBase
 	{
 		private readonly Task _task;
 
-		private string _title;
-		private TaskState _state;
 
 		public TaskViewModel(Task task)
 		{
 			_task = task;
-			_title = task.Title;
-			_state = task.State;
 		}
 
 		public TaskState State
 		{
-			get { return _state; }
-			set { this.RaiseAndSetIfChanged(t => t.State, value); }
+			get { return _task.State; }
+			set { this.SetAndRaisePropertyChanged(t => t.State, value, val => _task.State = val); }
 		}
 
 		public string Title
 		{
-			get { return _title; }
-			set { this.RaiseAndSetIfChanged(t => t.Title, value); }
+			get { return _task.Title; }
+			set { this.SetAndRaisePropertyChanged(t => t.Title, value, val  => _task.Title = val); }
 		}
 
 		public Task Task

@@ -118,6 +118,7 @@
     <Compile Include="Behaviors\CommandForEventBehavior.cs" />
     <Compile Include="Behaviors\DragGridElementBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Registration\CommandEventRegistrationConvention.cs" />
     <Compile Include="Registration\CommandRegistrationConvention.cs" />
     <Compile Include="Commands\CommandBase.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="ViewModels\TaskBoardViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="ViewModels\ToolbarViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>

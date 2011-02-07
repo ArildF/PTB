@@ -12,7 +12,7 @@ namespace Rogue.Ptb.Core
 
 		public virtual TaskState State
 		{
-			get; private set;
+			get; set;
 		}
 	}
 }
