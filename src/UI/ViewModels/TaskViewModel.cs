@@ -8,11 +8,13 @@ namespace Rogue.Ptb.UI.ViewModels
 	public class TaskViewModel : ViewModelBase
 	{
 		private readonly Task _task;
+		private bool _isEditing;
 
 
 		public TaskViewModel(Task task)
 		{
 			_task = task;
+			_isEditing = false;
 		}
 
 		public TaskState State
@@ -32,6 +34,26 @@ namespace Rogue.Ptb.UI.ViewModels
 			get {
 				return _task;
 			}
+		}
+
+		public bool IsEditing
+		{
+			get {
+				return _isEditing;
+			}
+			set {
+				this.RaiseAndSetIfChanged(tvm => tvm.IsEditing, value);
+			}
+		}
+
+		public void BeginEdit()
+		{
+			IsEditing = true;
+		}
+
+		public void EndEdit()
+		{
+			IsEditing = false;
 		}
 	}
 }

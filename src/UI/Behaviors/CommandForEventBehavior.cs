@@ -16,10 +16,12 @@ namespace Rogue.Ptb.UI.Behaviors
 		public static DependencyProperty CommandProperty =
 			DependencyProperty.Register("Command", typeof (ICommand), typeof (CommandForEventBehavior), new PropertyMetadata(OnCommandPropertyChanged));
 
+		private string _action;
+
 		private static void OnCommandPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var behavior = (CommandForEventBehavior) d;
-			behavior.AttachEventToCommand();
+			behavior.AttachToEvent();
 		}
 
 		/// <summary>
@@ -39,18 +41,31 @@ namespace Rogue.Ptb.UI.Behaviors
 			set
 			{
 				_event = value;
-				AttachEventToCommand();
+				AttachToEvent();
 			}
+		}
+
+
+		public string Action
+		{
+			get { return _action;  }
+			set
+			{
+				_action = value;
+	
+				AttachToEvent();
+			}
+
 		}
 
 		protected override void OnAttached()
 		{
-			AttachEventToCommand();
+			AttachToEvent();
 		}
 
-		private void AttachEventToCommand()
+		private void AttachToEvent()
 		{
-			if (AssociatedObject == null || Event == null || Command == null)
+			if (AssociatedObject == null || Event == null || (Command == null && Action == null))
 			{
 				return;
 			}
@@ -64,21 +79,43 @@ namespace Rogue.Ptb.UI.Behaviors
 
 			var methodInfo = GetType().GetMethod("OnEvent", BindingFlags.NonPublic | BindingFlags.Instance);
 
-			var del = Delegate.CreateDelegate(eventInfo.EventHandlerType, this, methodInfo);
-			eventInfo.AddEventHandler(AssociatedObject, del);
+			if (eventInfo.EventHandlerType != null)
+			{
+				var del = Delegate.CreateDelegate(eventInfo.EventHandlerType, this, methodInfo);
+				eventInfo.AddEventHandler(AssociatedObject, del);
+			}
+			else
+			{
+				throw new InvalidOperationException("This shouldn't happen. Really. Believe me.");
+			}
 		}
 
 		private void OnEvent(object sender, EventArgs e)
 		{
+			bool handled = false;
 			if (Command != null && Command.CanExecute(null))
 			{
 				Command.Execute(null);
+				handled = true;
 
-				var handled = e.GetType().GetProperty("Handled");
-				if (handled != null && handled.CanWrite)
+			}
+
+			object dataContext;
+			if (Action != null && (dataContext = AssociatedObject.GetValue(FrameworkElement.DataContextProperty)) != null)
+			{
+				var method = dataContext.GetType().GetMethod(_action, BindingFlags.Public | BindingFlags.Instance);
+				method.Invoke(dataContext, null);
+				handled = true;
+			}
+
+			if (handled)
+			{
+				var handledProp = e.GetType().GetProperty("Handled");
+				if (handledProp != null && handledProp.CanWrite)
 				{
-					handled.SetValue(e, true, null);
+					handledProp.SetValue(e, true, null);
 				}
+				
 			}
 		}
 	}

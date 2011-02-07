@@ -23,8 +23,10 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			Tasks.ItemChanged
 				.Throttle(TimeSpan.FromSeconds(5))
+				.Select(c => c.Sender)
 				.Where(c =>  _repository != null)
-				.Subscribe(task => OnSaveAllTasks(null));
+				.Where(task => !task.IsEditing)
+				.Subscribe(_ => OnSaveAllTasks(null));
 
 			Tasks.ChangeTrackingEnabled = true;
 
