@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NHibernate;
 using NHibernate.Linq;
+using Extensions = Rogue.Ptb.Infrastructure.Extensions;
 
 namespace Rogue.Ptb.Core.Repositories
 {
@@ -24,7 +24,7 @@ namespace Rogue.Ptb.Core.Repositories
 		{
 			using (var tx = _session.BeginTransaction())
 			{
-				items.Cast<object>().ForEach(_session.SaveOrUpdate);
+				Extensions.ForEach(items.Cast<object>(), _session.SaveOrUpdate);
 				tx.Commit();
 			}
 		}

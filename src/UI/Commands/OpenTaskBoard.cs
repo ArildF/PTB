@@ -1,11 +1,12 @@
 ﻿using Rogue.Ptb.Core;
+using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.Commands
 {
 	public class OpenTaskBoard : NoParameterCommandBase
 	{
-		private IEventAggregator _bus;
-		private ISessionFactoryProvider _sessionFactoryProvider;
+		private readonly IEventAggregator _bus;
+		private readonly ISessionFactoryProvider _sessionFactoryProvider;
 
 		public OpenTaskBoard(IEventAggregator bus, ISessionFactoryProvider sessionFactoryProvider)
 		{

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using ReactiveUI;
 using Rogue.Ptb.Core;
 using NHibernate.Linq;
+using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
@@ -12,7 +11,7 @@ namespace Rogue.Ptb.UI.ViewModels
 	{
 		private readonly IRepositoryProvider _repositoryProvider;
 		private readonly IEventAggregator _bus;
-		private IRepository<Task> _repository;
+		private Core.IRepository<Task> _repository;
 
 		public TaskBoardViewModel(IRepositoryProvider repositoryProvider, IEventAggregator bus)
 		{
@@ -53,7 +52,7 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			var tasks = _repository.FindAll();
 
-			tasks.Select(t => new TaskViewModel(t)).ForEach(Tasks.Add);
+			TypeHelperExtensionMethods.ForEach(tasks.Select(t => new TaskViewModel(t)), Tasks.Add);
 
 		}
 
@@ -63,7 +62,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			Tasks.Add(new TaskViewModel(task));
 		}
 
-		private IRepository<Task> NewRepository()
+		private Core.IRepository<Task> NewRepository()
 		{
 			if (_repository != null)
 			{

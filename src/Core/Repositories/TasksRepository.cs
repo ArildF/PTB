@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NHibernate;
+﻿using NHibernate;
+using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.Core.Repositories
 {

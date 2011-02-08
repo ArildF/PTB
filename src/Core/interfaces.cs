@@ -28,10 +28,4 @@ namespace Rogue.Ptb.Core
 	{
 		IRepository<T> Open<T>();
 	} 
-
-	public interface IEventAggregator
-	{
-		IObservable<T> Listen<T>();
-		void Publish<T>(T message = default(T));
-	}
 }

@@ -15,11 +15,10 @@ namespace Rogue.Ptb.Core
 					scanner.TheCallingAssembly();
 				});
 
-			For(typeof (IRepository<>)).Use(typeof (RepositoryBase<>));
 
 			For<ISession>().Use(c => c.GetInstance<ISessionFactoryProvider>().GetSessionFactory().OpenSession());
 			ForSingletonOf<ISessionFactoryProvider>().Use<SessionFactoryProvider>();
-			ForSingletonOf<IEventAggregator>().Use<EventAggregator>();
+			For(typeof (IRepository<>)).Use(typeof (RepositoryBase<>));
 		}
 	}
 }

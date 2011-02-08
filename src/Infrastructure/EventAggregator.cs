@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Rogue.Ptb.Core
+namespace Rogue.Ptb.Infrastructure
 {
 	public class EventAggregator : IEventAggregator
 	{

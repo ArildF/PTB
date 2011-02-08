@@ -1,4 +1,4 @@
-﻿using Rogue.Ptb.Core;
+﻿using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.Commands
 {
