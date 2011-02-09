@@ -13,7 +13,9 @@ namespace Rogue.Ptb.UI
 
 			var bootstrapper = new Bootstrapper();
 
-			IShellView shellView = bootstrapper.Bootstrap();
+			bootstrapper.Bootstrap();
+
+			var shellView = bootstrapper.CreateShell();
 
 			shellView.Window.Show();
 		}

@@ -7,11 +7,11 @@ using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
-	public class TaskBoardViewModel : ITaskBoardViewModel
+	public class TaskBoardViewModel : ViewModelBase, ITaskBoardViewModel
 	{
 		private readonly IRepositoryProvider _repositoryProvider;
-		private readonly IEventAggregator _bus;
 		private Core.IRepository<Task> _repository;
+		private readonly IEventAggregator _bus;
 
 		public TaskBoardViewModel(IRepositoryProvider repositoryProvider, IEventAggregator bus)
 		{
@@ -29,9 +29,9 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			Tasks.ChangeTrackingEnabled = true;
 
-			_bus.Listen<DatabaseChanged>().SubscribeOnDispatcher().Subscribe(OnDatabaseChanged);
-			_bus.Listen<CreateNewTask>().SubscribeOnDispatcher().Subscribe(OnCreateNewTask);
-			_bus.Listen<SaveAllTasks>().SubscribeOnDispatcher().Subscribe(OnSaveAllTasks);
+			_bus.ListenOnScheduler<DatabaseChanged>(OnDatabaseChanged);
+			_bus.ListenOnScheduler<CreateNewTask>(OnCreateNewTask);
+			_bus.ListenOnScheduler<SaveAllTasks>(OnSaveAllTasks);
 		}
 
 		public ReactiveCollection<TaskViewModel> Tasks { get; private set; }
@@ -58,8 +58,8 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		private void OnCreateNewTask(CreateNewTask ignored)
 		{
-			var task = new Task();
-			Tasks.Add(new TaskViewModel(task));
+			var task = new Task(){Title = "New Task"};
+			Tasks.Insert(0, new TaskViewModel(task));
 		}
 
 		private Core.IRepository<Task> NewRepository()

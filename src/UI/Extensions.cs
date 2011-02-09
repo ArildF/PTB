@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using ReactiveUI;
+using Rogue.Ptb.Infrastructure;
+using System.Linq;
 
 namespace Rogue.Ptb.UI
 {
@@ -32,6 +35,11 @@ namespace Rogue.Ptb.UI
 				return ((MemberExpression)expr.Body).Member.Name;
 			}
 			return null;
+		}
+
+		public static void ListenOnScheduler<T>(this IEventAggregator aggregator, Action<T> handler)
+		{
+			aggregator.Listen<T>().SubscribeOn(RxApp.DeferredScheduler).Subscribe(handler);
 		}
 
 	}

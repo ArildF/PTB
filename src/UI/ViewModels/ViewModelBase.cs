@@ -1,15 +1,18 @@
-﻿using ReactiveUI;
+﻿using System;
+using System.Linq;
+using ReactiveUI;
+using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
 	public class ViewModelBase : ReactiveObject, IReactivePropertyChangingObject
 	{
-		public void OnPropertyChanging(string propertyName)
+		void IReactivePropertyChangingObject.OnPropertyChanging(string propertyName)
 		{
 			raisePropertyChanging(propertyName);
 		}
 
-		public void OnPropertyChanged(string propertyName)
+		void IReactivePropertyChangingObject.OnPropertyChanged(string propertyName)
 		{
 			raisePropertyChanged(propertyName);
 		}
