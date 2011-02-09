@@ -60,7 +60,6 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[AfterScenario]
 		public void AfterScenario()
 		{
-			//TODO: implement logic that has to run after executing each scenario
 			_context.Dispose();
 		}
 

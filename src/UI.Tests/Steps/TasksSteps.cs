@@ -59,5 +59,12 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		{
 			_context.TaskBoardViewModel.Tasks.First().Task.Id.Should().Be(Guid.Empty);
 		}
+
+		[Then(@"the new task should be in edit mode")]
+		public void ThenTheNewTaskShouldBeInEditMode()
+		{
+			_context.TaskBoardViewModel.Tasks.First(t => t.Task.Id == Guid.Empty).IsEditing.Should().BeTrue();
+
+		}
 	}
 }

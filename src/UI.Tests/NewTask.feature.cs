@@ -73,6 +73,8 @@ testRunner.When("I click new task");
 testRunner.Then("a new task should be created");
 #line 12
 testRunner.And("the new task should be displayed first");
+#line 13
+testRunner.And("the new task should be in edit mode");
 #line hidden
             testRunner.CollectScenarioErrors();
         }

@@ -58,11 +58,14 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		private void OnCreateNewTask(CreateNewTask ignored)
 		{
-			var task = new Task(){Title = "New Task"};
-			Tasks.Insert(0, new TaskViewModel(task));
+			var task = new Task();
+			var taskViewModel = new TaskViewModel(task);
+			Tasks.Insert(0, taskViewModel);
+
+			taskViewModel.BeginEdit();
 		}
 
-		private Core.IRepository<Task> NewRepository()
+		private IRepository<Task> NewRepository()
 		{
 			if (_repository != null)
 			{

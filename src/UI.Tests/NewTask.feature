@@ -10,4 +10,5 @@ Scenario: Add new tasks
     When I click new task
     Then a new task should be created
     And the new task should be displayed first
+    And the new task should be in edit mode
 
