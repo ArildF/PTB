@@ -1,4 +1,5 @@
 ﻿using System;
+using Castle.DynamicProxy;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Moq;
@@ -8,6 +9,7 @@ using Rogue.Ptb.Core;
 using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.ViewModels;
 using StructureMap;
+using IInterceptor = Castle.DynamicProxy.IInterceptor;
 
 namespace Rogue.Ptb.UI.Tests.Steps
 {
@@ -28,6 +30,8 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_container = bootStrapper.Container;
 			_provider = new Provider();
 			_container.Inject<ISessionFactoryProvider>(_provider);
+			_container.Inject<ISession>(_provider.Session);
+
 
 			TaskBoardViewModel = Get<TaskBoardViewModel>();
 
@@ -44,28 +48,56 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public class Provider : ISessionFactoryProvider, IDisposable
 		{
 			private ISessionFactory _sessionFactory;
-			
+			private ISession _session;
+
+			public ISession Session
+			{
+				get
+				{
+					if (_session == null)
+					{
+						GetSessionFactory();
+					}
+					return _session;
+				}
+			}
 
 			public ISessionFactory GetSessionFactory()
 			{
 				return _sessionFactory ?? (_sessionFactory = CreateSessionFactory());
 			}
 
-			private static ISessionFactory CreateSessionFactory()
+			private ISessionFactory CreateSessionFactory()
 			{
 				var config = Fluently.Configure()
 					.Database(SQLiteConfiguration.Standard
-						.ConnectionString("Data Source=:memory:;Version=3;New=True; Pooling=True; Max Pool Size=1"))
+						.ConnectionString("Data Source=:memory:;Version=3;New=True; Pooling=True; Max Pool Size=1")
+						.Raw("connection.release_mode", "on_close"))
 					.Mappings(mc => mc.FluentMappings.AddFromAssemblyOf<SessionFactoryProvider>())
 					.BuildConfiguration();
 
 				var factory = config.BuildSessionFactory();
 
+				var session = factory.OpenSession();
 
-				using (var session = factory.OpenSession())
-					new SchemaExport(config).Execute(false, true, false, session.Connection, Console.Out);
+				var generator = new ProxyGenerator();
+				_session = generator.CreateInterfaceProxyWithTargetInterface(session, new CloseInterceptor());
+
+				new SchemaExport(config).Execute(false, true, false, session.Connection, Console.Out);
 
 				return factory;
+			}
+
+			private class CloseInterceptor : IInterceptor
+			{
+				public void Intercept(IInvocation invocation)
+				{
+					if (invocation.Method.Name.In("Close", "Dispose"))
+					{
+						return;
+					}
+					invocation.Proceed();
+				}
 			}
 
 			public void CreateNewDatabase(string path)
