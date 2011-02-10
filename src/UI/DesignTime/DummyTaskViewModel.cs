@@ -10,6 +10,16 @@ namespace Rogue.Ptb.UI.DesignTime
 	{
 		private TaskState _state;
 
+		public DummyTaskViewModel()
+		{
+			Title = "Hello world, all of you";
+			State = TaskState.InProgress;
+
+		}
+
+		public string Title { get; set; }
+
+
 		public DummyTaskViewModel(TaskState state)
 		{
 			_state = state;
