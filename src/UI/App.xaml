@@ -6,9 +6,11 @@
          
     	<ResourceDictionary>
     		<ResourceDictionary.MergedDictionaries>
-    			<ResourceDictionary Source="Art/CreateTaskBoard.xaml"/>
+    			<ResourceDictionary Source="Resources/Art/CreateTaskBoard.xaml"/>
     		</ResourceDictionary.MergedDictionaries>
     	</ResourceDictionary>
+		
+
          
     </Application.Resources>
 </Application>
