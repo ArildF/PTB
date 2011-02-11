@@ -25,7 +25,7 @@
 					<Border.Effect>
 						<DropShadowEffect BlurRadius="10" ShadowDepth="10"/>
 					</Border.Effect>
-					<Grid Height="Auto" Width="Auto" VerticalAlignment="Stretch">
+					<Grid Height="Auto" Width="Auto" VerticalAlignment="Stretch" Margin="5">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="*"/>
 							<RowDefinition Height="Auto"/>
