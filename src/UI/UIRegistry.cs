@@ -1,5 +1,7 @@
-﻿using Rogue.Ptb.UI.Commands;
+﻿using System;
+using Rogue.Ptb.UI.Commands;
 using Rogue.Ptb.UI.Registration;
+using Rogue.Ptb.UI.Views;
 using StructureMap.Configuration.DSL;
 
 namespace Rogue.Ptb.UI
@@ -16,8 +18,9 @@ namespace Rogue.Ptb.UI
 					scanner.With(new CommandRegistrationConvention());
 					scanner.With(new CommandEventRegistrationConvention());
 				});
-
+			ForSingletonOf<IShellView>().Use<ShellView>();
 			For<ICommandResolver>().Use<CommandResolver>();
+
 		}
 	}
 

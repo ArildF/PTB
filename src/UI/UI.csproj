@@ -123,6 +123,8 @@
     <Compile Include="Behaviors\FocusBehaviors.cs" />
     <Compile Include="Behaviors\SelectAllOnFocusBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="dialogargs.cs" />
+    <Compile Include="DialogDisplayer.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Registration\CommandEventRegistrationConvention.cs" />
     <Compile Include="Registration\CommandRegistrationConvention.cs" />
@@ -145,6 +147,13 @@
     <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="ViewModels\ToolbarViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\CreateTaskBoardDialog.xaml.cs">
+      <DependentUpon>CreateTaskBoardDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialog.cs" />
+    <Compile Include="Views\DialogHost.xaml.cs">
+      <DependentUpon>DialogHost.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -204,6 +213,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CreateTaskBoardDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DialogHost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

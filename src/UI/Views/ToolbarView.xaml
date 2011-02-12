@@ -28,13 +28,14 @@
 									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
 									/>
-					<ribbon:RibbonButton Label="Save" Name="SaveAllTasks"
+				<ribbon:RibbonButton Label="Save" Name="SaveAllTasks"
 									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
 									/>
 
-				</ribbon:RibbonGroup>
-        </ribbon:RibbonTab>
+			</ribbon:RibbonGroup>
+
+		</ribbon:RibbonTab>
 
         <ribbon:RibbonTab Header="File"/>
         <ribbon:RibbonTab Header="Filters"/>

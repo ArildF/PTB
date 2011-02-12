@@ -7,17 +7,26 @@ namespace Rogue.Ptb.UI.Commands
 	{
 		private readonly ISessionFactoryProvider _sessionFactoryProvider;
 		private readonly IEventAggregator _bus;
+		private readonly IDialogDisplayer _dialogDisplayer;
 
-		public CreateTaskBoard(ISessionFactoryProvider sessionFactoryProvider, IEventAggregator bus)
+		public CreateTaskBoard(ISessionFactoryProvider sessionFactoryProvider, IEventAggregator bus, 
+			IDialogDisplayer dialogDisplayer)
 		{
 			_sessionFactoryProvider = sessionFactoryProvider;
 			_bus = bus;
+			_dialogDisplayer = dialogDisplayer;
 		}
 
 
 		protected override void Execute()
 		{
-			_sessionFactoryProvider.CreateNewDatabase("Board.taskboard");
+			var result = _dialogDisplayer.ShowDialogFor<CreateTaskBoardDialogResult>();
+			if (result == null)
+			{
+				return;
+			}
+
+			_sessionFactoryProvider.CreateNewDatabase(result.Path);
 			_bus.Publish<DatabaseChanged>();
 		}
 	}

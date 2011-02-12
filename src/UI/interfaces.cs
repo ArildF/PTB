@@ -51,4 +51,11 @@ namespace Rogue.Ptb.UI
 		void OnPropertyChanged(string propertyName);
 
 	}
+
+	public interface IDialogDisplayer
+	{
+		TDialogReturnValue ShowDialogFor<TDialogReturnValue>(DialogArgsBase args = null) 
+			where TDialogReturnValue : DialogReturnValueBase;
+	}
+
 }

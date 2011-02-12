@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Windows.Controls;
 using ReactiveUI;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Infrastructure;
+using Rogue.Ptb.UI.Views;
 using StructureMap;
 
 namespace Rogue.Ptb.UI
@@ -28,7 +30,11 @@ namespace Rogue.Ptb.UI
 					ce.AddRegistry<UIRegistry>();
 					ce.AddRegistry<CoreRegistry>();
 					ce.AddRegistry<InfrastructureRegistry>();
+					ce.For<Func<Dialog, DialogHost>>().Use(c => 
+						uc => Container.With(uc).With(c.GetInstance<IShellView>()).GetInstance<DialogHost>());
+
 				});
+
 			Debug.WriteLine(Container.WhatDoIHave());
 			RxApp.GetFieldNameForPropertyNameFunc = propName => "_" + Char.ToLower(propName[0]) + propName.Substring(1);
 		}

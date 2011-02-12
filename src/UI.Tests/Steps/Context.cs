@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 using Castle.DynamicProxy;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
@@ -16,8 +18,9 @@ namespace Rogue.Ptb.UI.Tests.Steps
 	public class Context : IDisposable
 	{
 		private readonly Container _container;
-		private MockFactory _factory;
+		private readonly MockFactory _factory;
 		private readonly Provider _provider;
+		private Mock<IDialogDisplayer> _dialogDisplayer;
 
 		public Context()
 		{
@@ -26,12 +29,15 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			_factory = new MockFactory(MockBehavior.Loose);
 
+			_dialogDisplayer = _factory.Create<IDialogDisplayer>();
+
+
 
 			_container = bootStrapper.Container;
 			_provider = new Provider();
 			_container.Inject<ISessionFactoryProvider>(_provider);
 			_container.Inject<ISession>(_provider.Session);
-
+			_container.Inject<IDialogDisplayer>(_dialogDisplayer.Object);
 
 			TaskBoardViewModel = Get<TaskBoardViewModel>();
 
@@ -39,6 +45,11 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		}
 
 		public TaskBoardViewModel TaskBoardViewModel { get; private set; }
+
+		public IEnumerable<string> CreatedDatabases
+		{
+			get { return _provider.CreatedDatabases; }
+		}
 
 		public T Get<T>()
 		{
@@ -50,6 +61,10 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			private ISessionFactory _sessionFactory;
 			private ISession _session;
 
+			public Provider()
+			{
+				CreatedDatabases = new List<string>();
+			}
 			public ISession Session
 			{
 				get
@@ -61,6 +76,8 @@ namespace Rogue.Ptb.UI.Tests.Steps
 					return _session;
 				}
 			}
+
+			public IList<string> CreatedDatabases { get; private set; }
 
 			public ISessionFactory GetSessionFactory()
 			{
@@ -102,6 +119,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			public void CreateNewDatabase(string path)
 			{
+				CreatedDatabases.Add(path);
 			}
 
 			public void OpenDatabase(string file)
@@ -122,6 +140,22 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public void Dispose()
 		{
 			_provider.Dispose();
+		}
+
+		public void SetUpDialogResult<T>(T result) where T : DialogReturnValueBase
+		{
+			_dialogDisplayer.Setup(displayer => displayer.ShowDialogFor<T>(null)).Returns(result);
+
+		}
+
+		public ICommand GetCommand<T>()
+		{
+			return (ICommand) Get<T>();
+		}
+
+		public void Subscribe<T>(Action<T> handler)
+		{
+			Get<IEventAggregator>().Listen<T>().Subscribe(handler);
 		}
 	}
 }
