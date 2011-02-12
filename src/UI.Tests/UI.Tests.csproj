@@ -113,10 +113,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateTaskBoard.feature.cs">
+    <Compile Include="TaskBoardManagement.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CreateTaskBoard.feature</DependentUpon>
+      <DependentUpon>TaskBoardManagement.feature</DependentUpon>
     </Compile>
     <Compile Include="NewTask.feature.cs">
       <AutoGen>True</AutoGen>
@@ -131,9 +131,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="CreateTaskBoard.feature">
+    <None Include="TaskBoardManagement.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>CreateTaskBoard.feature.cs</LastGenOutput>
+      <LastGenOutput>TaskBoardManagement.feature.cs</LastGenOutput>
     </None>
     <None Include="NewTask.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

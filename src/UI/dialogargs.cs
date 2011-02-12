@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 
 namespace Rogue.Ptb.UI
 {
@@ -14,14 +15,27 @@ namespace Rogue.Ptb.UI
 	public class DialogArgsBase
 	{}
 
-
-	public class CreateTaskBoardDialogResult : DialogReturnValueBase<Views.CreateTaskBoardDialog, DialogArgsBase>
+	public class PathDialogResult<TDialog> : DialogReturnValueBase<TDialog, DialogArgsBase> where TDialog : UserControl
 	{
-		public string Path { get; private set; }
-
-		public CreateTaskBoardDialogResult(string path)
+		protected PathDialogResult(string path)
 		{
 			Path = path;
+		}
+
+		public string Path { get; private set; }
+	}
+
+	public class CreateTaskBoardDialogResult : PathDialogResult<Views.CreateTaskBoardDialog>
+	{
+		public CreateTaskBoardDialogResult(string path) : base(path)
+		{
+		}
+	}
+
+	public class OpenTaskBoardDialogResult : PathDialogResult<Views.OpenTaskBoardDialog>
+	{
+		public OpenTaskBoardDialogResult(string path) : base(path)
+		{
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		private readonly Container _container;
 		private readonly MockFactory _factory;
 		private readonly Provider _provider;
-		private Mock<IDialogDisplayer> _dialogDisplayer;
+		private readonly Mock<IDialogDisplayer> _dialogDisplayer;
 
 		public Context()
 		{
@@ -51,6 +51,11 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			get { return _provider.CreatedDatabases; }
 		}
 
+		public IEnumerable<string> OpenedDatabases
+		{
+			get { return _provider.OpenedDatabases; }
+		}
+
 		public T Get<T>()
 		{
 			return _container.GetInstance<T>();
@@ -64,6 +69,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			public Provider()
 			{
 				CreatedDatabases = new List<string>();
+				OpenedDatabases = new List<string>();
 			}
 			public ISession Session
 			{
@@ -78,6 +84,8 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			}
 
 			public IList<string> CreatedDatabases { get; private set; }
+
+			public IList<string> OpenedDatabases { get; private set; }
 
 			public ISessionFactory GetSessionFactory()
 			{
@@ -124,6 +132,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			public void OpenDatabase(string file)
 			{
+				OpenedDatabases.Add(file);
 			}
 
 			public void Dispose()

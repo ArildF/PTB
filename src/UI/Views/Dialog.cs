@@ -16,6 +16,7 @@ namespace Rogue.Ptb.UI.Views
 		{
 			Loaded += OnLoaded;
 
+
 			_closeResult = new Subject<bool>();
 		}
 

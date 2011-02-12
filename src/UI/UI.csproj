@@ -147,13 +147,15 @@
     <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="ViewModels\ToolbarViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\CreateTaskBoardDialog.xaml.cs">
-      <DependentUpon>CreateTaskBoardDialog.xaml</DependentUpon>
+    <Compile Include="Views\CreateTaskBoardDialog.cs" />
+    <Compile Include="Views\TaskBoardPathDialogBase.xaml.cs">
+      <DependentUpon>TaskBoardPathDialogBase.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialog.cs" />
     <Compile Include="Views\DialogHost.xaml.cs">
       <DependentUpon>DialogHost.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\OpenTaskBoardDialog.cs" />
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -216,7 +218,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CreateTaskBoardDialog.xaml">
+    <Page Include="Views\TaskBoardPathDialogBase.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
