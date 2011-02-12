@@ -121,6 +121,7 @@
     <Compile Include="Behaviors\CommandForEventBehavior.cs" />
     <Compile Include="Behaviors\DragGridElementBehavior.cs" />
     <Compile Include="Behaviors\FocusBehaviors.cs" />
+    <Compile Include="Behaviors\SelectAllOnFocusBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Registration\CommandEventRegistrationConvention.cs" />
