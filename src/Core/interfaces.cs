@@ -28,4 +28,9 @@ namespace Rogue.Ptb.Core
 	{
 		IRepository<T> Open<T>();
 	} 
+	
+	public interface IDatabaseServices
+	{
+		void CreateDatabaseFile(string connectionString);
+	}
 }

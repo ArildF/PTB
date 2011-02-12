@@ -13,6 +13,12 @@ namespace Rogue.Ptb.Core
 	public class SessionFactoryProvider : ISessionFactoryProvider
 	{
 		private ISessionFactory _factory;
+		private IDatabaseServices _databaseServices;
+
+		public SessionFactoryProvider(IDatabaseServices databaseServices)
+		{
+			_databaseServices = databaseServices;
+		}
 
 		public ISessionFactory GetSessionFactory()
 		{
@@ -39,7 +45,7 @@ namespace Rogue.Ptb.Core
 			_factory = CreateSessionFactory(path, createSchema);
 		}
 
-		public static ISessionFactory CreateSessionFactory(string path = "MyData.sdf", bool createSchema = false)
+		public ISessionFactory CreateSessionFactory(string path = "MyData.sdf", bool createSchema = false)
 		{
 			path = Path.GetFullPath(path);
 
@@ -54,6 +60,11 @@ namespace Rogue.Ptb.Core
 				return Fluently.Configure(configuration).BuildSessionFactory();
 			}
 			string connString = String.Format("Data Source={0};Persist Security Info=False", path);
+
+			if (createSchema)
+			{
+				_databaseServices.CreateDatabaseFile(connString);
+			}
 
 			var factory = Fluently.Configure()
 				.Database(MsSqlCeConfiguration.Standard

@@ -80,6 +80,7 @@
     <Compile Include="Repositories\TasksRepository.cs" />
     <Compile Include="RepositoryProvider.cs" />
     <Compile Include="SessionFactoryProvider.cs" />
+    <Compile Include="SqlCe\SqlCeDatabaseServices.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="TaskState.cs" />
   </ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using ReactiveUI;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Infrastructure;
@@ -28,7 +29,7 @@ namespace Rogue.Ptb.UI
 					ce.AddRegistry<CoreRegistry>();
 					ce.AddRegistry<InfrastructureRegistry>();
 				});
-
+			Debug.WriteLine(Container.WhatDoIHave());
 			RxApp.GetFieldNameForPropertyNameFunc = propName => "_" + Char.ToLower(propName[0]) + propName.Substring(1);
 		}
 
