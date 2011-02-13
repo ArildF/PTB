@@ -118,10 +118,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\CommandBehavior.cs" />
     <Compile Include="Behaviors\CommandForEventBehavior.cs" />
     <Compile Include="Behaviors\DragGridElementBehavior.cs" />
     <Compile Include="Behaviors\FocusBehaviors.cs" />
+    <Compile Include="Behaviors\FocusNextOnEnterBehavior.cs" />
+    <Compile Include="Behaviors\KeyCommandBehavior.cs" />
     <Compile Include="Behaviors\SelectAllOnFocusBehavior.cs" />
+    <Compile Include="Behaviors\TraverseFocusOnKeyBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="dialogargs.cs" />
     <Compile Include="DialogDisplayer.cs" />

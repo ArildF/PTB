@@ -1,69 +1,26 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Interactivity;
 
 namespace Rogue.Ptb.UI.Behaviors
 {
-	public class CommandForEventBehavior : Behavior<UIElement>
+	public class CommandForEventBehavior : CommandBehavior
 	{
 		private string _event;
 
-		/// <summary>
-		/// Identifies the name dependency property.
-		/// </summary>
-		public static DependencyProperty CommandProperty =
-			DependencyProperty.Register("Command", typeof (ICommand), typeof (CommandForEventBehavior), new PropertyMetadata(OnCommandPropertyChanged));
 
-		private string _action;
-
-		private static void OnCommandPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			var behavior = (CommandForEventBehavior) d;
-			behavior.AttachToEvent();
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public ICommand Command
-		{
-			get { return (ICommand) GetValue(CommandProperty); }
-			set { SetValue(CommandProperty, value); }
-		}
-
-
-		
 		public string Event
 		{
 			get { return _event; }
 			set
 			{
 				_event = value;
-				AttachToEvent();
+				ImportantPropertyChanged();
 			}
 		}
 
 
-		public string Action
-		{
-			get { return _action;  }
-			set
-			{
-				_action = value;
-	
-				AttachToEvent();
-			}
-
-		}
-
-		protected override void OnAttached()
-		{
-			AttachToEvent();
-		}
-
-		private void AttachToEvent()
+		protected override void ImportantPropertyChanged()
 		{
 			if (AssociatedObject == null || Event == null || (Command == null && Action == null))
 			{
@@ -92,21 +49,7 @@ namespace Rogue.Ptb.UI.Behaviors
 
 		private void OnEvent(object sender, EventArgs e)
 		{
-			bool handled = false;
-			if (Command != null && Command.CanExecute(null))
-			{
-				Command.Execute(null);
-				handled = true;
-
-			}
-
-			object dataContext;
-			if (Action != null && (dataContext = AssociatedObject.GetValue(FrameworkElement.DataContextProperty)) != null)
-			{
-				var method = dataContext.GetType().GetMethod(_action, BindingFlags.Public | BindingFlags.Instance);
-				method.Invoke(dataContext, null);
-				handled = true;
-			}
+			bool handled = InvokeCommandOrAction();
 
 			if (handled)
 			{

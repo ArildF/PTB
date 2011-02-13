@@ -9,6 +9,10 @@
     <UserControl.Resources>
 		<vc:TaskStateToColumnConverter x:Key="TaskStateToColumnConverter"/>
 		<ObjectDataProvider x:Key="DesignDataContext" d:IsDataSource="True" ObjectType="{x:Type design:DummyTaskBoardViewModel}"/>
+		
+		<Style TargetType="GridSplitter">
+			<Setter Property="IsTabStop" Value="False"/>
+		</Style>
 	</UserControl.Resources>
 
 	<ScrollViewer VerticalScrollBarVisibility="Auto">

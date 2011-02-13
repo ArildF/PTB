@@ -48,6 +48,7 @@
 						<i:Interaction.Behaviors>
 							<Behaviors:CommandForEventBehavior Event="LostFocus" Action="EndEdit"/>
 							<Behaviors:SelectAllOnFocusBehavior/>
+							<Behaviors:KeyCommandBehavior Key="Enter" Action="EndEdit"/>
 						</i:Interaction.Behaviors>
 					</TextBox>
 				</Grid>
