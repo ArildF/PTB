@@ -31,6 +31,10 @@ namespace Rogue.Ptb.UI.Behaviors
 
 		private void AssociatedObjectOnKeyDown(object sender, KeyEventArgs keyEventArgs)
 		{
+			if (keyEventArgs.Key != Key)
+			{
+				return;
+			}
 			InvokeCommandOrAction();
 		}
 	}
