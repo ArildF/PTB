@@ -15,7 +15,7 @@ namespace Rogue.Ptb.UI.Commands
 
 		public ICommand Resolve(CommandName commandName)
 		{
-			return _container.GetInstance<ICommand>(commandName.Name);
+			return _container.TryGetInstance<ICommand>(commandName.Name);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
+using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Commands;
 
 namespace Rogue.Ptb.UI.MarkupExtensions
@@ -9,13 +10,25 @@ namespace Rogue.Ptb.UI.MarkupExtensions
 	[MarkupExtensionReturnType(typeof(ICommand))]
 	public class ResolveCommandExtension : MarkupExtension
 	{
+		private readonly string _name;
+
+		public ResolveCommandExtension()
+		{
+			
+		}
+
+		public ResolveCommandExtension(string name)
+		{
+			_name = name;
+		}
+
 		public override object ProvideValue(IServiceProvider serviceProvider)
 		{
 			var pvt = (IProvideValueTarget) serviceProvider.GetService(typeof (IProvideValueTarget));
 			var fwe = pvt.TargetObject as FrameworkElement;
 			if (fwe == null)
 			{
-				return null;
+				return this;
 			}
 
 			var property = pvt.TargetProperty as DependencyProperty;
@@ -24,34 +37,64 @@ namespace Rogue.Ptb.UI.MarkupExtensions
 				return null;
 			}
 
-			fwe.DataContextChanged += (sender, args) => OnDataContextChanged(fwe, property);
-			return null;
+			return new ProxyCommand(fwe, _name);
 		}
 
-		private static void OnDataContextChanged(FrameworkElement fwe, DependencyProperty property)
+		public class ProxyCommand : ICommand
 		{
-			ICommand command = GetCommand(fwe);
+			private readonly FrameworkElement _frameworkElement;
+			private readonly string _name;
 
-			fwe.SetValue(property, command);
-		}
-
-		private static ICommand GetCommand(FrameworkElement fwe)
-		{
-			var dc = fwe.GetValue(FrameworkElement.DataContextProperty);
-
-			if (dc == null)
+			public ProxyCommand(FrameworkElement frameworkElement, string name)
 			{
-				return null;
+				_frameworkElement = frameworkElement;
+				_name = name;
+
+				_frameworkElement.DataContextChanged += FrameworkElementOnDataContextChanged;
 			}
 
-			var resolver = dc as ICommandResolver;
-			if (resolver == null)
+			private void FrameworkElementOnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 			{
-				throw new Exception("DataContext must be an ICommandResolver");
+				if (CanExecuteChanged != null)
+				{
+					CanExecuteChanged(this, EventArgs.Empty);
+				}
 			}
 
-			var name = (string) fwe.GetValue(FrameworkElement.NameProperty);
-			return resolver.Resolve(CommandName.Create(name));
+			public void Execute(object parameter)
+			{
+				Command.DoIfNotNull(c => c.Execute(parameter));
+			}
+
+			protected ICommand Command
+			{
+				get
+				{
+					var dc = _frameworkElement.GetValue(FrameworkElement.DataContextProperty);
+
+					if (dc == null)
+					{
+						return null;
+					}
+
+					var resolver = dc as ICommandResolver;
+					if (resolver == null)
+					{
+						return null;
+					}
+
+					var name = _name ?? (string)_frameworkElement.GetValue(FrameworkElement.NameProperty);
+
+					return resolver.Resolve(CommandName.Create(name));
+				}
+			}
+
+			public bool CanExecute(object parameter)
+			{
+				return Command.IfNotNull(c => c.CanExecute(parameter));
+			}
+
+			public event EventHandler CanExecuteChanged;
 		}
 	}
 }

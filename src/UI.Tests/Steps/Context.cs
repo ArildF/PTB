@@ -39,9 +39,15 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_container.Inject<ISession>(_provider.Session);
 			_container.Inject<IDialogDisplayer>(_dialogDisplayer.Object);
 
+			var settings = new UI.Properties.Settings {LastRecentlyUsedTaskboards = null};
+			settings.Providers.Clear();
+			_container.Inject(settings);
+
+			var startables = _container.Model.GetAllPossible<IStartable>();
+			startables.ForEach(startup => startup.Start());
+
 			TaskBoardViewModel = Get<TaskBoardViewModel>();
-
-
+			ToolbarViewModel = Get<ToolbarViewModel>();
 		}
 
 		public TaskBoardViewModel TaskBoardViewModel { get; private set; }
@@ -54,6 +60,11 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public IEnumerable<string> OpenedDatabases
 		{
 			get { return _provider.OpenedDatabases; }
+		}
+
+		public ToolbarViewModel ToolbarViewModel
+		{
+			get; private set;
 		}
 
 		public T Get<T>()

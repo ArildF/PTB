@@ -27,7 +27,7 @@ namespace Rogue.Ptb.UI.Commands
 			}
 
 			_sessionFactoryProvider.CreateNewDatabase(result.Path);
-			_bus.Publish<DatabaseChanged>();
+			_bus.Publish(new DatabaseChanged(result.Path));
 		}
 	}
 }

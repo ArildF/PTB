@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -58,4 +59,13 @@ namespace Rogue.Ptb.UI
 			where TDialogReturnValue : DialogReturnValueBase;
 	}
 
+	public interface ISettings : IStartable
+	{
+		IEnumerable<string> LastRecentlyUsedTaskBoards { get; }
+	}
+
+	public interface IStartable
+	{
+		void Start();
+	}
 }

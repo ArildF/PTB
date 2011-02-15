@@ -36,5 +36,22 @@ namespace Rogue.Ptb.Infrastructure
 				action(item);
 			}
 		}
+
+		public static void DoIfNotNull<T>(this T self, Action<T> action) where T : class
+		{
+			if (self != null)
+			{
+				action(self);
+			}
+		}
+
+		public static TRet IfNotNull<T, TRet>(this T self, Func<T, TRet> func) where T : class
+		{
+			if (self != null)
+			{
+				return func(self);
+			}
+			return default(TRet);
+		}
 	}
 }

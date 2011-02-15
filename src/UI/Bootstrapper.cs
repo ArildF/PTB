@@ -37,10 +37,14 @@ namespace Rogue.Ptb.UI
 
 			Debug.WriteLine(Container.WhatDoIHave());
 			RxApp.GetFieldNameForPropertyNameFunc = propName => "_" + Char.ToLower(propName[0]) + propName.Substring(1);
+
 		}
 
 		public IShellView CreateShell()
 		{
+			var startables = Container.Model.GetAllPossible<IStartable>();
+			startables.ForEach(startup => startup.Start());
+
 			return Container.GetInstance<IShellView>();
 		}
 	}

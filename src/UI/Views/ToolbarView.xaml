@@ -18,11 +18,20 @@
 									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
 									/>
-        		<ribbon:RibbonButton Content="Open" Label="Open" Name="OpenTaskBoard"
+				<ribbon:RibbonSplitButton Label="Open" Name="OpenTaskBoard"
 									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
-									/>
-        	</ribbon:RibbonGroup>
+									 ItemsSource="{Binding LastRecentlyUsedTaskboards}"
+										  ItemContainerStyle="{x:Null}">
+					<ribbon:RibbonSplitButton.ItemTemplate>
+						<DataTemplate>
+							<ribbon:RibbonButton Label="{Binding Text}" 
+												 Command="{me:ResolveCommand OpenTaskBoard}"
+												 CommandParameter="{Binding Text}"/>
+						</DataTemplate>
+					</ribbon:RibbonSplitButton.ItemTemplate>
+				</ribbon:RibbonSplitButton>
+			</ribbon:RibbonGroup>
 			<ribbon:RibbonGroup Header="Task">
 				<ribbon:RibbonButton Label="New task" Name="CreateNewTask"
 									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"

@@ -22,7 +22,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[Given(@"that I enter ""(.*)"" in the create taskboard dialog")]
 		public void GivenThatIEnterCFooBar_TaskboardInTheCreateTaskboardDialog(string path)
 		{
-			_context.SetUpDialogResult<CreateTaskBoardDialogResult>(new CreateTaskBoardDialogResult(path));
+			_context.SetUpDialogResult(new CreateTaskBoardDialogResult(path));
 
 		}
 
@@ -30,6 +30,13 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public void GivenThatIEnterCFooBar_TaskboardInTheOpenTaskboardDialog(string path)
 		{
 			_context.SetUpDialogResult(new OpenTaskBoardDialogResult(path));
+		}
+
+		[Given(@"that I open ""(.*)""")]
+		public void GivenThatIOpenCBarbarFoofoo_Taskboard(string path)
+		{
+			GivenThatIEnterCFooBar_TaskboardInTheOpenTaskboardDialog(path);
+			WhenIOpenATaskboard();
 		}
 
 		[When(@"I create a new taskboard")]
@@ -60,6 +67,19 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public void ThenANewTaskboardShouldBeLoaded()
 		{
 			_databaseChangedMessageReceived.Should().BeTrue();
+		}
+
+		[Then(@"the dropdown for the open button should display these in this order:")]
+		public void ThenTheDropdownForTheOpenButtonShouldDisplayTheseInThisOrder(Table table)
+		{
+			var paths = table.Rows.Select(row => row[0]);
+			_context.ToolbarViewModel.LastRecentlyUsedTaskboards.Should().ContainInOrder(paths);
+		}
+
+		[Then(@"the dropdown for the open button should contain no items")]
+		public void ThenTheDropdownForTheOpenButtonShouldContainNoItems()
+		{
+			_context.ToolbarViewModel.LastRecentlyUsedTaskboards.Should().BeEmpty();
 		}
 	}
 }

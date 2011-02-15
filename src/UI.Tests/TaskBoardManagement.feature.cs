@@ -90,6 +90,45 @@ testRunner.And("a new taskboard should be loaded");
 #line hidden
             testRunner.CollectScenarioErrors();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Remember the last opened taskboards")]
+        public virtual void RememberTheLastOpenedTaskboards()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remember the last opened taskboards", ((string[])(null)));
+#line 18
+this.ScenarioSetup(scenarioInfo);
+#line 19
+testRunner.Given("that I open \"C:\\foo\\bar.taskboard\"");
+#line 20
+testRunner.And("that I open \"C:\\bar\\foo.taskboard\"");
+#line 21
+testRunner.And("that I open \"C:\\barbar\\foofoo.taskboard\"");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Path"});
+            table1.AddRow(new string[] {
+                        "C:\\bar\\foo.taskboard"});
+            table1.AddRow(new string[] {
+                        "C:\\foo\\bar.taskboard"});
+#line 22
+testRunner.Then("the dropdown for the open button should display these in this order:", ((string)(null)), table1);
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("No remembered open taskboards")]
+        public virtual void NoRememberedOpenTaskboards()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No remembered open taskboards", ((string[])(null)));
+#line 27
+this.ScenarioSetup(scenarioInfo);
+#line 28
+testRunner.Then("the dropdown for the open button should contain no items");
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
     }
 }
 #endregion

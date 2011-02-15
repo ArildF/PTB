@@ -3,7 +3,7 @@ using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.Commands
 {
-	public class OpenTaskBoard : NoParameterCommandBase
+	public class OpenTaskBoard : CommandBase<string>
 	{
 		private readonly IEventAggregator _bus;
 		private readonly ISessionFactoryProvider _sessionFactoryProvider;
@@ -17,15 +17,19 @@ namespace Rogue.Ptb.UI.Commands
 			_dialogDisplayer = dialogDisplayer;
 		}
 
-		protected override void Execute()
+		protected override void Execute(string path)
 		{
-			var result = _dialogDisplayer.ShowDialogFor<OpenTaskBoardDialogResult>();
-			if (result == null)
+			if (path == null)
 			{
-				return;
+				var result = _dialogDisplayer.ShowDialogFor<OpenTaskBoardDialogResult>();
+				if (result == null)
+				{
+					return;
+				}
+				path = result.Path;
 			}
-			_sessionFactoryProvider.OpenDatabase(result.Path);
-			_bus.Publish<DatabaseChanged>();
+			_sessionFactoryProvider.OpenDatabase(path);
+			_bus.Publish(new DatabaseChanged(path));
 		}
 	}
 }

@@ -144,6 +144,7 @@
     <Compile Include="events.cs" />
     <Compile Include="interfaces.cs" />
     <Compile Include="MarkupExtensions\ResolveCommandExtension.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="UIRegistry.cs" />
     <Compile Include="ValueConverters\TaskStateToColumnConverter.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
@@ -194,7 +195,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />

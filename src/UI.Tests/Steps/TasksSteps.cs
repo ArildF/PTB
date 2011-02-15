@@ -29,7 +29,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 					repos.Save(new Task {Title = tableRow["Title"]});
 				}
 			}
-			_context.Publish(new DatabaseChanged());
+			_context.Publish(new DatabaseChanged(@"C:\foo\bar.taskboard"));
 		}
 
 		[When(@"I click new task")]
