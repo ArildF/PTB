@@ -22,6 +22,11 @@ namespace Rogue.Ptb.UI.MarkupExtensions
 			_name = name;
 		}
 
+		public ResolveCommandExtension(CommandName commandName)
+		{
+			_name = commandName.Name;
+		}
+
 		public override object ProvideValue(IServiceProvider serviceProvider)
 		{
 			var pvt = (IProvideValueTarget) serviceProvider.GetService(typeof (IProvideValueTarget));

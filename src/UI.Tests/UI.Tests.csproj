@@ -114,6 +114,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Container.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Container.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Steps\ContainerSteps.cs" />
     <Compile Include="TaskBoardManagement.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -132,6 +138,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Container.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Container.feature.cs</LastGenOutput>
+    </None>
     <None Include="TaskBoardManagement.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>TaskBoardManagement.feature.cs</LastGenOutput>

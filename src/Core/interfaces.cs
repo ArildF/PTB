@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NHibernate;
+using Rogue.Ptb.Core.Export;
 
 namespace Rogue.Ptb.Core
 {
@@ -32,5 +33,16 @@ namespace Rogue.Ptb.Core
 	public interface IDatabaseServices
 	{
 		void CreateDatabaseFile(string connectionString);
+	}
+
+	public interface ITasksExporter
+	{
+		void ExportAll(string path);
+	}
+
+	public interface IDtoMapper
+	{
+		IEnumerable<TaskDto> MapTasksToDtos(IEnumerable<Task> tasks);
+		IEnumerable<Task> MapDtosToTasks(IEnumerable<TaskDto> taskDtos);
 	}
 }

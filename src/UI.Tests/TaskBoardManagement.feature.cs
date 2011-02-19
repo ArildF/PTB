@@ -129,6 +129,42 @@ testRunner.Then("the dropdown for the open button should contain no items");
 #line hidden
             testRunner.CollectScenarioErrors();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Export tasks")]
+        public virtual void ExportTasks()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Export tasks", ((string[])(null)));
+#line 30
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table2.AddRow(new string[] {
+                        "Foo"});
+            table2.AddRow(new string[] {
+                        "Bar"});
+            table2.AddRow(new string[] {
+                        "Baz"});
+#line 31
+testRunner.Given("that the following tasks already exist and are loaded:", ((string)(null)), table2);
+#line 36
+testRunner.And("that everything is saved");
+#line 37
+testRunner.And("that I enter \"C:\\foo\\bar.taskboard\" in the export taskboard dialog");
+#line 38
+testRunner.When("I click export task");
+#line 39
+testRunner.Then("the tasks should be exported to a \"C:\\foo\\bar.taskboard\"");
+#line 40
+testRunner.And("the exported tasks should contain 3 tasks");
+#line 41
+testRunner.And("task #2 in the exported tasks should have the title \"Bar\"");
+#line 42
+testRunner.And("the tasks should not have empty IDs");
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
     }
 }
 #endregion

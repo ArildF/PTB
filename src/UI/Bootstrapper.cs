@@ -35,7 +35,6 @@ namespace Rogue.Ptb.UI
 
 				});
 
-			Debug.WriteLine(Container.WhatDoIHave());
 			RxApp.GetFieldNameForPropertyNameFunc = propName => "_" + Char.ToLower(propName[0]) + propName.Substring(1);
 
 		}

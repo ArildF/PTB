@@ -38,4 +38,12 @@ namespace Rogue.Ptb.UI
 		{
 		}
 	}
+
+	public class ExportTaskBoardDialogResult : PathDialogResult<Views.ExportTaskBoardDialog>
+	{
+		public ExportTaskBoardDialogResult(string path) : base(path)
+		{
+			
+		}
+	}
 }

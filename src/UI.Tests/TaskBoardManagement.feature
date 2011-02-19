@@ -26,3 +26,17 @@ Scenario: Remember the last opened taskboards
 
 Scenario: No remembered open taskboards
     Then the dropdown for the open button should contain no items
+
+Scenario: Export tasks
+    Given that the following tasks already exist and are loaded:
+    |Title |
+    |Foo    |
+    |Bar    |
+    |Baz|
+    And that everything is saved
+    And that I enter "C:\foo\bar.taskboard" in the export taskboard dialog
+    When I click export task
+    Then the tasks should be exported to a "C:\foo\bar.taskboard"
+    And the exported tasks should contain 3 tasks
+    And task #2 in the exported tasks should have the title "Bar"
+    And the tasks should not have empty IDs

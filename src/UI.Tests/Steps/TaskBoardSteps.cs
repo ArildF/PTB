@@ -1,5 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Xml.Serialization;
 using Rogue.Ptb.Core;
+using Rogue.Ptb.Core.Export;
 using Rogue.Ptb.UI.Commands;
 using TechTalk.SpecFlow;
 using FluentAssertions;
@@ -11,6 +16,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 	{
 		private readonly Context _context;
 		private bool _databaseChangedMessageReceived;
+		private TaskDto[] _exportedDtos;
 
 		public TaskBoardSteps(Context context)
 		{
@@ -39,6 +45,23 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			WhenIOpenATaskboard();
 		}
 
+		[Given(@"that I enter ""(.*)"" in the export taskboard dialog")]
+		public void GivenThatIEnterCFooBar_TaskboardInTheExportTaskboardDialog(string path)
+		{
+			string exportPath = TestifyPath(path);
+			Console.WriteLine(exportPath);
+			_context.SetUpDialogResult(new ExportTaskBoardDialogResult(exportPath));
+
+			Directory.CreateDirectory(Path.GetDirectoryName(exportPath));
+		}
+
+		[Given(@"that everything is saved")]
+		public void GivenThatEverythingIsSaved()
+		{
+			_context.Publish(new SaveAllTasks());
+		}
+
+
 		[When(@"I create a new taskboard")]
 		public void WhenICreateANewTaskboard()
 		{
@@ -51,12 +74,19 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.GetCommand<OpenTaskBoard>().Execute(null);
 		}
 
+		[When(@"I click export task")]
+		public void WhenIClickExportTask()
+		{
+			_context.GetCommand<ExportTaskBoard>().Execute(null);
+		}
+
+
 		[Then(@"a new taskboard database should be created in ""(.*)""")]
 		public void ThenANewTaskboardDatabaseShouldBeCreatedInCFooBar_Taskboard(string path)
 		{
 			_context.CreatedDatabases.Last().Should().BeEquivalentTo(path);
 		}
-		
+
 		[Then(@"a taskboard should be loaded from ""(.*)""")]
 		public void ThenATaskboardShouldBeLoadedFromCFooBar_Taskboard(string path)
 		{
@@ -80,6 +110,46 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public void ThenTheDropdownForTheOpenButtonShouldContainNoItems()
 		{
 			_context.ToolbarViewModel.LastRecentlyUsedTaskboards.Should().BeEmpty();
+		}
+
+		[Then(@"the tasks should be exported to a ""(.*)""")]
+		public void ThenTheTasksShouldBeExportedToAcFooBarTaskboard(string path)
+		{
+			path = TestifyPath(path);
+
+			File.Copy(path, @"C:\temp\exported.xml", true);
+			var serializer = new XmlSerializer(typeof (TaskDto[]));
+			using (var stream = File.OpenRead(path))
+			{
+				_exportedDtos = (TaskDto[])serializer.Deserialize(stream);
+				var mappings = new DtoMapper();
+			}
+		}
+
+		[Then(@"the exported tasks should contain (\d+) tasks")]
+		public void ThenTheExportedTasksShouldContain3Tasks(int num)
+		{
+			_exportedDtos.Length.Should().Be(num);
+		}
+
+		[Then(@"task \#(\d+) in the exported tasks should have the title ""(.*)""")]
+		public void ThenTask2InTheExportedTasksShouldHaveTheTitleBar(int ordinal, string expectedTitle)
+		{
+			_exportedDtos[ordinal - 1].Title.Should().BeEquivalentTo(expectedTitle);
+		}
+
+		[Then(@"the tasks should not have empty IDs")]
+		public void ThenTheTasksShouldNotHaveEmptyIDs()
+		{
+			_exportedDtos.Should().OnlyContain(t => t.Id != Guid.Empty);
+		}
+
+
+		private static string TestifyPath(string path)
+		{
+			return Path.Combine(
+				Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+				path.Replace(":", ""));
 		}
 	}
 }

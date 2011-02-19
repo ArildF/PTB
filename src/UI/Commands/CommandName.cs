@@ -24,6 +24,11 @@ namespace Rogue.Ptb.UI.Commands
 			return new CommandName(name);
 		}
 
+		public static CommandName Create<TCommand>()
+		{
+			return new CommandName(typeof(TCommand).Name);
+		}
+
 		public bool Equals(CommandName other)
 		{
 			if (ReferenceEquals(null, other)) return false;

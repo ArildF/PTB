@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary" 
 			 mc:Ignorable="d" 
-			 xmlns:me="clr-namespace:Rogue.Ptb.UI.MarkupExtensions"
-             d:DesignHeight="300" d:DesignWidth="300">
+			 xmlns:me="clr-namespace:Rogue.Ptb.UI.MarkupExtensions" xmlns:Commands="clr-namespace:Rogue.Ptb.UI.Commands" d:DesignHeight="300" d:DesignWidth="300">
 	<UserControl.Resources>
 		<Style TargetType="ribbon:RibbonButton">
 		</Style> 
@@ -31,6 +30,10 @@
 						</DataTemplate>
 					</ribbon:RibbonSplitButton.ItemTemplate>
 				</ribbon:RibbonSplitButton>
+				<ribbon:RibbonButton Content="Export" Label="Export" 
+									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+									 Command="{me:ResolveCommand {x:Static Commands:GlobalCommandNames.ExportTaskBoardCommand}}"
+									/>
 			</ribbon:RibbonGroup>
 			<ribbon:RibbonGroup Header="Task">
 				<ribbon:RibbonButton Label="New task" Name="CreateNewTask"
