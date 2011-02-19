@@ -103,7 +103,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public void ThenTheDropdownForTheOpenButtonShouldDisplayTheseInThisOrder(Table table)
 		{
 			var paths = table.Rows.Select(row => row[0]);
-			_context.ToolbarViewModel.LastRecentlyUsedTaskboards.Should().ContainInOrder(paths);
+			_context.ToolbarViewModel.LastRecentlyUsedTaskboards.Select(menuItem => menuItem.Text).Should().ContainInOrder(paths);
 		}
 
 		[Then(@"the dropdown for the open button should contain no items")]
