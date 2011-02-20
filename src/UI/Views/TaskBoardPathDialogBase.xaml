@@ -16,7 +16,7 @@
     	<Label Margin="0,0,10,0" Background="{x:Null}" Foreground="#FF56A1AB" Grid.Row="1">Path</Label>
     	<TextBlock Margin="0" TextWrapping="Wrap" Text="{Binding Title}" d:LayoutOverrides="Height" 
 				   Grid.ColumnSpan="2" FontFamily="Tahoma" TextAlignment="Center" FontSize="18.667"/>
-    	<TextBox Margin="0" TextWrapping="Wrap" Text="TextBox" d:LayoutOverrides="Height" Grid.Row="2" x:Name="_pathTextBox"/>
+    	<TextBox Margin="0" TextWrapping="NoWrap" Text="TextBox" d:LayoutOverrides="Height" Grid.Row="2" x:Name="_pathTextBox"/>
     	<Button Content="..." Margin="0" d:LayoutOverrides="Height" Grid.Column="1" Grid.Row="2" Click="ButtonOnClick"/>
             
     </Grid>
