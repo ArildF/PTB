@@ -152,7 +152,6 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		{
 			path = TestifyPath(path);
 
-			File.Copy(path, @"C:\temp\exported.xml", true);
 			var serializer = new XmlSerializer(typeof (TaskDto[]));
 			using (var stream = File.OpenRead(path))
 			{
