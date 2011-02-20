@@ -39,4 +39,26 @@ Scenario: Export tasks
     Then the tasks should be exported to a "C:\foo\bar.taskboard"
     And the exported tasks should contain 3 tasks
     And task #2 in the exported tasks should have the title "Bar"
-    And the tasks should not have empty IDs
+    And the exported tasks should not have empty IDs
+
+Scenario: Import tasks
+    Given an export file containing these tasks at "C:\foo\export.xml"
+    |Title |
+    |Sidious    |
+    |Tyranus    |
+    |Malak|
+    And I create a new taskboard
+    And that the following tasks already exist and are loaded:
+    |Title|
+    |Caedus|
+    |Plagueis|
+    And that I enter "C:\foo\export.xml" in the import taskboard dialog
+    When I click import tasks
+    Then the taskboard should contain these tasks:
+    |Title|
+    |Sidious|
+    |Tyranus|
+    |Malak|
+    |Caedus|
+    |Plagueis|
+    And the loaded tasks should not have empty IDs

@@ -34,6 +34,10 @@
 									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand {x:Static Commands:GlobalCommandNames.ExportTaskBoardCommand}}"
 									/>
+				<ribbon:RibbonButton Content="Import" Label="Import" 
+									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+									 Command="{me:ResolveCommand {x:Static Commands:GlobalCommandNames.ImportTaskBoardCommand}}"
+									/>
 			</ribbon:RibbonGroup>
 			<ribbon:RibbonGroup Header="Task">
 				<ribbon:RibbonButton Label="New task" Name="CreateNewTask"

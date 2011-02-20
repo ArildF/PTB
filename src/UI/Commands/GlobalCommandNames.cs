@@ -4,6 +4,6 @@
 	{
 		public static CommandName CreateTaskBoardCommand = CommandName.Create<CreateTaskBoard>();
 		public static CommandName ExportTaskBoardCommand = CommandName.Create<ExportTaskBoard>();
-
+		public static CommandName ImportTaskBoardCommand = CommandName.Create<ImportTaskBoard>();
 	}
 }

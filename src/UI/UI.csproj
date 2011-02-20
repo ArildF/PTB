@@ -128,6 +128,7 @@
     <Compile Include="Behaviors\TraverseFocusOnKeyBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commands\ExportTaskBoard.cs" />
+    <Compile Include="Commands\ImportTaskBoard.cs" />
     <Compile Include="dialogargs.cs" />
     <Compile Include="DialogDisplayer.cs" />
     <Compile Include="Extensions.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\CreateTaskBoardDialog.cs" />
     <Compile Include="Views\ExportTaskBoardDialog.cs" />
+    <Compile Include="Views\ImportTaskBoardDialog.cs" />
     <Compile Include="Views\TaskBoardPathDialogBase.xaml.cs">
       <DependentUpon>TaskBoardPathDialogBase.xaml</DependentUpon>
     </Compile>

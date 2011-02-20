@@ -17,7 +17,7 @@ namespace Rogue.Ptb.Core.Export
 
 		public void ExportAll(string path)
 		{
-			using (var stream = File.OpenWrite(path))
+			using (var stream = File.Open(path, FileMode.Create, FileAccess.Write))
 			{
 				var serializer = new XmlSerializer(typeof (TaskDto[]));
 

@@ -11,8 +11,7 @@ namespace Rogue.Ptb.Core.Export
 		public DtoMapper()
 		{
 			_taskMapping = new Mapping<Task, TaskDto>();
-			//_taskMapping.AddConverter(new GuidConverter());
-			_taskMapping.RelateTowardsRight(t => t.Id, dto => dto.Id);
+			_taskMapping.Relate(t => t.Id, dto => dto.Id);
 			_taskMapping.Relate(t => t.State, dto => dto.State);
 			_taskMapping.Relate(t => t.Title, t => t.Title);
 		}

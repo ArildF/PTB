@@ -19,6 +19,7 @@ namespace Rogue.Ptb.Core
 		void SaveAll(IEnumerable<T> items);
 		void Save(T item);
 
+		void MergeAll(IEnumerable<T> items);
 	}
 
 	public interface ITasksRepository : IRepository<Task>
@@ -38,6 +39,11 @@ namespace Rogue.Ptb.Core
 	public interface ITasksExporter
 	{
 		void ExportAll(string path);
+	}
+
+	public interface ITasksImporter
+	{
+		void ImportAll(string path);
 	}
 
 	public interface IDtoMapper

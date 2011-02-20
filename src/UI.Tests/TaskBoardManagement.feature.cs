@@ -161,7 +161,61 @@ testRunner.And("the exported tasks should contain 3 tasks");
 #line 41
 testRunner.And("task #2 in the exported tasks should have the title \"Bar\"");
 #line 42
-testRunner.And("the tasks should not have empty IDs");
+testRunner.And("the exported tasks should not have empty IDs");
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Import tasks")]
+        public virtual void ImportTasks()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import tasks", ((string[])(null)));
+#line 44
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table3.AddRow(new string[] {
+                        "Sidious"});
+            table3.AddRow(new string[] {
+                        "Tyranus"});
+            table3.AddRow(new string[] {
+                        "Malak"});
+#line 45
+testRunner.Given("an export file containing these tasks at \"C:\\foo\\export.xml\"", ((string)(null)), table3);
+#line 50
+testRunner.And("I create a new taskboard");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table4.AddRow(new string[] {
+                        "Caedus"});
+            table4.AddRow(new string[] {
+                        "Plagueis"});
+#line 51
+testRunner.And("that the following tasks already exist and are loaded:", ((string)(null)), table4);
+#line 55
+testRunner.And("that I enter \"C:\\foo\\export.xml\" in the import taskboard dialog");
+#line 56
+testRunner.When("I click import tasks");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table5.AddRow(new string[] {
+                        "Sidious"});
+            table5.AddRow(new string[] {
+                        "Tyranus"});
+            table5.AddRow(new string[] {
+                        "Malak"});
+            table5.AddRow(new string[] {
+                        "Caedus"});
+            table5.AddRow(new string[] {
+                        "Plagueis"});
+#line 57
+testRunner.Then("the taskboard should contain these tasks:", ((string)(null)), table5);
+#line 64
+testRunner.And("the loaded tasks should not have empty IDs");
 #line hidden
             testRunner.CollectScenarioErrors();
         }

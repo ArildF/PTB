@@ -24,7 +24,7 @@ namespace Rogue.Ptb.Core.Repositories
 		{
 			using (var tx = _session.BeginTransaction())
 			{
-				Extensions.ForEach(items.Cast<object>(), _session.SaveOrUpdate);
+				items.Cast<object>().ForEach(_session.SaveOrUpdate);
 				tx.Commit();
 			}
 		}
@@ -32,6 +32,14 @@ namespace Rogue.Ptb.Core.Repositories
 		public void Save(T item)
 		{
 			SaveAll(new []{item});
+		}
+
+		public void MergeAll(IEnumerable<T> items)
+		{
+			using (_session.BeginTransaction())
+			{
+				items.Cast<object>().ForEach(o => _session.Merge(o));
+			}
 		}
 
 		public void Dispose()

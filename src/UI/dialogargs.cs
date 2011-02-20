@@ -46,4 +46,12 @@ namespace Rogue.Ptb.UI
 			
 		}
 	}
+
+	public class ImportTaskBoardDialogResult : PathDialogResult<Views.ImportTaskBoardDialog>
+	{
+		public ImportTaskBoardDialogResult(string path) : base(path)
+		{
+			
+		}
+	}
 }

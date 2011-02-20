@@ -32,6 +32,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			_bus.ListenOnScheduler<DatabaseChanged>(OnDatabaseChanged);
 			_bus.ListenOnScheduler<CreateNewTask>(OnCreateNewTask);
 			_bus.ListenOnScheduler<SaveAllTasks>(OnSaveAllTasks);
+			_bus.ListenOnScheduler<ReloadAllTasks>(evt => Reload());
 		}
 
 		public ReactiveCollection<TaskViewModel> Tasks { get; private set; }
@@ -48,12 +49,16 @@ namespace Rogue.Ptb.UI.ViewModels
 		{
 			_repository = NewRepository();
 
+			Reload();
+		}
+
+		private void Reload()
+		{
 			Tasks.Clear();
 
 			var tasks = _repository.FindAll();
 
 			TypeHelperExtensionMethods.ForEach(tasks.Select(t => new TaskViewModel(t)), Tasks.Add);
-
 		}
 
 		private void OnCreateNewTask(CreateNewTask ignored)

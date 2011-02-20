@@ -12,6 +12,7 @@ using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.ViewModels;
 using StructureMap;
 using IInterceptor = Castle.DynamicProxy.IInterceptor;
+using NHibernate.Linq;
 
 namespace Rogue.Ptb.UI.Tests.Steps
 {
@@ -44,7 +45,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_container.Inject(settings);
 
 			var startables = _container.Model.GetAllPossible<IStartable>();
-			startables.ForEach(startup => startup.Start());
+			TypeHelperExtensionMethods.ForEach(startables, startup => startup.Start());
 
 			TaskBoardViewModel = Get<TaskBoardViewModel>();
 			ToolbarViewModel = Get<ToolbarViewModel>();
@@ -128,7 +129,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			{
 				public void Intercept(IInvocation invocation)
 				{
-					if (invocation.Method.Name.In("Close", "Dispose"))
+					if (FluentNHibernate.Utils.Extensions.In(invocation.Method.Name, "Close", "Dispose"))
 					{
 						return;
 					}
@@ -149,6 +150,14 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			public void Dispose()
 			{
 				_sessionFactory.Close();
+			}
+
+			public void ClearDatabase()
+			{
+				foreach (var task in Session.Query<Task>())
+				{
+					Session.Delete(task);
+				}
 			}
 		}
 
@@ -176,6 +185,11 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public void Subscribe<T>(Action<T> handler)
 		{
 			Get<IEventAggregator>().Listen<T>().Subscribe(handler);
+		}
+
+		public void ClearDatabase()
+		{
+			_provider.ClearDatabase();
 		}
 	}
 }

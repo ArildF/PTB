@@ -80,6 +80,7 @@
     <Compile Include="Export\GuidConverter.cs" />
     <Compile Include="Export\TaskDto.cs" />
     <Compile Include="Export\TasksExporter.cs" />
+    <Compile Include="Export\TasksImporter.cs" />
     <Compile Include="interfaces.cs" />
     <Compile Include="Maps\TaskMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

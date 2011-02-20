@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Xml.Serialization;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Core.Export;
+using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Commands;
 using TechTalk.SpecFlow;
 using FluentAssertions;
@@ -32,6 +33,24 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 		}
 
+		[Given(@"an export file containing these tasks at ""(.*)""")]
+		public void GivenAnExportFileContainingTheseTasksAtCFooExport_Xml(string path, Table table)
+		{
+			path = TestifyPath(path);
+
+			Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+
+			var tasks = table.Rows.Select(r => new Task {Title = r["Title"]});
+			var repos = _context.Get<IRepository<Task>>();
+			tasks.ForEach(repos.Save);
+
+			var exporter = _context.Get<ITasksExporter>();
+			exporter.ExportAll(path);
+
+			_context.ClearDatabase();
+		}
+
 		[Given(@"that I enter ""(.*)"" in the open taskboard dialog")]
 		public void GivenThatIEnterCFooBar_TaskboardInTheOpenTaskboardDialog(string path)
 		{
@@ -54,6 +73,21 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			Directory.CreateDirectory(Path.GetDirectoryName(exportPath));
 		}
+		[Given(@"that I enter ""(.*)"" in the import taskboard dialog")]
+		public void WhenThatIEnterCFooBarTaskboardImport_TaskboardInTheImportTaskboardDialog(string path)
+		{
+			path = TestifyPath(path);
+
+			_context.SetUpDialogResult(new ImportTaskBoardDialogResult(path));
+
+		}
+
+		[When(@"I click import tasks")]
+		public void WhenIClickImportTasks()
+		{
+			_context.GetCommand<ImportTaskBoard>().Execute(null);
+		}
+
 
 		[Given(@"that everything is saved")]
 		public void GivenThatEverythingIsSaved()
@@ -63,6 +97,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 
 		[When(@"I create a new taskboard")]
+		[Given(@"I create a new taskboard")]
 		public void WhenICreateANewTaskboard()
 		{
 			_context.GetCommand<CreateTaskBoard>().Execute(null);
@@ -132,16 +167,25 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_exportedDtos.Length.Should().Be(num);
 		}
 
+		
+
+
 		[Then(@"task \#(\d+) in the exported tasks should have the title ""(.*)""")]
 		public void ThenTask2InTheExportedTasksShouldHaveTheTitleBar(int ordinal, string expectedTitle)
 		{
 			_exportedDtos[ordinal - 1].Title.Should().BeEquivalentTo(expectedTitle);
 		}
 
-		[Then(@"the tasks should not have empty IDs")]
+		[Then(@"the exported tasks should not have empty IDs")]
 		public void ThenTheTasksShouldNotHaveEmptyIDs()
 		{
 			_exportedDtos.Should().OnlyContain(t => t.Id != Guid.Empty);
+		}
+
+		[Then(@"the loaded tasks should not have empty IDs")]
+		public void ThenTheLoadedTasksShouldNotHaveEmptyIDs()
+		{
+			_context.TaskBoardViewModel.Tasks.Should().OnlyContain(t => t.Task.Id != Guid.Empty);
 		}
 
 
