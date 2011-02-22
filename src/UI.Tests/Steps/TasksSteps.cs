@@ -55,6 +55,15 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.TaskBoardViewModel.Tasks.Count.Should().BeGreaterThan(1);
 		}
 
+		[Then(@"the new task should have a created date like now")]
+		public void ThenTheNewTaskShouldHaveACreatedDateLikeNow()
+		{
+			_context.TaskBoardViewModel.Tasks.First().Task.CreatedDate.Should().BeWithin(TimeSpan.FromSeconds(1)).Before(
+				DateTime.Now);
+
+		}
+
+
 		[Then(@"the database should contain (\d+) tasks")]
 		public void ThenTheDatabaseShouldContain2Tasks(int count)
 		{
@@ -83,5 +92,12 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.TaskBoardViewModel.Tasks.First(t => t.Task.Id == Guid.Empty).IsEditing.Should().BeTrue();
 
 		}
+
+		[Then(@"the task should not be started")]
+		public void ThenTheTaskShouldNotBeStarted()
+		{
+			_context.TaskBoardViewModel.Tasks.First().Task.State.Should().Be(TaskState.NotStarted);
+		}
+
 	}
 }

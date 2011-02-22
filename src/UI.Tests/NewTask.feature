@@ -11,4 +11,9 @@ Scenario: Add new tasks
     Then a new task should be created
     And the new task should be displayed first
     And the new task should be in edit mode
+    And the task should not be started
 
+
+Scenario: Created date
+    When I click new task
+    Then the new task should have a created date like now

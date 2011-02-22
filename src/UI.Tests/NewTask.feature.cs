@@ -75,6 +75,23 @@ testRunner.Then("a new task should be created");
 testRunner.And("the new task should be displayed first");
 #line 13
 testRunner.And("the new task should be in edit mode");
+#line 14
+testRunner.And("the task should not be started");
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Created date")]
+        public virtual void CreatedDate()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Created date", ((string[])(null)));
+#line 17
+this.ScenarioSetup(scenarioInfo);
+#line 18
+testRunner.When("I click new task");
+#line 19
+testRunner.Then("the new task should have a created date like now");
 #line hidden
             testRunner.CollectScenarioErrors();
         }

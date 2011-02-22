@@ -9,6 +9,7 @@ namespace Rogue.Ptb.Core.Maps
 			Id(t => t.Id);
 			Map(t => t.Title).Not.Nullable();
 			Map(t => t.State).CustomType<int>().Not.Nullable();
+			Map(t => t.CreatedDate).Not.Nullable();
 		}
 	}
 }
