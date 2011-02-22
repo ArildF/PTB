@@ -7,8 +7,8 @@ namespace Rogue.Ptb.Core.Maps
 		public TaskMap()
 		{
 			Id(t => t.Id);
-			Map(t => t.Title);
-			Map(t => t.State);
+			Map(t => t.Title).Not.Nullable();
+			Map(t => t.State).CustomType<int>().Not.Nullable();
 		}
 	}
 }

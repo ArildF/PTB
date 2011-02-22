@@ -6,7 +6,7 @@ namespace Rogue.Ptb.Core.Maps
 	{
 		public DatabaseVersionMap()
 		{
-			Map(v => v.Number);
+			Map(v => v.Number).Not.Nullable();
 			Id(v => v.Id);
 		}
 	}
