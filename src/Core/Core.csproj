@@ -75,13 +75,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreRegistry.cs" />
+    <Compile Include="DatabaseVersion.cs" />
     <Compile Include="events.cs" />
     <Compile Include="Export\DtoMapper.cs" />
     <Compile Include="Export\GuidConverter.cs" />
     <Compile Include="Export\TaskDto.cs" />
     <Compile Include="Export\TasksExporter.cs" />
     <Compile Include="Export\TasksImporter.cs" />
+    <Compile Include="Initializers\SetDatabaseVersion.cs" />
     <Compile Include="interfaces.cs" />
+    <Compile Include="Maps\DatabaseVersionMap.cs" />
     <Compile Include="Maps\TaskMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />

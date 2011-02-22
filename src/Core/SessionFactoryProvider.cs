@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -7,32 +8,56 @@ using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
+using NHibernate.Linq;
+using System.Linq;
+using Rogue.Ptb.Core.Initializers;
 
 namespace Rogue.Ptb.Core
 {
 	public class SessionFactoryProvider : ISessionFactoryProvider
 	{
 		private ISessionFactory _factory;
-		private IDatabaseServices _databaseServices;
+		private readonly IDatabaseServices _databaseServices;
+		private readonly IEnumerable<IDatabaseInitializer> _initializers;
 
-		public SessionFactoryProvider(IDatabaseServices databaseServices)
+		public SessionFactoryProvider(IDatabaseServices databaseServices, IEnumerable<IDatabaseInitializer> initializers)
 		{
 			_databaseServices = databaseServices;
+			_initializers = initializers;
 		}
 
-		public ISessionFactory GetSessionFactory()
+		public virtual ISessionFactory GetSessionFactory()
 		{
 			return _factory ?? (_factory = CreateSessionFactory());
 		}
 
-		public void CreateNewDatabase(string path)
+		public virtual void CreateNewDatabase(string path)
 		{
 			OpenDatabase(path, true);
+
+			using (var session = GetSession())
+			{
+				_initializers.ForEach(i => i.Run(session));
+
+				session.Flush();
+			}
 		}
 
-		public void OpenDatabase(string file)
+		public virtual void OpenDatabase(string file)
 		{
 			OpenDatabase(file, false);
+
+			using (var session = GetSession())
+			{
+				var version = session.Query<DatabaseVersion>().FirstOrDefault();
+
+				if (version == null || version.Number != SetDatabaseVersion.CurrentVersion)
+				{
+					throw new InvalidOperationException(
+						"Wrong database version. Expected version " + SetDatabaseVersion.CurrentVersion);
+				}
+			}
+
 		}
 
 		private void OpenDatabase(string path, bool createSchema)
@@ -45,7 +70,7 @@ namespace Rogue.Ptb.Core
 			_factory = CreateSessionFactory(path, createSchema);
 		}
 
-		public ISessionFactory CreateSessionFactory(string path = "MyData.sdf", bool createSchema = false)
+		public virtual ISessionFactory CreateSessionFactory(string path = "MyData.sdf", bool createSchema = false)
 		{
 			path = Path.GetFullPath(path);
 
@@ -88,6 +113,11 @@ namespace Rogue.Ptb.Core
 		private static void BuildSchema(Configuration obj)
 		{
 			new SchemaExport(obj).Create(s => Debug.WriteLine(s), true);
+		}
+
+		public virtual ISession GetSession()
+		{
+			return GetSessionFactory().OpenSession();
 		}
 	}
 }

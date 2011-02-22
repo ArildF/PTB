@@ -51,4 +51,9 @@ namespace Rogue.Ptb.Core
 		IEnumerable<TaskDto> MapTasksToDtos(IEnumerable<Task> tasks);
 		IEnumerable<Task> MapDtosToTasks(IEnumerable<TaskDto> taskDtos);
 	}
+
+	public interface IDatabaseInitializer
+	{
+		void Run(ISession session);
+	}
 }

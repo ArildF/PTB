@@ -14,6 +14,7 @@ namespace Rogue.Ptb.Core
 				{
 					scanner.WithDefaultConventions();
 					scanner.TheCallingAssembly();
+					scanner.AddAllTypesOf<IDatabaseInitializer>();
 				});
 
 

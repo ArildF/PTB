@@ -35,9 +35,9 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 
 			_container = bootStrapper.Container;
-			_provider = new Provider();
+			_provider = _container.GetInstance<Provider>();
 			_container.Inject<ISessionFactoryProvider>(_provider);
-			_container.Inject<ISession>(_provider.Session);
+			_container.Inject<ISession>(_provider.GetSession());
 			_container.Inject<IDialogDisplayer>(_dialogDisplayer.Object);
 
 			var settings = new UI.Properties.Settings {LastRecentlyUsedTaskboards = null};
@@ -73,38 +73,37 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			return _container.GetInstance<T>();
 		}
 
-		public class Provider : ISessionFactoryProvider, IDisposable
+		public class Provider : SessionFactoryProvider, ISessionFactoryProvider, IDisposable
 		{
 			private ISessionFactory _sessionFactory;
 			private ISession _session;
 
-			public Provider()
+			public Provider(IDatabaseServices services, IEnumerable<IDatabaseInitializer> initializers) 
+				: base(services, initializers)
 			{
 				CreatedDatabases = new List<string>();
 				OpenedDatabases = new List<string>();
 			}
-			public ISession Session
+
+			public override ISession GetSession()
 			{
-				get
+				if (_session == null)
 				{
-					if (_session == null)
-					{
-						GetSessionFactory();
-					}
-					return _session;
+					CreateNewDatabase(String.Empty);
 				}
+				return _session;
+			}
+
+			public override ISessionFactory GetSessionFactory()
+			{
+				return _sessionFactory;
 			}
 
 			public IList<string> CreatedDatabases { get; private set; }
 
 			public IList<string> OpenedDatabases { get; private set; }
 
-			public ISessionFactory GetSessionFactory()
-			{
-				return _sessionFactory ?? (_sessionFactory = CreateSessionFactory());
-			}
-
-			private ISessionFactory CreateSessionFactory()
+			public override  ISessionFactory CreateSessionFactory(string path = "MyData.sdf", bool createSchema = false)
 			{
 				var config = Fluently.Configure()
 					.Database(SQLiteConfiguration.Standard
@@ -122,7 +121,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 				new SchemaExport(config).Execute(false, true, false, session.Connection, Console.Out);
 
-				return factory;
+				return _sessionFactory = factory;
 			}
 
 			private class CloseInterceptor : IInterceptor
@@ -137,14 +136,20 @@ namespace Rogue.Ptb.UI.Tests.Steps
 				}
 			}
 
-			public void CreateNewDatabase(string path)
+			public override void CreateNewDatabase(string path)
 			{
 				CreatedDatabases.Add(path);
+
+				base.CreateNewDatabase(path);
 			}
 
-			public void OpenDatabase(string file)
+			public override void OpenDatabase(string file)
 			{
 				OpenedDatabases.Add(file);
+				if (_sessionFactory == null)
+				{
+					base.OpenDatabase(file);
+				}
 			}
 
 			public void Dispose()
@@ -154,9 +159,11 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			public void ClearDatabase()
 			{
-				foreach (var task in Session.Query<Task>())
+				var session = GetSession();
+
+				foreach (var task in session.Query<Task>())
 				{
-					Session.Delete(task);
+					session.Delete(task);
 				}
 			}
 		}
