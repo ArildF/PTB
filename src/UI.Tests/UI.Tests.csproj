@@ -180,6 +180,10 @@
       <Project>{E243D3BF-72E5-4CCD-9C94-3B3C07869769}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TestUtilities\TestUtilities.csproj">
+      <Project>{1368C17B-0871-4C53-AAC9-C86F41D5FE56}</Project>
+      <Name>TestUtilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UI\UI.csproj">
       <Project>{7494EE73-CB54-4FCB-B612-DAD6303B6C79}</Project>
       <Name>UI</Name>

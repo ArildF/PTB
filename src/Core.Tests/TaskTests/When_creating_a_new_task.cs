@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
+using TestUtilities;
 
 namespace Rogue.Ptb.Core.Tests.TaskTests
 {
@@ -18,7 +19,7 @@ namespace Rogue.Ptb.Core.Tests.TaskTests
 		[Test]
 		public void Should_have_CreatedDate_set_to_now()
 		{
-			_task.CreatedDate.Should().BeWithin(TimeSpan.FromSeconds(0.1)).Before(DateTime.Now);
+			_task.CreatedDate.Should().BeAboutNow();
 		}
 
 		[Test]
@@ -26,5 +27,6 @@ namespace Rogue.Ptb.Core.Tests.TaskTests
 		{
 			_task.State.Should().Be(TaskState.NotStarted);
 		}
+		
 	}
 }

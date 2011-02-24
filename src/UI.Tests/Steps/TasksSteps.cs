@@ -6,6 +6,7 @@ using Rogue.Ptb.Core;
 using Rogue.Ptb.UI.ViewModels;
 using TechTalk.SpecFlow;
 using FluentAssertions;
+using TestUtilities;
 
 namespace Rogue.Ptb.UI.Tests.Steps
 {
@@ -58,8 +59,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[Then(@"the new task should have a created date like now")]
 		public void ThenTheNewTaskShouldHaveACreatedDateLikeNow()
 		{
-			_context.TaskBoardViewModel.Tasks.First().Task.CreatedDate.Should().BeWithin(TimeSpan.FromSeconds(1)).Before(
-				DateTime.Now);
+			_context.TaskBoardViewModel.Tasks.First().Task.CreatedDate.Should().BeAboutNow();
 
 		}
 
