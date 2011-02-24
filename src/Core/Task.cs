@@ -7,6 +7,8 @@ namespace Rogue.Ptb.Core
 		public Task()
 		{
 			CreatedDate = DateTime.Now;
+			Id = Guid.NewGuid();
+			Title = "";
 		}
 
 		public virtual Guid Id { get; private set; }

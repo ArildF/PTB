@@ -12,6 +12,8 @@ namespace Rogue.Ptb.Core.Export
 
 		public TaskState State { get; set; }
 
+		public DateTime CreatedDate { get; set; }
+
 		public TaskDto()
 		{
 			

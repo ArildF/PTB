@@ -18,6 +18,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		private readonly Context _context;
 		private bool _databaseChangedMessageReceived;
 		private TaskDto[] _exportedDtos;
+		private Task[] _loadedTasks;
 
 		public TaskBoardSteps(Context context)
 		{
@@ -31,6 +32,15 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		{
 			_context.SetUpDialogResult(new CreateTaskBoardDialogResult(path));
 
+		}
+
+		[Given(@"a varied set of tasks loaded into the taskboard")]
+		public void GivenAVariedSetOfTasksLoadedIntoTheTaskboard()
+		{
+			var importer = _context.Get<ITasksImporter>();
+			importer.ImportAll("VariedSetOfTasks.xml");
+
+			_loadedTasks = _context.Get<IRepository<Task>>().FindAll().ToArray();
 		}
 
 		[Given(@"an export file containing these tasks at ""(.*)""")]
@@ -185,6 +195,20 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public void ThenTheLoadedTasksShouldNotHaveEmptyIDs()
 		{
 			_context.TaskBoardViewModel.Tasks.Should().OnlyContain(t => t.Task.Id != Guid.Empty);
+		}
+
+		[Then(@"the loaded tasks should have the same attributes as the original set of tasks")]
+		public void ThenTheLoadedTasksShouldHaveTheSameAttributesAsTheOriginalSetOfTasks()
+		{
+			var newTasks = _context.Get<IRepository<Task>>().FindAll().ToArray();
+			foreach (var newTask in newTasks)
+			{
+				Task task = newTask;
+				var oldTask = _loadedTasks.Where(t => t.Id == task.Id).FirstOrDefault();
+				oldTask.Should().NotBeNull();
+
+				oldTask.ShouldHave().AllProperties().EqualTo(newTask);
+			}
 		}
 
 

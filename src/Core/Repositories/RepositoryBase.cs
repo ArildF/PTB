@@ -36,9 +36,14 @@ namespace Rogue.Ptb.Core.Repositories
 
 		public void MergeAll(IEnumerable<T> items)
 		{
-			using (_session.BeginTransaction())
+			using (var tx = _session.BeginTransaction())
 			{
-				items.Cast<object>().ForEach(o => _session.Merge(o));
+				foreach (var item in items)
+				{
+					_session.SaveOrUpdateCopy(item);
+				}
+				
+				tx.Commit();
 			}
 		}
 

@@ -124,6 +124,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DatabaseVersion.feature</DependentUpon>
     </Compile>
+    <Compile Include="ImportExport.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImportExport.feature</DependentUpon>
+    </Compile>
     <Compile Include="Steps\ContainerSteps.cs" />
     <Compile Include="Steps\VersionSteps.cs" />
     <Compile Include="TaskBoardManagement.feature.cs">
@@ -152,6 +157,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DatabaseVersion.feature.cs</LastGenOutput>
     </None>
+    <None Include="ImportExport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ImportExport.feature.cs</LastGenOutput>
+    </None>
     <None Include="TaskBoardManagement.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>TaskBoardManagement.feature.cs</LastGenOutput>
@@ -175,6 +184,11 @@
       <Project>{7494EE73-CB54-4FCB-B612-DAD6303B6C79}</Project>
       <Name>UI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="VariedSetOfTasks.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

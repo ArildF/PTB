@@ -83,13 +83,13 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[Then(@"the new task should be displayed first")]
 		public void ThenTheNewTaskShouldBeDisplayedFirst()
 		{
-			_context.TaskBoardViewModel.Tasks.First().Task.Id.Should().Be(Guid.Empty);
+			_context.TaskBoardViewModel.Tasks.First().Task.Title.Should().Be(String.Empty);
 		}
 
 		[Then(@"the new task should be in edit mode")]
 		public void ThenTheNewTaskShouldBeInEditMode()
 		{
-			_context.TaskBoardViewModel.Tasks.First(t => t.Task.Id == Guid.Empty).IsEditing.Should().BeTrue();
+			_context.TaskBoardViewModel.Tasks.First(t => String.IsNullOrEmpty(t.Title)).IsEditing.Should().BeTrue();
 
 		}
 

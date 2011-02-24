@@ -75,12 +75,14 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 		public class Provider : SessionFactoryProvider, ISessionFactoryProvider, IDisposable
 		{
+			private readonly IContainer _container;
 			private ISessionFactory _sessionFactory;
 			private ISession _session;
 
-			public Provider(IDatabaseServices services, IEnumerable<IDatabaseInitializer> initializers) 
+			public Provider(IDatabaseServices services, IEnumerable<IDatabaseInitializer> initializers, IContainer container) 
 				: base(services, initializers)
 			{
+				_container = container;
 				CreatedDatabases = new List<string>();
 				OpenedDatabases = new List<string>();
 			}
@@ -140,7 +142,11 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			{
 				CreatedDatabases.Add(path);
 
+				_sessionFactory = null;
+
 				base.CreateNewDatabase(path);
+
+				_container.Inject(_session);
 			}
 
 			public override void OpenDatabase(string file)

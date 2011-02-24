@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<ArrayOfTaskDto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TaskDto>
+    <Id>de5635dd-04d5-48f2-a8f7-9e8601739188</Id>
+    <Title>Create dialog mechanism</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>87ded1b3-653f-4f7a-980e-9e860173ecbe</Id>
+    <Title>Enter to finish typing in a task</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>99f2484f-2b9e-4938-8f48-9e860173ecbe</Id>
+    <Title>Text wrapping in the tasks</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>d1d1b07e-8fbf-4659-b400-9e860173ecbe</Id>
+    <Title>Create dialog for creating new database</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>23dad28a-9956-4c0a-9489-9e86017421cc</Id>
+    <Title>Drop down for LRU taskboards on the Open button</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>170be086-1078-4aa3-98cb-9e860175a9e3</Id>
+    <Title>Prettier font in the tasks</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>4e74c679-c4bc-4e44-9fcf-9e860175f3b4</Id>
+    <Title>Green check in completed tasks background</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>e70b8204-0502-4764-9801-9e86018a9305</Id>
+    <Title>Task numbers</Title>
+    <State>NotStarted</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>849deddf-9fb5-4051-9f37-9e87015feacd</Id>
+    <Title>Margins for textblock/textbox and check</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>71e914d1-29ec-4ddb-b3df-9e87016bf427</Id>
+    <Title>Deal with text blurriness</Title>
+    <State>NotStarted</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>73025c09-21ea-46b5-84e5-9e87017de32b</Id>
+    <Title>Create the database file automatically</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>203df3c3-76fa-46bd-a269-9e8800bdcd0b</Id>
+    <Title>Select all text when editing existing task</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>22f3b869-29a4-43cb-ac0a-9e890108b17e</Id>
+    <Title>Use RibbonWindow</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>c90af040-b3db-4132-8a78-9e890109226a</Id>
+    <Title>Scroll tasks into view when editing</Title>
+    <State>NotStarted</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>c1a84f6d-9ca3-4322-8084-9e890109226d</Id>
+    <Title>Import/export of tasks</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>fffcb411-5670-4f26-a90a-9e9001666e77</Id>
+    <Title>Disable commands when no taskboard open</Title>
+    <State>NotStarted</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>7d20c412-bf67-48bd-a1c9-9e900166ce38</Id>
+    <Title>Task prioritization</Title>
+    <State>NotStarted</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>75099242-96c3-4f51-b0ed-9e900166ce38</Id>
+    <Title>Task links</Title>
+    <State>NotStarted</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>9fc06313-8c62-4f60-ae88-9e900166ce38</Id>
+    <Title>Use async commands for import and export</Title>
+    <State>Abandoned</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>11b42d5a-5bc4-4ba3-a93d-9e90016b2aed</Id>
+    <Title>Single line textbox in path dialogs</Title>
+    <State>Complete</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>b90356e6-1255-4fd1-a2e3-9e900173bd7f</Id>
+    <Title>Version table</Title>
+    <State>NotStarted</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>4eb5e6d5-daac-4444-a070-9e900173bd82</Id>
+    <Title>TaskState stored as enum in base</Title>
+    <State>NotStarted</State>
+  </TaskDto>
+  <TaskDto>
+    <Id>4535df29-ad3a-4b7d-a214-9e900174d279</Id>
+    <Title>Weird indentation in Open LRU dropdown</Title>
+    <State>NotStarted</State>
+  </TaskDto>
+</ArrayOfTaskDto>

@@ -6,7 +6,7 @@ namespace Rogue.Ptb.Core.Maps
 	{
 		public TaskMap()
 		{
-			Id(t => t.Id);
+			Id(t => t.Id).GeneratedBy.Assigned();
 			Map(t => t.Title).Not.Nullable();
 			Map(t => t.State).CustomType<int>().Not.Nullable();
 			Map(t => t.CreatedDate).Not.Nullable();
