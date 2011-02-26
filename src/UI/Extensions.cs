@@ -25,8 +25,22 @@ namespace Rogue.Ptb.UI
 			self.OnPropertyChanging(func.PropertyName());
 			setter(value);
 			self.OnPropertyChanged(func.PropertyName());
-
 		}
+
+		public static void RaisePropertyChanging<TVm, TProperty>(this TVm self,
+			Expression<Func<TVm, TProperty>> func)
+			where TVm : IReactivePropertyChangingObject
+		{
+			self.OnPropertyChanging(func.PropertyName());
+		}
+
+		public static void RaisePropertyChanged<TVm, TProperty>(this TVm self,
+			Expression<Func<TVm, TProperty>> func)
+			where TVm : IReactivePropertyChangingObject
+		{
+			self.OnPropertyChanged(func.PropertyName());
+		}
+
 		public static string PropertyName<T, TRet>(
 					this Expression<Func<T, TRet>> expr)
 		{

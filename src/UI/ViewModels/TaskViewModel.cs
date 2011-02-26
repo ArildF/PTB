@@ -20,7 +20,42 @@ namespace Rogue.Ptb.UI.ViewModels
 		public TaskState State
 		{
 			get { return _task.State; }
-			set { this.SetAndRaisePropertyChanged(t => t.State, value, val => _task.State = val); }
+			set
+			{
+				this.RaisePropertyChanging(t => t.State);
+
+				ApplyNewState(value);
+
+				this.RaisePropertyChanged(t => t.State);
+				this.RaisePropertyChanged(t => t.ToolTip);
+			}
+		}
+
+		private void ApplyNewState(TaskState value)
+		{
+			if (value == _task.State)
+			{
+				return;
+			}
+
+			if (value == TaskState.InProgress)
+			{
+				_task.Start();
+			}
+			if (value == TaskState.Complete)
+			{
+				_task.Complete();
+			}
+			if (value == TaskState.Abandoned)
+			{
+				_task.Abandon();
+			}
+
+			if (value == TaskState.NotStarted)
+			{
+				_task.NotStarted();
+			}
+
 		}
 
 		public string Title
@@ -43,6 +78,31 @@ namespace Rogue.Ptb.UI.ViewModels
 			}
 			set {
 				this.RaiseAndSetIfChanged(tvm => tvm.IsEditing, value);
+			}
+		}
+
+		public string ToolTip
+		{
+			get
+			{
+				Func<DateTime?, string, string> formatter = (date, format) =>
+					{
+						if (date != null)
+						{
+							return String.Format("\r\n{0}: {1:g}", format, date);
+						}
+						return "";
+					};
+
+				string str = formatter(_task.CreatedDate, "Created");
+				str += formatter(_task.ModifiedDate, "Last modified");
+				str += formatter(_task.StartedDate, "Started");
+				str += formatter(_task.CompletedDate, "Completed");
+				str += formatter(_task.AbandonedDate, "Abandoned");
+
+				str += formatter(_task.StateChangedDate, "State last changed");
+
+				return str.Trim();
 			}
 		}
 

@@ -25,6 +25,11 @@ namespace Rogue.Ptb.Core.Export
 				{
 					var dtos = (TaskDto[])serializer.Deserialize(stream);
 
+					foreach (var taskDto in dtos)
+					{
+						taskDto.FixUpMissingData();
+					}
+
 					var tasks = _mapper.MapDtosToTasks(dtos).ToArray();
 
 					repository.MergeAll(tasks);

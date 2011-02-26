@@ -20,6 +20,8 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		private TaskDto[] _exportedDtos;
 		private Task[] _loadedTasks;
 
+		private Random _random = new Random();
+
 		public TaskBoardSteps(Context context)
 		{
 			_context = context;
@@ -37,10 +39,46 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[Given(@"a varied set of tasks loaded into the taskboard")]
 		public void GivenAVariedSetOfTasksLoadedIntoTheTaskboard()
 		{
-			var importer = _context.Get<ITasksImporter>();
-			importer.ImportAll("VariedSetOfTasks.xml");
+			var repos = _context.Get<IRepository<Task>>();
 
-			_loadedTasks = _context.Get<IRepository<Task>>().FindAll().ToArray();
+			var tasks = Enumerable.Range(0, 100).Select(_ => CreateRandomTask()).ToArray();
+
+			repos.SaveAll(tasks);
+
+			_loadedTasks = tasks;
+
+			_context.Publish(new DatabaseChanged("whatever"));
+
+		}
+
+		private Task CreateRandomTask()
+		{
+			DateTimeHelper.MoveAheadBy(TimeSpan.FromMinutes(_random.Next(50)));
+
+			var task = new Task {Title = Guid.NewGuid().ToString()};
+
+			DateTimeHelper.MoveAheadBy(TimeSpan.FromMinutes(_random.Next(50)));
+
+			if (DateTime.Now.Ticks % 2 == 0)
+			{
+				task.Start();
+			}
+
+			DateTimeHelper.MoveAheadBy(TimeSpan.FromMinutes(_random.Next(50)));
+
+			if (DateTime.Now.Ticks % 3 == 0)
+			{
+				task.Complete();
+			}
+
+			DateTimeHelper.MoveAheadBy(TimeSpan.FromMinutes(_random.Next(50)));
+
+			if (DateTime.Now.Ticks % 4 == 0)
+			{
+				task.Abandon();
+			}
+
+			return task;
 		}
 
 		[Given(@"an export file containing these tasks at ""(.*)""")]
@@ -207,7 +245,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 				var oldTask = _loadedTasks.Where(t => t.Id == task.Id).FirstOrDefault();
 				oldTask.Should().NotBeNull();
 
-				oldTask.ShouldHave().AllProperties().EqualTo(newTask);
+				newTask.ShouldHave().AllProperties().EqualTo(oldTask);
 			}
 		}
 

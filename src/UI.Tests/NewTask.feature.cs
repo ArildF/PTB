@@ -92,6 +92,8 @@ this.ScenarioSetup(scenarioInfo);
 testRunner.When("I click new task");
 #line 19
 testRunner.Then("the new task should have a created date like now");
+#line 20
+testRunner.And("the new task should have a modified date like now");
 #line hidden
             testRunner.CollectScenarioErrors();
         }

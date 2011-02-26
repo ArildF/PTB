@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.Core.Export
 {
@@ -13,10 +12,43 @@ namespace Rogue.Ptb.Core.Export
 		public TaskState State { get; set; }
 
 		public DateTime CreatedDate { get; set; }
+		public DateTime ModifiedDate { get; set; }
+		public DateTime? StartedDate { get; set; }
+		public DateTime? CompletedDate { get; set; }
+		public DateTime? AbandonedDate { get; set; }
+		public DateTime? StateChangedDate { get; set; }
 
 		public TaskDto()
 		{
 			
+		}
+
+		public void FixUpMissingData()
+		{
+			if (CreatedDate == default(DateTime))
+			{
+				CreatedDate = DateTimeHelper.Now;
+			}
+
+			if (ModifiedDate == default(DateTime))
+			{
+				ModifiedDate = DateTimeHelper.Now;
+			}
+
+			if (State == TaskState.InProgress && StartedDate == null)
+			{
+				StartedDate = DateTimeHelper.Now;
+			}
+
+			if (State == TaskState.InProgress && CompletedDate == null)
+			{
+				CompletedDate = DateTimeHelper.Now;
+			}
+
+			if (StateChangedDate == null)
+			{
+				StateChangedDate = new[]{StartedDate, CompletedDate, AbandonedDate}.LastOrDefault(dt => dt != null);
+			}
 		}
 	}
 }

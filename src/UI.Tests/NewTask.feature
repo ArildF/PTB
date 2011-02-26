@@ -17,3 +17,4 @@ Scenario: Add new tasks
 Scenario: Created date
     When I click new task
     Then the new task should have a created date like now
+    And the new task should have a modified date like now

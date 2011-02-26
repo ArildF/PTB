@@ -114,6 +114,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeTaskState.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChangeTaskState.feature</DependentUpon>
+    </Compile>
     <Compile Include="Container.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -130,6 +135,7 @@
       <DependentUpon>ImportExport.feature</DependentUpon>
     </Compile>
     <Compile Include="Steps\ContainerSteps.cs" />
+    <Compile Include="Steps\GeneralSteps.cs" />
     <Compile Include="Steps\VersionSteps.cs" />
     <Compile Include="TaskBoardManagement.feature.cs">
       <AutoGen>True</AutoGen>
@@ -146,9 +152,18 @@
     <Compile Include="Steps\events.cs" />
     <Compile Include="Steps\TaskBoardSteps.cs" />
     <Compile Include="Steps\TasksSteps.cs" />
+    <Compile Include="TaskToolTip.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaskToolTip.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ChangeTaskState.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ChangeTaskState.feature.cs</LastGenOutput>
+    </None>
     <None Include="Container.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Container.feature.cs</LastGenOutput>
@@ -170,6 +185,10 @@
       <LastGenOutput>NewTask.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="TaskToolTip.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>TaskToolTip.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

@@ -58,12 +58,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaskTests\When_setting_a_task_back_to_completed.cs" />
+    <Compile Include="TaskTests\When_abandoning_a_task.cs" />
+    <Compile Include="TaskTests\When_completing_a_task.cs" />
     <Compile Include="TaskTests\When_creating_a_new_task.cs" />
+    <Compile Include="TaskTests\When_editing_task_title.cs" />
+    <Compile Include="TaskTests\When_setting_a_task_back_to_InProgress.cs" />
+    <Compile Include="TaskTests\When_setting_a_task_back_to_not_started.cs" />
+    <Compile Include="TaskTests\When_starting_a_task.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{3CBBCA1C-5FE2-46B0-9DEE-22D46CC1544B}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{E243D3BF-72E5-4CCD-9C94-3B3C07869769}</Project>
+      <Name>Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\TestUtilities\TestUtilities.csproj">
       <Project>{1368C17B-0871-4C53-AAC9-C86F41D5FE56}</Project>
