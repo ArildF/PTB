@@ -20,13 +20,16 @@
 				<ribbon:RibbonSplitButton Label="Open" Name="OpenTaskBoard"
 									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
-									 ItemsSource="{Binding LastRecentlyUsedTaskboards}"
-										  ItemContainerStyle="{x:Null}">
+									 ItemsSource="{Binding LastRecentlyUsedTaskboards}">
+										  
 					<ribbon:RibbonSplitButton.ItemTemplate>
 						<DataTemplate>
-							<ribbon:RibbonButton Label="{Binding Text}" 
+							<ribbon:RibbonMenuItem Header="{Binding Text}"  
+												   ImageSource="{StaticResource ResourceKey=nige_Database}"
 												 Command="{me:ResolveCommand OpenTaskBoard}"
-												 CommandParameter="{Binding Text}"/>
+												 CommandParameter="{Binding Text}"
+												   
+												   />
 						</DataTemplate>
 					</ribbon:RibbonSplitButton.ItemTemplate>
 				</ribbon:RibbonSplitButton>

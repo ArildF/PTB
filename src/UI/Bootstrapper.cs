@@ -46,6 +46,11 @@ namespace Rogue.Ptb.UI
 
 			return Container.GetInstance<IShellView>();
 		}
+
+		public Action<Exception> TryResolveExceptionHandler()
+		{
+			return Container.TryGetInstance<Action<Exception>>();
+		}
 	}
 
 }
