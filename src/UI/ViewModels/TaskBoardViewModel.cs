@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Input;
 using ReactiveUI;
 using Rogue.Ptb.Core;
 using NHibernate.Linq;
 using Rogue.Ptb.Infrastructure;
+using Rogue.Ptb.UI.Commands;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
-	public class TaskBoardViewModel : ViewModelBase, ITaskBoardViewModel
+	public class TaskBoardViewModel : ViewModelBase, ITaskBoardViewModel, ICommandResolver
 	{
 		private readonly IRepositoryProvider _repositoryProvider;
 		private Core.IRepository<Task> _repository;
 		private readonly IEventAggregator _bus;
+		private readonly ICommandResolver _commandResolver;
 
-		public TaskBoardViewModel(IRepositoryProvider repositoryProvider, IEventAggregator bus)
+		public TaskBoardViewModel(IRepositoryProvider repositoryProvider, IEventAggregator bus, ICommandResolver commandResolver)
 		{
 			_repositoryProvider = repositoryProvider;
 			_bus = bus;
+			_commandResolver = commandResolver;
 
 			Tasks = new ReactiveCollection<TaskViewModel>();
 
@@ -77,6 +81,11 @@ namespace Rogue.Ptb.UI.ViewModels
 				_repository.Dispose();
 			}
 			return _repositoryProvider.Open<Task>();
+		}
+
+		public ICommand Resolve(CommandName commandName)
+		{
+			return _commandResolver.Resolve(commandName);
 		}
 	}
 }

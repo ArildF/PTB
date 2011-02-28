@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -33,7 +34,12 @@ namespace Rogue.Ptb.UI.MarkupExtensions
 			var fwe = pvt.TargetObject as FrameworkElement;
 			if (fwe == null)
 			{
-				return this;
+				if (!(pvt.TargetObject is Freezable))
+				{
+					return this;
+				}
+				var freezable = (Freezable)pvt.TargetObject;
+				return new FreezableProxyCommand(freezable, _name);
 			}
 
 			var property = pvt.TargetProperty as DependencyProperty;
@@ -45,17 +51,47 @@ namespace Rogue.Ptb.UI.MarkupExtensions
 			return new ProxyCommand(fwe, _name);
 		}
 
+		public class FreezableProxyCommand : ProxyCommand
+		{
+			private readonly Freezable _freezable;
+
+			public FreezableProxyCommand(Freezable freezable, string name) : base(null, name)
+			{
+				_freezable = freezable;
+
+				var evt = _freezable.GetType().GetEvent("InheritanceContextChanged",
+					BindingFlags.Instance | BindingFlags.NonPublic);
+				var addMethod = evt.GetAddMethod(true);
+				addMethod.Invoke(freezable, new[] {new EventHandler(OnInheritanceContextChanged)});
+
+				SetFrameworkElementFromInheritanceContext();
+			}
+
+			private void OnInheritanceContextChanged(object sender, EventArgs e)
+			{
+				SetFrameworkElementFromInheritanceContext();
+			}
+
+			private void SetFrameworkElementFromInheritanceContext()
+			{
+				var fwe = _freezable.GetType()
+					.GetProperty( "InheritanceContext", BindingFlags.Instance | BindingFlags.NonPublic) 
+					.GetValue(_freezable, null) as FrameworkElement;
+
+				FrameworkElement = fwe;
+			}
+		}
+
 		public class ProxyCommand : ICommand
 		{
-			private readonly FrameworkElement _frameworkElement;
+			private FrameworkElement _frameworkElement;
 			private readonly string _name;
 
 			public ProxyCommand(FrameworkElement frameworkElement, string name)
 			{
-				_frameworkElement = frameworkElement;
 				_name = name;
 
-				_frameworkElement.DataContextChanged += FrameworkElementOnDataContextChanged;
+				FrameworkElement = frameworkElement;
 			}
 
 			private void FrameworkElementOnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -70,6 +106,7 @@ namespace Rogue.Ptb.UI.MarkupExtensions
 			{
 				Command.DoIfNotNull(c => c.Execute(parameter));
 			}
+
 
 			protected ICommand Command
 			{
@@ -91,6 +128,24 @@ namespace Rogue.Ptb.UI.MarkupExtensions
 					var name = _name ?? (string)_frameworkElement.GetValue(FrameworkElement.NameProperty);
 
 					return resolver.Resolve(CommandName.Create(name));
+				}
+			}
+
+			protected FrameworkElement FrameworkElement
+			{
+				get {
+					return _frameworkElement;
+				}
+				set {
+					if (_frameworkElement != null)
+					{
+						_frameworkElement.DataContextChanged -= FrameworkElementOnDataContextChanged;
+					}
+					_frameworkElement = value;
+					if (_frameworkElement != null)
+					{
+						_frameworkElement.DataContextChanged += FrameworkElementOnDataContextChanged;
+					}
 				}
 			}
 

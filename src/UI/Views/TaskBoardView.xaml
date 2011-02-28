@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:design="clr-namespace:Rogue.Ptb.UI.DesignTime" xmlns:vc="clr-namespace:Rogue.Ptb.UI.ValueConverters" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:Behaviors="clr-namespace:Rogue.Ptb.UI.Behaviors" xmlns:Views="clr-namespace:Rogue.Ptb.UI.Views" x:Class="Rogue.Ptb.UI.Views.TaskBoardView"
+             xmlns:design="clr-namespace:Rogue.Ptb.UI.DesignTime" 
+			xmlns:vc="clr-namespace:Rogue.Ptb.UI.ValueConverters" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:Behaviors="clr-namespace:Rogue.Ptb.UI.Behaviors" xmlns:Views="clr-namespace:Rogue.Ptb.UI.Views" xmlns:Commands="clr-namespace:Rogue.Ptb.UI.Commands" x:Class="Rogue.Ptb.UI.Views.TaskBoardView"
+			xmlns:me="clr-namespace:Rogue.Ptb.UI.MarkupExtensions"
              mc:Ignorable="d" d:DesignHeight="702" d:DesignWidth="789">
     
     <UserControl.Resources>
