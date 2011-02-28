@@ -38,13 +38,16 @@
 				<GridSplitter Grid.Column="5" Width="3"/>
 				<TextBlock Grid.Column="6" TextAlignment="Center"><Run Text="Abandoned"/></TextBlock>
 			</Grid>
-			<ItemsControl ItemsSource="{Binding Tasks}" x:Name="_itemsControl">
+			<ItemsControl ItemsSource="{Binding Tasks}" x:Name="_itemsControl"
+				>
+				<i:Interaction.Behaviors>
+					<Behaviors:DragListItemElementBehavior AllElementsDraggable="False"/>
+				</i:Interaction.Behaviors>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Grid>
-							<i:Interaction.Behaviors>
-								<Behaviors:DragGridElementBehavior AllElementsDraggable="False"/>
-							</i:Interaction.Behaviors>
+						<Grid 
+							Behaviors:DragListItemElementBehavior.DragTargetCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=DataContext.DragCommand}"
+							Behaviors:DragListItemElementBehavior.IsDragTargetGrid="True">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="3*" SharedSizeGroup="NotStarted"/>
 								<ColumnDefinition Width="3"/>
@@ -55,7 +58,7 @@
 								<ColumnDefinition Width="3*" SharedSizeGroup="Abandoned"/>
 							</Grid.ColumnDefinitions>
 							<Views:TaskControl 
-								Behaviors:DragGridElementBehavior.Draggable="True"
+  								Behaviors:DragListItemElementBehavior.Draggable="True"
 								Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Views:TaskControl>
 
 

@@ -120,7 +120,8 @@
     </Compile>
     <Compile Include="Behaviors\CommandBehavior.cs" />
     <Compile Include="Behaviors\CommandForEventBehavior.cs" />
-    <Compile Include="Behaviors\DragGridElementBehavior.cs" />
+    <Compile Include="Behaviors\DragCommandArgs.cs" />
+    <Compile Include="Behaviors\DragListItemElementBehavior.cs" />
     <Compile Include="Behaviors\FocusBehaviors.cs" />
     <Compile Include="Behaviors\FocusNextOnEnterBehavior.cs" />
     <Compile Include="Behaviors\KeyCommandBehavior.cs" />

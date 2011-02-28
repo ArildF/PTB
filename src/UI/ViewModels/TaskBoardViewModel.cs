@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Windows.Input;
 using ReactiveUI;
+using ReactiveUI.Xaml;
 using Rogue.Ptb.Core;
 using NHibernate.Linq;
 using Rogue.Ptb.Infrastructure;
+using Rogue.Ptb.UI.Behaviors;
 using Rogue.Ptb.UI.Commands;
 
 namespace Rogue.Ptb.UI.ViewModels
@@ -37,7 +39,41 @@ namespace Rogue.Ptb.UI.ViewModels
 			_bus.ListenOnScheduler<CreateNewTask>(OnCreateNewTask);
 			_bus.ListenOnScheduler<SaveAllTasks>(OnSaveAllTasks);
 			_bus.ListenOnScheduler<ReloadAllTasks>(evt => Reload());
+
+			DragCommand = new ReactiveCommand();
+
+
+			DragCommand.OfType<DragCommandArgs>().Subscribe(OnNext);
+
 		}
+
+		private void OnNext(DragCommandArgs dragCommandArgs)
+		{
+			var target = (TaskViewModel) dragCommandArgs.DragTarget;
+			var dragged = (TaskViewModel) dragCommandArgs.Dragged;
+
+			int indexTarget = Tasks.IndexOf(target);
+			int indexDragged = Tasks.IndexOf(dragged);
+
+			if (indexTarget < 0 || indexDragged < 0)
+			{
+				return;
+			}
+
+			Tasks.Remove(dragged);
+
+			//if (indexDragged > indexTarget)
+			{
+				Tasks.Insert(indexTarget, dragged);
+			}
+			//else
+			//{
+			//    Tasks.Insert(indexTarget, dragged);
+			//}
+
+		}
+
+		public ReactiveCommand DragCommand { get; private set; }
 
 		public ReactiveCollection<TaskViewModel> Tasks { get; private set; }
 
