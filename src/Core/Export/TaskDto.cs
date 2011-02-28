@@ -40,9 +40,14 @@ namespace Rogue.Ptb.Core.Export
 				StartedDate = DateTimeHelper.Now;
 			}
 
-			if (State == TaskState.InProgress && CompletedDate == null)
+			if (State == TaskState.Complete && CompletedDate == null)
 			{
 				CompletedDate = DateTimeHelper.Now;
+			}
+
+			if (State == TaskState.Abandoned && AbandonedDate == null)
+			{
+				AbandonedDate = DateTimeHelper.Now;
 			}
 
 			if (StateChangedDate == null)
