@@ -98,7 +98,8 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			var tasks = _repository.FindAll();
 
-			TypeHelperExtensionMethods.ForEach(tasks.Select(t => new TaskViewModel(t)), Tasks.Add);
+			tasks.Select(t => new TaskViewModel(t)).ToList()
+				.OrderBy(t => t, new TaskComparer()).ForEach(Tasks.Add);
 		}
 
 		private void OnCreateNewTask(CreateNewTask ignored)

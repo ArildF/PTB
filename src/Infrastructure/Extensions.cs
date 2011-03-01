@@ -29,13 +29,13 @@ namespace Rogue.Ptb.Infrastructure
 			return candidates.Any(c => c.Equals(self));
 		}
 
-		public static void ForEach<T>(this IEnumerable<T> self, Action<T> action)
-		{
-			foreach (var item in self)
-			{
-				action(item);
-			}
-		}
+		//public static void ForEach<T>(this IEnumerable<T> self, Action<T> action)
+		//{
+		//    foreach (var item in self)
+		//    {
+		//        action(item);
+		//    }
+		//}
 
 		public static void DoIfNotNull<T>(this T self, Action<T> action) where T : class
 		{
