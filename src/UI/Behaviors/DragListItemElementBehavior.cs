@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using JetBrains.Profiler.Core.Api;
 using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.Behaviors
@@ -14,7 +16,7 @@ namespace Rogue.Ptb.UI.Behaviors
 		private Point _startPoint;
 		private UIElement _movedObject;
 		private Transform _originalTransform;
-		private int _originalZIndex;
+		private Point _deltaFromDragged;
 
 		public static readonly DependencyProperty Draggable = DependencyProperty.RegisterAttached(
 			"DraggableProperty", typeof (bool), typeof (DragListItemElementBehavior));
@@ -55,6 +57,24 @@ namespace Rogue.Ptb.UI.Behaviors
 		public static void SetIsDragTargetGrid(Grid d, bool value)
 		{
 			d.SetValue(IsDragTargetGrid, value);
+		}
+
+		public static readonly DependencyProperty CurrentlyDraggedOver = DependencyProperty.RegisterAttached(
+			"CurrentlyDraggedOver", typeof (DragType), typeof (DragListItemElementBehavior));
+
+		private DependencyObject _currentObjectBeingDraggedOver;
+		private DependencyObject _originalObjectBeingDraggedOver;
+
+		private int? _savedZIndex;
+
+		public static DragType GetCurrentlyDraggedOver(DependencyObject d)
+		{
+			return (DragType) d.GetValue(CurrentlyDraggedOver);
+		}
+
+		public static void SetCurrentlyDraggedOver(DependencyObject d, DragType value)
+		{
+			d.SetValue(CurrentlyDraggedOver, value);
 		}
 
 		public DragListItemElementBehavior()
@@ -105,19 +125,52 @@ namespace Rogue.Ptb.UI.Behaviors
 				return;
 			}
 
+			if (PerformanceProfiler.IsActive)
+			{
+				PerformanceProfiler.Begin();
+				PerformanceProfiler.Start();
+			}
+
+			
+
 			_movedSource = GetDragCommandAndTarget(gridRelativeStartPoint, true).Item2;
 
 			_startPoint = e.GetPosition(RootElement);
 			_originalTransform = _movedObject.RenderTransform;
+			_deltaFromDragged = e.GetPosition(_movedObject);
 
-			_originalZIndex = Panel.GetZIndex(_movedObject);
-			Panel.SetZIndex(_movedObject, 1000);
+
+			_originalObjectBeingDraggedOver = FindDragOverTarget(gridRelativeStartPoint);
 
 			AssociatedObject.CaptureMouse();
 			AssociatedObject.MouseMove += OnMouseMove;
 			AssociatedObject.MouseLeftButtonUp += OnMouseUp;
 
+			BringMovedObjectToFront();
+
+
 			e.Handled = true;
+		}
+
+		private void BringMovedObjectToFront()
+		{
+			UIElement childToBringToFront = FindItemContainer();
+
+			var index = childToBringToFront.ReadLocalValue(Panel.ZIndexProperty);
+			_savedZIndex = index == DependencyProperty.UnsetValue ? null : (int?) index;
+
+			_savedZIndex = Panel.GetZIndex(childToBringToFront);
+			Panel.SetZIndex(childToBringToFront, 1000);
+		}
+
+		private UIElement FindItemContainer()
+		{
+			var immediateChildren = AssociatedObject.Items.Cast<object>().Select(
+				obj => AssociatedObject.ItemContainerGenerator.ContainerFromItem(obj)).ToArray();
+			//var immediateChildren = VisualTreeHelper..GetChildren(AssociatedObject).Cast<DependencyObject>().ToArray();
+
+			return _movedObject.TraverseBy(elt => (UIElement) VisualTreeHelper.GetParent(elt))
+				.First(elt => elt.In(immediateChildren));
 		}
 
 		protected UIElement RootElement
@@ -138,6 +191,87 @@ namespace Rogue.Ptb.UI.Behaviors
 			
 			_movedObject.RenderTransform = new MatrixTransform(
 				translation);
+
+			DragType dragType = currentPoint.Y > _startPoint.Y ? DragType.Downwards : DragType.Upwards;
+			Point dragOrigin = GetDragOrigin(e);
+
+			NotifyObjectsBeingDraggedOver(dragOrigin, dragType);
+
+		}
+
+		private Point GetDragOrigin(MouseEventArgs e)
+		{
+			Point dragOrigin = e.GetPosition(AssociatedObject);
+			dragOrigin.Offset(-_deltaFromDragged.X, _deltaFromDragged.Y);
+			return dragOrigin;
+		}
+
+		private void NotifyObjectsBeingDraggedOver(Point point, DragType dragType)
+		{
+			DependencyObject foundObject  = FindDragOverTarget(point);
+
+			if ((foundObject == null && _currentObjectBeingDraggedOver != null) ||
+				(foundObject != null && foundObject != _currentObjectBeingDraggedOver))
+			{
+				ReleaseCurrentObjectBeingDraggedOver();
+			}
+
+			if (foundObject != null && foundObject != _currentObjectBeingDraggedOver) 
+			{
+				_currentObjectBeingDraggedOver = foundObject;
+				SetCurrentlyDraggedOver(_currentObjectBeingDraggedOver, dragType);
+			}
+
+		}
+
+		private void ReleaseCurrentObjectBeingDraggedOver()
+		{
+			if (_currentObjectBeingDraggedOver != null)
+			{
+				SetCurrentlyDraggedOver(_currentObjectBeingDraggedOver, DragType.AcceptsDrag);
+				_currentObjectBeingDraggedOver = null;
+			}
+		}
+
+		private DependencyObject FindDragOverTarget(Point point)
+		{
+			//FrameworkElement element = null;
+			//double y = 0;
+			//foreach (FrameworkElement item in VisualTreeHelper.AssociatedObject)
+			//{
+			//    y += item.ActualHeight;
+			//    if (y > point.Y)
+			//    {
+			//        break;
+			//    }
+			//    element = item;
+			//}
+			//return element;
+			DependencyObject foundObject = null;
+
+			//if (_cachedFoundObject != null)
+			//{
+			//    return _cachedFoundObject;
+			//}
+
+			VisualTreeHelper.HitTest(AssociatedObject,
+				v =>
+				{
+					if (v == _originalObjectBeingDraggedOver)
+					{
+						return HitTestFilterBehavior.Continue;
+					}
+					if (GetCurrentlyDraggedOver(v) != DragType.None)
+					{
+						foundObject = v;
+						return HitTestFilterBehavior.Stop;
+					}
+					return HitTestFilterBehavior.Continue;
+				}, htr => HitTestResultBehavior.Continue,
+				new PointHitTestParameters(point)
+				);
+
+			return foundObject;
 		}
 
 
@@ -147,7 +281,7 @@ namespace Rogue.Ptb.UI.Behaviors
 			AssociatedObject.MouseLeftButtonUp -= OnMouseUp;
 			AssociatedObject.ReleaseMouseCapture();
 
-			var position = e.GetPosition(AssociatedObject);
+			var position = GetDragOrigin(e);
 
 			// first, check for up and down drag
 			var dragCommandAndTarget = GetDragCommandAndTarget(position, false);
@@ -175,9 +309,34 @@ namespace Rogue.Ptb.UI.Behaviors
 				}
 			}
 
+			ReleaseCurrentObjectBeingDraggedOver();
+
 			_movedObject.RenderTransform = _originalTransform;
-			Panel.SetZIndex(_movedObject, _originalZIndex);
+
+			_currentObjectBeingDraggedOver = null;
+
 			_movedSource = null;
+
+			BringMovedObjectToOriginalZOrder();
+
+			if (PerformanceProfiler.IsActive)
+			{
+				PerformanceProfiler.Stop();
+				PerformanceProfiler.EndSave();
+			}
+		}
+
+		private void BringMovedObjectToOriginalZOrder()
+		{
+			var elt = FindItemContainer();
+			if (_savedZIndex != null)
+			{
+				Panel.SetZIndex(elt, _savedZIndex.Value);
+			}
+			else
+			{
+				elt.ClearValue(Panel.ZIndexProperty);
+			}
 		}
 
 		private Grid FindDragTargetGrid(Point position)
@@ -287,5 +446,13 @@ namespace Rogue.Ptb.UI.Behaviors
 				return new GridLocation(-1, -1);
 			}
 		}
+	}
+
+	public enum DragType
+	{
+		None,
+		AcceptsDrag,
+		Upwards,
+		Downwards
 	}
 }

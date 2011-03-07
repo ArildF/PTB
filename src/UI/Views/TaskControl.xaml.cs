@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -21,6 +22,24 @@ namespace Rogue.Ptb.UI.Views
 	{
 		public TaskControl()
 		{
+			//  MUST do this BEFORE InitializeComponent()
+			if (DesignerProperties.GetIsInDesignMode(this))
+			{
+				if (AppDomain.CurrentDomain.BaseDirectory.Contains("Blend 4"))
+				{
+					// load styles resources
+					foreach (var resource in new[] { "../../Resources/Styles.xaml", "../../Resources/Art/Check.xaml" })
+					{
+						ResourceDictionary rd = new ResourceDictionary();
+						rd.Source = new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, resource),
+						                    UriKind.Absolute);
+						Resources.MergedDictionaries.Add(rd);
+					}
+
+					// load any other resources this control needs such as Converters
+					//Resources.Add("booleanNOTConverter", new BooleanNOTConverter());
+				}
+			}
 			InitializeComponent();
 		}
 	}

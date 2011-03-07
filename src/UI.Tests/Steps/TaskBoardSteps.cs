@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
+using NHibernate.Linq;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Core.Export;
 using Rogue.Ptb.Infrastructure;

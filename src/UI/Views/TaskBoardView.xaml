@@ -15,7 +15,13 @@
 		<Style TargetType="GridSplitter">
 			<Setter Property="IsTabStop" Value="False"/>
 		</Style>
+		<Storyboard x:Key="DraggedOverUpwards"/>
 	</UserControl.Resources>
+	<UserControl.Triggers>
+		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+			<BeginStoryboard Storyboard="{StaticResource DraggedOverUpwards}"/>
+		</EventTrigger>
+	</UserControl.Triggers>
 
 	<ScrollViewer VerticalScrollBarVisibility="Auto">
 		<StackPanel d:DataContext="{StaticResource DesignDataContext}">
@@ -45,9 +51,49 @@
 				</i:Interaction.Behaviors>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Grid 
+						<DataTemplate.Resources>
+							<Storyboard x:Key="DragOverUpwards">
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="dragAnimationGrid">
+									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="{Binding ActualHeight}"/>
+								</DoubleAnimationUsingKeyFrames>
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="dragAnimationGrid">
+									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="10"/>
+								</DoubleAnimationUsingKeyFrames>
+							</Storyboard>
+							<Storyboard x:Key="DragOverDownwards">
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="dragAnimationGrid">
+									<EasingDoubleKeyFrame KeyTime="0:0:0.037" Value="-50"/>
+								</DoubleAnimationUsingKeyFrames>
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="dragAnimationGrid">
+									<EasingDoubleKeyFrame KeyTime="0:0:0.037" Value="10"/>
+								</DoubleAnimationUsingKeyFrames>
+							</Storyboard>
+							<Storyboard x:Key="DragOverUpwards_Exit">
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="dragAnimationGrid">
+									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="0"/>
+								</DoubleAnimationUsingKeyFrames>
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="dragAnimationGrid">
+									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="0"/>
+								</DoubleAnimationUsingKeyFrames>
+							</Storyboard>
+							<Storyboard x:Key="DragOverDownwards_Exit">
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="dragAnimationGrid">
+									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="0"/>
+								</DoubleAnimationUsingKeyFrames>
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="dragAnimationGrid">
+									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="0"/>
+								</DoubleAnimationUsingKeyFrames>
+							</Storyboard>
+						</DataTemplate.Resources>
+						
+
+						<Grid x:Name="grid" 
 							Behaviors:DragListItemElementBehavior.DragTargetCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=DataContext.DragCommand}"
-							Behaviors:DragListItemElementBehavior.IsDragTargetGrid="True">
+							Behaviors:DragListItemElementBehavior.IsDragTargetGrid="True" RenderTransformOrigin="0.5,0.5"
+							Behaviors:DragListItemElementBehavior.CurrentlyDraggedOver="AcceptsDrag"
+							Tag="{Binding Title}"
+							  >
+							
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="3*" SharedSizeGroup="NotStarted"/>
 								<ColumnDefinition Width="3"/>
@@ -57,16 +103,53 @@
 								<ColumnDefinition Width="3"/>
 								<ColumnDefinition Width="3*" SharedSizeGroup="Abandoned"/>
 							</Grid.ColumnDefinitions>
-							<Views:TaskControl 
-  								Behaviors:DragListItemElementBehavior.Draggable="True"
-								Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Views:TaskControl>
-
-
+							
 							<GridSplitter Grid.Column="1" Width="3"/>
 							<GridSplitter Grid.Column="3" Width="3"/>
 							<GridSplitter Grid.Column="5" Width="3"/>
 
+							<Border Grid.Column="0" Grid.ColumnSpan="8" x:Name="overlay"></Border>
+
+							<Grid x:Name="dragAnimationGrid"
+									Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.5,0.5">
+								<Grid.RenderTransform>
+									<TransformGroup>
+										<ScaleTransform/>
+										<SkewTransform/>
+										<RotateTransform/>
+										<TranslateTransform/>
+									</TransformGroup>
+								</Grid.RenderTransform>
+								<Views:TaskControl x:Name="taskControl" 
+  									Behaviors:DragListItemElementBehavior.Draggable="True">
+								</Views:TaskControl>
+							</Grid>
+							
 						</Grid>
+						
+						<DataTemplate.Triggers>
+							<Trigger Property="Behaviors:DragListItemElementBehavior.CurrentlyDraggedOver" 
+									 SourceName="grid"
+									 Value="Upwards">
+								<Trigger.EnterActions>
+									<BeginStoryboard x:Name="DragOverUpwards_BeginStoryboard" Storyboard="{StaticResource DragOverUpwards}"/>
+								</Trigger.EnterActions>
+								<Trigger.ExitActions>
+									<BeginStoryboard Storyboard="{StaticResource DragOverUpwards_Exit}"/>
+								</Trigger.ExitActions>
+							</Trigger>
+							<Trigger Property="Behaviors:DragListItemElementBehavior.CurrentlyDraggedOver" 
+									 SourceName="grid"
+									 Value="Downwards">
+								<Trigger.EnterActions>
+									<BeginStoryboard Storyboard="{StaticResource DragOverDownwards}"/>
+								</Trigger.EnterActions>
+								<Trigger.ExitActions>
+									<BeginStoryboard Storyboard="{StaticResource DragOverDownwards_Exit}"/>
+								</Trigger.ExitActions>
+							</Trigger>
+									 
+						</DataTemplate.Triggers>
 
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
