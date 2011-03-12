@@ -15,6 +15,8 @@ namespace Rogue.Ptb.UI
 		{
 			base.OnStartup(e);
 
+			HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
+
 			_bootstrapper = new Bootstrapper();
 
 			DispatcherUnhandledException += OnDispatcherUnhandledException;
