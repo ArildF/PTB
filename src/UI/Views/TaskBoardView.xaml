@@ -54,7 +54,7 @@
 						<DataTemplate.Resources>
 							<Storyboard x:Key="DragOverUpwards">
 								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="dragAnimationGrid">
-									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="{Binding ActualHeight}"/>
+									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="50"/>
 								</DoubleAnimationUsingKeyFrames>
 								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="dragAnimationGrid">
 									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="10"/>
