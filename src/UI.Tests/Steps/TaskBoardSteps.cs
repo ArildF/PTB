@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml.Serialization;
 using NHibernate.Linq;
@@ -14,7 +16,7 @@ using FluentAssertions;
 namespace Rogue.Ptb.UI.Tests.Steps
 {
 	[Binding]
-	public class TaskBoardSteps
+	public class TaskBoardSteps : TechTalk.SpecFlow.Steps
 	{
 		private readonly Context _context;
 		private bool _databaseChangedMessageReceived;
@@ -40,6 +42,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[Given(@"a varied set of tasks loaded into the taskboard")]
 		public void GivenAVariedSetOfTasksLoadedIntoTheTaskboard()
 		{
+			Given("that I have created a new database");
 			var repos = _context.Get<IRepository<Task>>();
 
 			var tasks = Enumerable.Range(0, 100).Select(_ => CreateRandomTask()).ToArray();
@@ -90,14 +93,22 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			Directory.CreateDirectory(Path.GetDirectoryName(path));
 
 
+			GivenThatIHaveCreatedANewDatabase();
+
 			var tasks = table.Rows.Select(r => new Task {Title = r["Title"]});
 			var repos = _context.Get<IRepository<Task>>();
 			tasks.ForEach(repos.Save);
 
 			var exporter = _context.Get<ITasksExporter>();
 			exporter.ExportAll(path);
+		}
 
-			_context.ClearDatabase();
+		[Given(@"that I have created a new database")]
+		public void GivenThatIHaveCreatedANewDatabase()
+		{
+			var filename = Guid.NewGuid().ToString();
+
+			_context.Get<ISessionFactoryProvider>().CreateNewDatabase(filename);
 		}
 
 		[Given(@"that I enter ""(.*)"" in the open taskboard dialog")]
@@ -112,6 +123,25 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			GivenThatIEnterCFooBar_TaskboardInTheOpenTaskboardDialog(path);
 			WhenIOpenATaskboard();
 		}
+
+		[Given(@"that the following taskboards already exist:")]
+		public void GivenThatTheFollowingTaskboardsAlreadyExist(Table table)
+		{
+			foreach (var tableRow in table.Rows)
+			{
+				GivenThatTheDatabaseCFooBar_TaskboardAlreadyExists(tableRow[0]);
+			}
+		}
+
+
+		[Given(@"that the database ""(.*)"" already exists")]
+		public void GivenThatTheDatabaseCFooBar_TaskboardAlreadyExists(string path)
+		{
+			_context.Get<ISessionFactoryProvider>().CreateNewDatabase(path);
+		}
+
+
+
 
 		[Given(@"that I enter ""(.*)"" in the export taskboard dialog")]
 		public void GivenThatIEnterCFooBar_TaskboardInTheExportTaskboardDialog(string path)
@@ -246,7 +276,43 @@ namespace Rogue.Ptb.UI.Tests.Steps
 				var oldTask = _loadedTasks.Where(t => t.Id == task.Id).FirstOrDefault();
 				oldTask.Should().NotBeNull();
 
-				newTask.ShouldHave().AllProperties().EqualTo(oldTask);
+				var dateFuncs = new Expression<Func<Task, object>>[]
+					{
+						t => t.CreatedDate,
+						t => t.AbandonedDate,
+						t => t.CompletedDate,
+						t => t.ModifiedDate,
+						t => t.StartedDate,
+						t => t.StateChangedDate
+					};
+
+				CheckDates(oldTask, newTask, dateFuncs);
+
+				newTask.ShouldHave().AllProperties().But(
+					t => t.CreatedDate,
+					dateFuncs.Skip(1).ToArray()
+					).EqualTo(oldTask);
+
+				
+			}
+		}
+
+		private static void CheckDates(Task oldTask, Task newTask, IEnumerable<Expression<Func<Task, object>>> dateFuncs)
+		{
+			foreach (var expression in dateFuncs)
+			{
+				var func = expression.Compile();
+				var oldDate = (DateTime?) func(oldTask);
+				var newDate = (DateTime?) func(newTask);
+
+				if (oldDate == null)
+				{
+					newDate.Should().Be(null);
+				}
+				else
+				{
+					oldDate.Should().BeWithin(TimeSpan.FromSeconds(0.5)).Before(newDate.GetValueOrDefault());
+				}
 			}
 		}
 

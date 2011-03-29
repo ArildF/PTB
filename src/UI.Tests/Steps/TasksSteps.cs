@@ -26,6 +26,8 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[When(@"that the following tasks already exist and are loaded:")]
 		public void GivenThatTheFollowingTasksAlreadyExist(Table table)
 		{
+			Given("that I have created a new database");
+
 			using (var repos = _context.Get<IRepository<Task>>())
 			{
 				foreach (var tableRow in table.Rows)

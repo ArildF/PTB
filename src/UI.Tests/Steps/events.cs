@@ -57,11 +57,6 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			//TODO: implement logic that has to run before executing each scenario
 		}
 
-		[AfterScenario]
-		public void AfterScenario()
-		{
-			_context.Dispose();
-		}
 
 		[BeforeFeature]
 		public static void BeforeFeature()

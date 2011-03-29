@@ -5,5 +5,6 @@
 
 @mytag
 Scenario: Get database version from the database
+	Given that I have created a new database
 	Then I should be able to read the database version from the database
     And the version should be higher than 0

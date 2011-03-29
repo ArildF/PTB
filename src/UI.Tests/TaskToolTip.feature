@@ -5,6 +5,7 @@
 
 Background:
     Given that the thread culture is 'nb-no'
+	And that I have created a new database
 
 Scenario: Tooltip 1
 	Given a task with the following attributes:

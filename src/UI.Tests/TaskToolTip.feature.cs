@@ -59,6 +59,8 @@ namespace Rogue.Ptb.UI.Tests
 #line 6
 #line 7
     testRunner.Given("that the thread culture is \'nb-no\'");
+#line 8
+ testRunner.And("that I have created a new database");
 #line hidden
         }
         
@@ -67,7 +69,7 @@ namespace Rogue.Ptb.UI.Tests
         public virtual void Tooltip1()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tooltip 1", ((string[])(null)));
-#line 9
+#line 10
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -85,10 +87,10 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "ModifiedDate",
                         "27.01.2006 19:23"});
-#line 10
+#line 11
  testRunner.Given("a task with the following attributes:", ((string)(null)), table1);
 #line hidden
-#line 16
+#line 17
     testRunner.Then("the tooltip should show", "Created: 26.01.2005 15:55 \r\nLast modified: 27.01.2006 19:23\r\nStarted: 27.01.2006 " +
                     "08:32\r\nState last changed: 27.01.2006 08:32", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
@@ -100,7 +102,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Tooltip2()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tooltip 2", ((string[])(null)));
-#line 24
+#line 25
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -121,10 +123,10 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "ModifiedDate",
                         "27.01.2006 19:23"});
-#line 25
+#line 26
  testRunner.Given("a task with the following attributes:", ((string)(null)), table2);
 #line hidden
-#line 32
+#line 33
     testRunner.Then("the tooltip should show", "Created: 26.01.2005 15:55 \r\nLast modified: 27.01.2006 19:23\r\nStarted: 27.01.2006 " +
                     "08:32\r\nCompleted: 27.02.2006 08:32\r\nState last changed: 27.02.2006 08:32", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
@@ -136,7 +138,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Tooltip3()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tooltip 3", ((string[])(null)));
-#line 41
+#line 42
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -157,10 +159,10 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "ModifiedDate",
                         "27.01.2006 19:23"});
-#line 42
+#line 43
  testRunner.Given("a task with the following attributes:", ((string)(null)), table3);
 #line hidden
-#line 49
+#line 50
     testRunner.Then("the tooltip should show", "Created: 26.01.2005 15:55 \r\nLast modified: 27.01.2006 19:23\r\nStarted: 27.01.2006 " +
                     "08:32\r\nAbandoned: 27.02.2006 08:32\r\nState last changed: 27.02.2006 08:32", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden

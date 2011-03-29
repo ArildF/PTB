@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Input;
 using Castle.DynamicProxy;
 using FluentNHibernate.Cfg;
@@ -16,7 +17,7 @@ using NHibernate.Linq;
 
 namespace Rogue.Ptb.UI.Tests.Steps
 {
-	public class Context : IDisposable
+	public class Context 
 	{
 		private readonly Container _container;
 		private readonly MockFactory _factory;
@@ -37,7 +38,6 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_container = bootStrapper.Container;
 			_provider = _container.GetInstance<Provider>();
 			_container.Inject<ISessionFactoryProvider>(_provider);
-			_container.Inject<ISession>(_provider.GetSession());
 			_container.Inject<IDialogDisplayer>(_dialogDisplayer.Object);
 
 			var settings = new UI.Properties.Settings {LastRecentlyUsedTaskboards = null};
@@ -73,7 +73,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			return _container.GetInstance<T>();
 		}
 
-		public class Provider : SessionFactoryProvider, ISessionFactoryProvider, IDisposable
+		public class Provider : SessionFactoryProvider
 		{
 			private readonly IContainer _container;
 			private ISessionFactory _sessionFactory;
@@ -83,23 +83,14 @@ namespace Rogue.Ptb.UI.Tests.Steps
 				: base(services, initializers)
 			{
 				_container = container;
+				DatabasePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+				Directory.CreateDirectory(DatabasePath);
+
 				CreatedDatabases = new List<string>();
 				OpenedDatabases = new List<string>();
 			}
 
-			public override ISession GetSession()
-			{
-				if (_session == null)
-				{
-					CreateNewDatabase(String.Empty);
-				}
-				return _session;
-			}
-
-			public override ISessionFactory GetSessionFactory()
-			{
-				return _sessionFactory;
-			}
+			public string DatabasePath { get; set; }
 
 			public IList<string> CreatedDatabases { get; private set; }
 
@@ -107,36 +98,30 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			public override  ISessionFactory CreateSessionFactory(string path = "MyData.sdf", bool createSchema = false)
 			{
+				var filename = Path.GetFileName(path);
+				filename = Path.Combine(DatabasePath, filename);
+
 				var config = Fluently.Configure()
 					.Database(SQLiteConfiguration.Standard
-						.ConnectionString("Data Source=:memory:;Version=3;New=True; Pooling=True; Max Pool Size=1")
-						.Raw("connection.release_mode", "on_close"))
-					.Mappings(mc => mc.FluentMappings.AddFromAssemblyOf<SessionFactoryProvider>())
-					.BuildConfiguration();
+					          	.ConnectionString(String.Format("Data Source={0};Version=3;New=True; Pooling=True; Max Pool Size=1",
+					          	                                filename))
+					          	                  	.Raw("connection.release_mode", "on_close"))
+					          	.Mappings(mc => mc.FluentMappings.AddFromAssemblyOf<SessionFactoryProvider>())
+					          	.BuildConfiguration();
+
 
 				var factory = config.BuildSessionFactory();
 
 				var session = factory.OpenSession();
 
-				var generator = new ProxyGenerator();
-				_session = generator.CreateInterfaceProxyWithTargetInterface(session, new CloseInterceptor());
-
-				new SchemaExport(config).Execute(false, true, false, session.Connection, Console.Out);
+				if (createSchema)
+				{
+					new SchemaExport(config).Execute(false, true, false, session.Connection, Console.Out);
+				}
 
 				return _sessionFactory = factory;
 			}
 
-			private class CloseInterceptor : IInterceptor
-			{
-				public void Intercept(IInvocation invocation)
-				{
-					if (FluentNHibernate.Utils.Extensions.In(invocation.Method.Name, "Close", "Dispose"))
-					{
-						return;
-					}
-					invocation.Proceed();
-				}
-			}
 
 			public override void CreateNewDatabase(string path)
 			{
@@ -145,33 +130,14 @@ namespace Rogue.Ptb.UI.Tests.Steps
 				_sessionFactory = null;
 
 				base.CreateNewDatabase(path);
-
-				_container.Inject(_session);
 			}
 
 			public override void OpenDatabase(string file)
 			{
 				OpenedDatabases.Add(file);
-				if (_sessionFactory == null)
-				{
 					base.OpenDatabase(file);
-				}
 			}
 
-			public void Dispose()
-			{
-				_sessionFactory.Close();
-			}
-
-			public void ClearDatabase()
-			{
-				var session = GetSession();
-
-				foreach (var task in session.Query<Task>())
-				{
-					session.Delete(task);
-				}
-			}
 		}
 
 		public void Publish<T>(T message)
@@ -179,10 +145,6 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			Get<IEventAggregator>().Publish(message);
 		}
 
-		public void Dispose()
-		{
-			_provider.Dispose();
-		}
 
 		public void SetUpDialogResult<T>(T result) where T : DialogReturnValueBase
 		{
@@ -200,9 +162,5 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			Get<IEventAggregator>().Listen<T>().Subscribe(handler);
 		}
 
-		public void ClearDatabase()
-		{
-			_provider.ClearDatabase();
-		}
 	}
 }
