@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NHibernate;
 using NHibernate.Linq;
@@ -32,6 +33,15 @@ namespace Rogue.Ptb.Core.Repositories
 		public void Save(T item)
 		{
 			SaveAll(new []{item});
+		}
+
+		public void InsertNew(T item)
+		{
+			using (var tx = _session.BeginTransaction())
+			{
+				_session.Save(item);
+				tx.Commit();
+			}
 		}
 
 		public void MergeAll(IEnumerable<T> items)

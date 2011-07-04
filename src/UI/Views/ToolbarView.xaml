@@ -58,6 +58,17 @@
 
         <ribbon:RibbonTab Header="File"/>
         <ribbon:RibbonTab Header="Filters"/>
+		<ribbon:RibbonTab Header="Debug">
+			<ribbon:RibbonGroup>
+				<ribbon:RibbonButton Label="Show importance"
+									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+									 Command="{me:ResolveCommand {x:Static Commands:GlobalCommandNames.DebugDumpImportantLinks}}"/>
+				<ribbon:RibbonButton Label="Resort"
+									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+									  Command="{me:ResolveCommand ReSort}"/>
+									  
+			</ribbon:RibbonGroup>
+		</ribbon:RibbonTab>
 
     </ribbon:Ribbon>
 </UserControl>

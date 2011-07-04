@@ -32,29 +32,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Antlr3.Runtime">
-      <HintPath>..\packages\Antlr.3.1.3.42154\lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
     <Reference Include="Castle.Core">
-      <HintPath>..\packages\Castle.Core.2.5.1\lib\NET35\Castle.Core.dll</HintPath>
+      <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.1.3.0.1\Lib\.NetFramework 4.0\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="FluentNHibernate">
-      <HintPath>..\packages\FluentNHibernate.1.1.1.694\lib\FluentNHibernate.dll</HintPath>
+      <HintPath>..\packages\FluentNHibernate.1.2.0.712\lib\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="HibernatingRhinos.Profiler.Appender.v4.0">
+      <HintPath>..\..\..\..\..\bin\NHProf\HibernatingRhinos.Profiler.Appender.v4.0.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections">
-      <HintPath>..\packages\Iesi.Collections.1.0.1\lib\Iesi.Collections.dll</HintPath>
+      <HintPath>..\packages\Iesi.Collections.3.1.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.3.1.416.3\lib\Moq.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate">
-      <HintPath>..\packages\NHibernate.3.0.0.2001\lib\NHibernate.dll</HintPath>
+      <HintPath>..\packages\NHibernate.3.1.0.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate.ByteCode.Castle">
-      <HintPath>..\packages\NHibernate.3.0.0.2001\lib\NHibernate.ByteCode.Castle.dll</HintPath>
+      <HintPath>..\packages\NHibernate.Castle.3.1.0.4000\lib\Net35\NHibernate.ByteCode.Castle.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -78,9 +78,6 @@
     <Reference Include="ReactiveUI.Xaml">
       <HintPath>..\packages\reactiveui-xaml.2.0.0.2\lib\Net4\ReactiveUI.Xaml.dll</HintPath>
     </Reference>
-    <Reference Include="Remotion.Data.Linq">
-      <HintPath>..\packages\NHibernate.3.0.0.2001\lib\Remotion.Data.Linq.dll</HintPath>
-    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.2.6.1.0\lib\StructureMap.dll</HintPath>
     </Reference>
@@ -93,6 +90,9 @@
     </Reference>
     <Reference Include="System.Data.SQLite">
       <HintPath>..\..\lib\System.Data.SQLite.DLL</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Interactive, Version=1.0.2838.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -134,8 +134,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ImportExport.feature</DependentUpon>
     </Compile>
+    <Compile Include="Links.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Links.feature</DependentUpon>
+    </Compile>
     <Compile Include="Steps\ContainerSteps.cs" />
     <Compile Include="Steps\GeneralSteps.cs" />
+    <Compile Include="Steps\LinksSteps.cs" />
     <Compile Include="Steps\VersionSteps.cs" />
     <Compile Include="TaskBoardManagement.feature.cs">
       <AutoGen>True</AutoGen>
@@ -175,6 +181,10 @@
     <None Include="ImportExport.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ImportExport.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Links.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Links.feature.cs</LastGenOutput>
     </None>
     <None Include="TaskBoardManagement.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

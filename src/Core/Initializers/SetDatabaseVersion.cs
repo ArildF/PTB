@@ -4,7 +4,7 @@ namespace Rogue.Ptb.Core.Initializers
 {
 	public class SetDatabaseVersion : IDatabaseInitializer
 	{
-		public const int CurrentVersion = 4;
+		public const int CurrentVersion = 5;
 
 		public void Run(ISession session)
 		{

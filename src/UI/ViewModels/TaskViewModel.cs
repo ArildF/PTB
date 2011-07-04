@@ -1,10 +1,12 @@
-﻿using ReactiveUI;
+﻿using System.Diagnostics;
+using ReactiveUI;
 using Rogue.Ptb.Core;
 using System.Linq;
 using System;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
+	[DebuggerDisplay("Task: '{Title}'")]
 	public class TaskViewModel : ViewModelBase
 	{
 		private readonly Task _task;
@@ -114,6 +116,15 @@ namespace Rogue.Ptb.UI.ViewModels
 		public void EndEdit()
 		{
 			IsEditing = false;
+		}
+
+		public void IsMoreImportantThan(TaskViewModel leastImportant)
+		{
+			raisePropertyChanging(null);
+
+			_task.IsMoreImportantThan(leastImportant.Task);
+
+			raisePropertyChanged(null);
 		}
 	}
 }

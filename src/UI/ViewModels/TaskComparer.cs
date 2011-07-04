@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Rogue.Ptb.Core;
+using System.Linq;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
@@ -22,6 +23,16 @@ namespace Rogue.Ptb.UI.ViewModels
 			if (task1.State != task2.State)
 			{
 				return _sortKeys[task2.State] - _sortKeys[task1.State];
+			}
+
+			if (task1.LessImportantTasks.Contains(task2)) 
+			{
+				return -1;
+			}
+
+			if (task2.LessImportantTasks.Contains(task1))
+			{
+				return 1;
 			}
 
 			// same state, sort by relevant date

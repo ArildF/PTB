@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Input;
 using Castle.DynamicProxy;
 using FluentNHibernate.Cfg;
@@ -77,7 +78,6 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		{
 			private readonly IContainer _container;
 			private ISessionFactory _sessionFactory;
-			private ISession _session;
 
 			public Provider(IDatabaseServices services, IEnumerable<IDatabaseInitializer> initializers, IContainer container) 
 				: base(services, initializers)
@@ -101,21 +101,30 @@ namespace Rogue.Ptb.UI.Tests.Steps
 				var filename = Path.GetFileName(path);
 				filename = Path.Combine(DatabasePath, filename);
 
+				string connString = String.Format("Data Source={0};Persist Security Info=False;",
+				                                                  filename);
+
+				if (createSchema)
+				{
+					var services = _container.GetInstance<IDatabaseServices>();
+					services.CreateDatabaseFile(connString);
+				}
+				
 				var config = Fluently.Configure()
-					.Database(SQLiteConfiguration.Standard
-					          	.ConnectionString(String.Format("Data Source={0};Version=3;New=True; Pooling=True; Max Pool Size=1",
-					          	                                filename))
-					          	                  	.Raw("connection.release_mode", "on_close"))
+					.Database(MsSqlCeConfiguration.Standard
+					          	.ConnectionString(connString))
 					          	.Mappings(mc => mc.FluentMappings.AddFromAssemblyOf<SessionFactoryProvider>())
 					          	.BuildConfiguration();
 
 
 				var factory = config.BuildSessionFactory();
 
+
 				var session = factory.OpenSession();
 
 				if (createSchema)
 				{
+					
 					new SchemaExport(config).Execute(false, true, false, session.Connection, Console.Out);
 				}
 
@@ -162,5 +171,9 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			Get<IEventAggregator>().Listen<T>().Subscribe(handler);
 		}
 
+		public TaskViewModel FindTaskVM(string taskName)
+		{
+			return TaskBoardViewModel.Tasks.First(t => t.Title == taskName);
+		}
 	}
 }

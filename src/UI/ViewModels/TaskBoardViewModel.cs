@@ -8,6 +8,7 @@ using NHibernate.Linq;
 using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Behaviors;
 using Rogue.Ptb.UI.Commands;
+using Rogue.Ptb.UI.Infrastructure;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
@@ -24,13 +25,14 @@ namespace Rogue.Ptb.UI.ViewModels
 			_bus = bus;
 			_commandResolver = commandResolver;
 
-			Tasks = new ReactiveCollection<TaskViewModel>();
+			Tasks = new SortableReactiveCollection<TaskViewModel>();
 
 			Tasks.ItemChanged
 				.Throttle(TimeSpan.FromSeconds(5))
 				.Select(c => c.Sender)
 				.Where(c =>  _repository != null)
 				.Where(task => !task.IsEditing)
+				.SubscribeOn(RxApp.DeferredScheduler)
 				.Subscribe(_ => OnSaveAllTasks(null));
 
 			Tasks.ChangeTrackingEnabled = true;
@@ -39,6 +41,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			_bus.ListenOnScheduler<CreateNewTask>(OnCreateNewTask);
 			_bus.ListenOnScheduler<SaveAllTasks>(OnSaveAllTasks);
 			_bus.ListenOnScheduler<ReloadAllTasks>(evt => Reload());
+			_bus.ListenOnScheduler<ReSort>(evt => Sort());
 
 			DragCommand = new ReactiveCommand();
 
@@ -60,30 +63,29 @@ namespace Rogue.Ptb.UI.ViewModels
 				return;
 			}
 
-			Tasks.Remove(dragged);
+			var mostImportant = indexTarget < indexDragged ? dragged : target;
+			var leastImportant = mostImportant == target ? dragged : target;
 
-			//if (indexDragged > indexTarget)
-			{
-				Tasks.Insert(indexTarget, dragged);
-			}
-			//else
-			//{
-			//    Tasks.Insert(indexTarget, dragged);
-			//}
+			mostImportant.IsMoreImportantThan(leastImportant);
+
+			Sort();
+		}
+
+		private void Sort()
+		{
+			Tasks.Sort(new TaskComparer());
 
 		}
 
 		public ReactiveCommand DragCommand { get; private set; }
 
-		public ReactiveCollection<TaskViewModel> Tasks { get; private set; }
+		public SortableReactiveCollection<TaskViewModel> Tasks { get; private set; }
 
 		private void OnSaveAllTasks(SaveAllTasks ignored)
 		{
 			var tasks = Tasks.Select(t => t.Task);
 			_repository.SaveAll(tasks);
 		}
-
-		
 
 		private void OnDatabaseChanged(DatabaseChanged databaseChanged)
 		{
@@ -98,13 +100,17 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			var tasks = _repository.FindAll();
 
-			tasks.Select(t => new TaskViewModel(t)).ToList()
-				.OrderBy(t => t, new TaskComparer()).ForEach(Tasks.Add);
+			tasks.Select(t => new TaskViewModel(t)).ForEach(Tasks.Add);
+			Sort();
+			Sort();
 		}
 
 		private void OnCreateNewTask(CreateNewTask ignored)
 		{
 			var task = new Task();
+
+			_repository.InsertNew(task);
+
 			var taskViewModel = new TaskViewModel(task);
 			Tasks.Insert(0, taskViewModel);
 

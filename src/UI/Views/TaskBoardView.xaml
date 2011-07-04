@@ -57,7 +57,8 @@
 									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="50"/>
 								</DoubleAnimationUsingKeyFrames>
 								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="dragAnimationGrid">
-									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="10"/>
+									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="00"/>
+
 								</DoubleAnimationUsingKeyFrames>
 							</Storyboard>
 							<Storyboard x:Key="DragOverDownwards">
@@ -65,7 +66,7 @@
 									<EasingDoubleKeyFrame KeyTime="0:0:0.037" Value="-50"/>
 								</DoubleAnimationUsingKeyFrames>
 								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="dragAnimationGrid">
-									<EasingDoubleKeyFrame KeyTime="0:0:0.037" Value="10"/>
+									<EasingDoubleKeyFrame KeyTime="0:0:0.037" Value="0"/>
 								</DoubleAnimationUsingKeyFrames>
 							</Storyboard>
 							<Storyboard x:Key="DragOverUpwards_Exit">
@@ -111,7 +112,9 @@
 							<Border Grid.Column="0" Grid.ColumnSpan="8" x:Name="overlay"></Border>
 
 							<Grid x:Name="dragAnimationGrid"
-									Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.5,0.5">
+									Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.5,0.5"
+								  Behaviors:DragListItemElementBehavior.Draggable="True"
+								  Tag="{Binding Title}">
 								<Grid.RenderTransform>
 									<TransformGroup>
 										<ScaleTransform/>
@@ -120,8 +123,7 @@
 										<TranslateTransform/>
 									</TransformGroup>
 								</Grid.RenderTransform>
-								<Views:TaskControl x:Name="taskControl" 
-  									Behaviors:DragListItemElementBehavior.Draggable="True">
+								<Views:TaskControl x:Name="taskControl">
 								</Views:TaskControl>
 							</Grid>
 							

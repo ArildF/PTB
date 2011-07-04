@@ -68,4 +68,10 @@ namespace Rogue.Ptb.UI
 	{
 		void Start();
 	}
+
+	public interface IDebugService
+	{
+		void Dump(string str);
+
+	}
 }

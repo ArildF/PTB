@@ -97,7 +97,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			var tasks = table.Rows.Select(r => new Task {Title = r["Title"]});
 			var repos = _context.Get<IRepository<Task>>();
-			tasks.ForEach(repos.Save);
+			tasks.ForEach(repos.InsertNew);
 
 			var exporter = _context.Get<ITasksExporter>();
 			exporter.ExportAll(path);
@@ -109,6 +109,15 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			var filename = Guid.NewGuid().ToString();
 
 			_context.Get<ISessionFactoryProvider>().CreateNewDatabase(filename);
+		}
+
+
+		[Given(@"an open taskboard")]
+		public void GivenAnOpenTaskboard()
+		{
+			Given("that I have created a new database");
+
+			_context.Publish(new DatabaseChanged("whatever"));
 		}
 
 		[Given(@"that I enter ""(.*)"" in the open taskboard dialog")]
@@ -194,6 +203,14 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.GetCommand<ExportTaskBoard>().Execute(null);
 		}
 
+		[When(@"I reload the taskboard")]
+		public void WhenIReloadTheTaskboard()
+		{
+			_context.Publish(new SaveAllTasks());
+			_context.Publish(new ReloadAllTasks());
+		}
+
+
 
 		[Then(@"a new taskboard database should be created in ""(.*)""")]
 		public void ThenANewTaskboardDatabaseShouldBeCreatedInCFooBar_Taskboard(string path)
@@ -245,6 +262,22 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_exportedDtos.Length.Should().Be(num);
 		}
 
+		[Then(@"the tasks should be in this order:")]
+		public void ThenTheTasksShouldBeInThisOrder(Table table)
+		{
+			_context.TaskBoardViewModel.Tasks.Count.Should().Be(table.RowCount);
+
+			var tasks = _context.TaskBoardViewModel.Tasks.Select(t => t.Title).Zip(
+				table.Rows.Select(r => r[0]), Tuple.Create);
+
+			foreach (var tuple in tasks)
+			{
+				tuple.Item1.Should().Be(tuple.Item2);
+			}
+
+		}
+
+
 		
 
 
@@ -286,11 +319,17 @@ namespace Rogue.Ptb.UI.Tests.Steps
 						t => t.StateChangedDate
 					};
 
+				var links = new Expression<Func<Task, object>>[]
+					{
+						t => t.LessImportantTasks,
+						t => t.MoreImportantTasks
+					};
+
 				CheckDates(oldTask, newTask, dateFuncs);
 
 				newTask.ShouldHave().AllProperties().But(
 					t => t.CreatedDate,
-					dateFuncs.Skip(1).ToArray()
+					dateFuncs.Skip(1).Concat(links).ToArray()
 					).EqualTo(oldTask);
 
 				

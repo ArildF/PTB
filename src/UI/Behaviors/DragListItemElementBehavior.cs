@@ -313,7 +313,7 @@ namespace Rogue.Ptb.UI.Behaviors
 
 			_movedObject.RenderTransform = _originalTransform;
 
-			_currentObjectBeingDraggedOver = null;
+			_currentObjectBeingDraggedOver = _originalObjectBeingDraggedOver = null;
 
 			_movedSource = null;
 

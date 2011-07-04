@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Rogue.Ptb.Core;
+using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.ViewModels;
 using TechTalk.SpecFlow;
 using FluentAssertions;
@@ -32,7 +33,8 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			{
 				foreach (var tableRow in table.Rows)
 				{
-					repos.Save(new Task {Title = tableRow["Title"]});
+					DateTimeHelper.MoveAheadBy(TimeSpan.FromSeconds(-5));
+					repos.InsertNew(new Task {Title = tableRow["Title"]});
 				}
 			}
 			_context.Publish(new DatabaseChanged(@"C:\foo\bar.taskboard"));

@@ -8,4 +8,6 @@
 	public class SaveAllTasks : ICommandEvent{}
 
 	public class ReloadAllTasks : ICommandEvent{}
+
+	public class ReSort : ICommandEvent {}
 }

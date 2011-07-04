@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Iesi.Collections.Generic;
 using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.Core
@@ -12,6 +15,7 @@ namespace Rogue.Ptb.Core
 			CreatedDate = ModifiedDate = DateTimeHelper.Now;
 			Id = Guid.NewGuid();
 			_title = "";
+			Links = new HashedSet<Link>();
 		}
 
 		public virtual Guid Id { get; private set; }
@@ -52,9 +56,32 @@ namespace Rogue.Ptb.Core
 			get; private set;
 		}
 
+		protected internal virtual Iesi.Collections.Generic.ISet<Link> Links
+		{
+			get; private set;
+		}
+
 		public virtual DateTime? AbandonedDate { get; private set; }
 
 		public virtual DateTime? StateChangedDate { get; private set; }
+
+		public virtual IEnumerable<Task> LessImportantTasks
+		{
+			get
+			{
+				return Links.Where(link => link.Type == LinkType.MoreImportantThan)
+					.Select(link => link.LinkTo);
+			}
+		}
+
+		public virtual IEnumerable<Task> MoreImportantTasks
+		{
+			get
+			{
+				return Links.Where(link => link.Type == LinkType.LessImportantThan)
+					.Select(link => link.LinkTo);
+			}
+		}
 
 		public virtual void Start()
 		{
@@ -104,6 +131,34 @@ namespace Rogue.Ptb.Core
 		private void Modified()
 		{
 			ModifiedDate = DateTimeHelper.Now;
+		}
+
+		public virtual void IsMoreImportantThan(Task otherTask)
+		{
+			AddLink(otherTask, LinkType.MoreImportantThan);
+			otherTask.AddLink(this, LinkType.LessImportantThan);
+		}
+
+		private void AddLink(Task otherTask, LinkType type)
+		{
+			var existingLink = Links.FirstOrDefault(link => link.LinkTo == otherTask);
+
+			if (existingLink != null)
+			{
+				if (existingLink.Type == type)
+				{
+					return;
+				}
+				Links.Remove(existingLink);
+			}
+
+			Links.Add(new Link(otherTask, type));
+		}
+
+		public virtual void IsLessImportantThan(Task otherTask)
+		{
+			AddLink(otherTask, LinkType.LessImportantThan);
+			otherTask.AddLink(this, LinkType.MoreImportantThan);
 		}
 	}
 }
