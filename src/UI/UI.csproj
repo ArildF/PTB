@@ -161,7 +161,6 @@
     <Compile Include="ValueConverters\TaskStateToColumnConverter.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TaskBoardViewModel.cs" />
-    <Compile Include="ViewModels\TaskComparer.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="ViewModels\ToolbarViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

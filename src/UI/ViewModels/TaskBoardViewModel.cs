@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using ReactiveUI;
@@ -15,9 +16,10 @@ namespace Rogue.Ptb.UI.ViewModels
 	public class TaskBoardViewModel : ViewModelBase, ITaskBoardViewModel, ICommandResolver
 	{
 		private readonly IRepositoryProvider _repositoryProvider;
-		private Core.IRepository<Task> _repository;
+		private IRepository<Task> _repository;
 		private readonly IEventAggregator _bus;
 		private readonly ICommandResolver _commandResolver;
+		private List<Task> _tasks;
 
 		public TaskBoardViewModel(IRepositoryProvider repositoryProvider, IEventAggregator bus, ICommandResolver commandResolver)
 		{
@@ -41,7 +43,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			_bus.ListenOnScheduler<CreateNewTask>(OnCreateNewTask);
 			_bus.ListenOnScheduler<SaveAllTasks>(OnSaveAllTasks);
 			_bus.ListenOnScheduler<ReloadAllTasks>(evt => Reload());
-			_bus.ListenOnScheduler<ReSort>(evt => Sort());
+			_bus.ListenOnScheduler<ReSort>(evt => Reorder());
 
 			DragCommand = new ReactiveCommand();
 
@@ -68,14 +70,10 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			mostImportant.IsMoreImportantThan(leastImportant);
 
-			Sort();
+			Reorder();
 		}
 
-		private void Sort()
-		{
-			Tasks.Sort(new TaskComparer());
-
-		}
+		
 
 		public ReactiveCommand DragCommand { get; private set; }
 
@@ -96,13 +94,18 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		private void Reload()
 		{
+			_tasks = _repository.FindAll().ToList();
+			Reorder();
+		}
+
+		private void Reorder()
+		{
 			Tasks.Clear();
 
-			var tasks = _repository.FindAll();
 
-			tasks.Select(t => new TaskViewModel(t)).ForEach(Tasks.Add);
-			Sort();
-			Sort();
+			_tasks.InPlaceSort();
+
+			_tasks.Select(t => new TaskViewModel(t)).ForEach(Tasks.Add);
 		}
 
 		private void OnCreateNewTask(CreateNewTask ignored)

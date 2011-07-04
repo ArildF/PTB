@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Iesi.Collections.Generic;
 using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.Core
 {
+	[DebuggerDisplay("{Title}")]
 	public class Task
 	{
 		private string _title;
