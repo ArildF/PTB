@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
-using JetBrains.Profiler.Core.Api;
 using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.Behaviors
@@ -124,14 +123,7 @@ namespace Rogue.Ptb.UI.Behaviors
 			{
 				return;
 			}
-
-			if (PerformanceProfiler.IsActive)
-			{
-				PerformanceProfiler.Begin();
-				PerformanceProfiler.Start();
-			}
-
-			
+		
 
 			_movedSource = GetDragCommandAndTarget(gridRelativeStartPoint, true).Item2;
 
@@ -318,12 +310,6 @@ namespace Rogue.Ptb.UI.Behaviors
 			_movedSource = null;
 
 			BringMovedObjectToOriginalZOrder();
-
-			if (PerformanceProfiler.IsActive)
-			{
-				PerformanceProfiler.Stop();
-				PerformanceProfiler.EndSave();
-			}
 		}
 
 		private void BringMovedObjectToOriginalZOrder()
