@@ -70,6 +70,25 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             testRunner.CollectScenarioErrors();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Pass in taskboard on command line")]
+        public virtual void PassInTaskboardOnCommandLine()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pass in taskboard on command line", ((string[])(null)));
+#line 11
+this.ScenarioSetup(scenarioInfo);
+#line 12
+ testRunner.Given("that the database \"C:\\foo\\bar.taskboard\" already exists");
+#line 13
+ testRunner.And("that I pass in \"C:\\foo\\bar.taskboard\" on the command line");
+#line 14
+ testRunner.When("I start the application");
+#line 15
+ testRunner.Then("a taskboard should be loaded from \"C:\\foo\\bar.taskboard\"");
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
     }
 }
 #endregion

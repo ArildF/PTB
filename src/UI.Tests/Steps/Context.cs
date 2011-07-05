@@ -25,8 +25,9 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 		public Context()
 		{
+			Options = new Options();
 			var bootStrapper = new Bootstrapper();
-			bootStrapper.Bootstrap();
+			bootStrapper.Bootstrap(new string[]{});
 
 			_factory = new MockFactory(MockBehavior.Loose);
 
@@ -38,6 +39,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_provider = _container.GetInstance<Provider>();
 			_container.Inject<ISessionFactoryProvider>(_provider);
 			_container.Inject<IDialogDisplayer>(_dialogDisplayer.Object);
+			_container.Inject(Options);
 
 			var settings = new UI.Properties.Settings {LastRecentlyUsedTaskboards = null};
 			settings.Providers.Clear();
@@ -69,6 +71,8 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		{
 			get; private set;
 		}
+
+		public Options Options { get; private set; }
 
 		public T Get<T>()
 		{

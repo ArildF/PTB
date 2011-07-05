@@ -10,7 +10,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public void ThenIWantToKnowWhatSInTheContainer()
 		{
 			var bootstrapper = new Bootstrapper();
-			bootstrapper.Bootstrap();
+			bootstrapper.Bootstrap(new string[]{});
 			Console.WriteLine(bootstrapper.Container.WhatDoIHave());
 		}
 

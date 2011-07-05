@@ -10,4 +10,6 @@
 	public class ReloadAllTasks : ICommandEvent{}
 
 	public class ReSort : ICommandEvent {}
+
+	public class ApplicationIdle {}
 }

@@ -22,7 +22,7 @@ namespace Rogue.Ptb.UI
 			DispatcherUnhandledException += OnDispatcherUnhandledException;
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
-			_bootstrapper.Bootstrap();
+			_bootstrapper.Bootstrap(e.Args);
 
 			var shellView = _bootstrapper.CreateShell();
 

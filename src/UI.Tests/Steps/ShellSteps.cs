@@ -26,5 +26,19 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			_context.ShellViewModel.Title.Should().Be(title);
 		}
+
+		[Given(@"that I pass in ""(.*)"" on the command line")]
+		public void GivenThatIPassInCFooBar_TaskboardOnTheCommandLine(string path)
+		{
+			_context.Options.TaskboardPath = path;
+		}
+
+		[When(@"I start the application")]
+		public void WhenIStartTheApplication()
+		{
+			_context.Publish<ApplicationIdle>(null);
+		}
+
+
 	}
 }

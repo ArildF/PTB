@@ -141,6 +141,7 @@
     <Compile Include="DialogDisplayer.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Infrastructure\SortableObservableCollection.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="Registration\CommandEventRegistrationConvention.cs" />
     <Compile Include="Registration\CommandRegistrationConvention.cs" />
     <Compile Include="Commands\CommandBase.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="events.cs" />
     <Compile Include="interfaces.cs" />
     <Compile Include="MarkupExtensions\ResolveCommandExtension.cs" />
+    <Compile Include="Services\CommandLineLoader.cs" />
     <Compile Include="Services\DebugService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UIRegistry.cs" />
