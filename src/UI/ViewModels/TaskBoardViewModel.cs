@@ -116,6 +116,7 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			var taskViewModel = new TaskViewModel(task);
 			Tasks.Insert(0, taskViewModel);
+			_tasks.Add(task);
 
 			taskViewModel.BeginEdit();
 		}
