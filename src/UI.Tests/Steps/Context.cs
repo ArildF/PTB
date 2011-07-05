@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
-using Castle.DynamicProxy;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Moq;
@@ -13,7 +12,6 @@ using Rogue.Ptb.Core;
 using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.ViewModels;
 using StructureMap;
-using IInterceptor = Castle.DynamicProxy.IInterceptor;
 using NHibernate.Linq;
 
 namespace Rogue.Ptb.UI.Tests.Steps
@@ -50,7 +48,10 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			TaskBoardViewModel = Get<TaskBoardViewModel>();
 			ToolbarViewModel = Get<ToolbarViewModel>();
+			ShellViewModel = Get<ShellViewModel>();
 		}
+
+		public ShellViewModel ShellViewModel { get; private set; }
 
 		public TaskBoardViewModel TaskBoardViewModel { get; private set; }
 

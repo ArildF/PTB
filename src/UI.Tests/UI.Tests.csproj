@@ -139,9 +139,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Links.feature</DependentUpon>
     </Compile>
+    <Compile Include="Shell.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Shell.feature</DependentUpon>
+    </Compile>
     <Compile Include="Steps\ContainerSteps.cs" />
     <Compile Include="Steps\GeneralSteps.cs" />
     <Compile Include="Steps\LinksSteps.cs" />
+    <Compile Include="Steps\ShellSteps.cs" />
     <Compile Include="Steps\VersionSteps.cs" />
     <Compile Include="TaskBoardManagement.feature.cs">
       <AutoGen>True</AutoGen>
@@ -185,6 +191,10 @@
     <None Include="Links.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Links.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Shell.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Shell.feature.cs</LastGenOutput>
     </None>
     <None Include="TaskBoardManagement.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

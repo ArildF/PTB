@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.IO;
+using System.Windows.Input;
 using ReactiveUI;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Infrastructure;
@@ -18,14 +19,15 @@ namespace Rogue.Ptb.UI.ViewModels
 			_resolver = resolver;
 			_eventAggregator = eventAggregator;
 
-			_eventAggregator.Listen<DatabaseChanged>().Subscribe(OnDatabaseChanged);
+			_eventAggregator.ListenOnScheduler<DatabaseChanged>(OnDatabaseChanged);
 
 			Title = "Personal Task Board - (no task board loaded)";
 		}
 
 		private void OnDatabaseChanged(DatabaseChanged evt)
 		{
-			Title = String.Format("Personal Task Board - {0}", evt.Path);
+			string name = Path.GetFileNameWithoutExtension(evt.Path);
+			Title = String.Format("{0} - Personal Task Board", name);
 		}
 
 		public string Title
