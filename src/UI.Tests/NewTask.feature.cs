@@ -85,19 +85,40 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Current task should be deselected when adding new task")]
+        public virtual void CurrentTaskShouldBeDeselectedWhenAddingNewTask()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Current task should be deselected when adding new task", ((string[])(null)));
+#line 17
+this.ScenarioSetup(scenarioInfo);
+#line 18
+ testRunner.Given("an open taskboard");
+#line 19
+ testRunner.When("I click new task");
+#line 20
+ testRunner.And("I click new task");
+#line 21
+ testRunner.Then("the new task should be selected");
+#line 22
+ testRunner.And("task #2 should not be selected");
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Created date")]
         public virtual void CreatedDate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Created date", ((string[])(null)));
-#line 18
+#line 24
 this.ScenarioSetup(scenarioInfo);
-#line 19
+#line 25
  testRunner.Given("an open taskboard");
-#line 20
+#line 26
     testRunner.When("I click new task");
-#line 21
+#line 27
     testRunner.Then("the new task should have a created date like now");
-#line 22
+#line 28
     testRunner.And("the new task should have a modified date like now");
 #line hidden
             testRunner.CollectScenarioErrors();
@@ -108,28 +129,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Subtasks()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Subtasks", ((string[])(null)));
-#line 24
+#line 30
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Title"});
             table2.AddRow(new string[] {
                         "Yo"});
-#line 25
- testRunner.Given("that the following tasks already exist and are loaded:", ((string)(null)), table2);
-#line 28
- testRunner.When("I select task \'Yo\'");
-#line 29
- testRunner.And("click new subtask");
-#line 30
- testRunner.Then("a new task should be created");
 #line 31
- testRunner.And("the new task should be in edit mode");
-#line 32
- testRunner.And("the new task should be in position #2");
-#line 33
- testRunner.And("the new task should be indented 1 place");
+ testRunner.Given("that the following tasks already exist and are loaded:", ((string)(null)), table2);
 #line 34
+ testRunner.When("I select task \'Yo\'");
+#line 35
+ testRunner.And("click new subtask");
+#line 36
+ testRunner.Then("a new task should be created");
+#line 37
+ testRunner.And("the new task should be in edit mode");
+#line 38
+ testRunner.And("the new task should be in position #2");
+#line 39
+ testRunner.And("the new task should be indented 1 place");
+#line 40
  testRunner.And("the new task should be selected");
 #line hidden
             testRunner.CollectScenarioErrors();

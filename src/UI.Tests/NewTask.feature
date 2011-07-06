@@ -14,6 +14,12 @@ Scenario: Add new tasks
 	And the new task should be selected
     And the task should not be started
 
+Scenario: Current task should be deselected when adding new task
+	Given an open taskboard
+	When I click new task
+	And I click new task
+	Then the new task should be selected
+	And task #2 should not be selected
 
 Scenario: Created date
 	Given an open taskboard

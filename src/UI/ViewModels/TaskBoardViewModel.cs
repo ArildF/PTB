@@ -162,6 +162,11 @@ namespace Rogue.Ptb.UI.ViewModels
 			Tasks.Insert(0, taskViewModel);
 			_tasks.Add(task);
 
+			if (SelectedTask != null)
+			{
+				SelectedTask.Deselect();
+			}
+
 			SelectedTask = taskViewModel;
 			taskViewModel.BeginEdit();
 		}
