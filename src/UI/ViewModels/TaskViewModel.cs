@@ -165,5 +165,10 @@ namespace Rogue.Ptb.UI.ViewModels
 		{
 			IsSelected = false;
 		}
+
+		public void NotifyStateChanged()
+		{
+			this.RaisePropertyChanged(t => t.State);
+		}
 	}
 }

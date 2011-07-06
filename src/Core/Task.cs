@@ -109,6 +109,11 @@ namespace Rogue.Ptb.Core
 			AbandonedDate = null;
 
 			StateChanged();
+
+			if (Parent != null)
+			{
+				Parent.Start();
+			}
 		}
 
 		public virtual void Complete()

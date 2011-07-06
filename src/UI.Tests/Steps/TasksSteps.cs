@@ -40,6 +40,14 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.Publish(new DatabaseChanged(@"C:\foo\bar.taskboard"));
 		}
 
+		[Given(@"that task \#(\d+) has a subtask ""(.*)""")]
+		public void GivenThatTask1HasASubtaskSubA(int num, string title)
+		{
+			_context.TaskBoardViewModel.SelectedTask = _context.TaskByOrdinal(num);
+			_context.Publish<CreateNewSubTask>(null);
+			_context.TaskBoardViewModel.SelectedTask.Title = title;
+		}
+
 		[Given(@"a task with the following attributes:")]
 		public void GivenATaskWithTheFollowingAttributes(Table table)
 		{

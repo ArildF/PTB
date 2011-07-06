@@ -25,3 +25,8 @@ Scenario: Drag back to not started
     When I drag task #1 to the "In Progress" column
     And I drag task #1 to the "Not Started" column
     Then task #1 should be "Not Started"
+
+Scenario: Starting a subtask should start the parent
+	Given that task #1 has a subtask "Sub a"
+	When I drag task #2 to the "In Progress" column
+	Then task #1 should be "In Progress"

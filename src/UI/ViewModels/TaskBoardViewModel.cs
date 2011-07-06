@@ -41,8 +41,14 @@ namespace Rogue.Ptb.UI.ViewModels
 			Tasks.ItemChanged
 				.Where(c => c.PropertyName == "IsSelected")
 				.SubscribeOn(RxApp.DeferredScheduler)
-				.Select(c => (TaskViewModel)c.Sender)
+				.Select(c => c.Sender)
 				.Subscribe(IsSelectedChanged);
+
+			Tasks.ItemChanged
+				.Where(c => c.PropertyName == "State")
+				.SubscribeOn(RxApp.DeferredScheduler)
+				.Select(c => c.Sender)
+				.Subscribe(StateChanged);
 
 
 			Tasks.ChangeTrackingEnabled = true;
@@ -61,6 +67,14 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		}
 
+
+		private void StateChanged(TaskViewModel model)
+		{
+			if (model.Task.Parent != null)
+			{
+				Tasks.Where(t => t.Task == model.Task.Parent).ForEach(vm => vm.NotifyStateChanged());
+			}
+		}
 
 		private void IsSelectedChanged(TaskViewModel viewModel)
 		{

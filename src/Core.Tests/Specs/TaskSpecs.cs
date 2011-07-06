@@ -42,6 +42,21 @@ namespace Rogue.Ptb.Core.Tests.Specs
 		It should_not_be_allowed = () => result.ShouldBeFalse();
 
 		private static bool result;
+	}
 
+	public class When_starting_a_subtask_of_another_task
+	{
+		Establish context = () =>
+			{
+				parent = new Task();
+				subTask = parent.CreateSubTask();
+			};
+
+		Because of = () => subTask.Start();
+
+		It should_then_start_the_parent_task = () => parent.State.ShouldEqual(TaskState.InProgress);
+
+		private static Task parent;
+		private static Task subTask;
 	}
 }
