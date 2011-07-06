@@ -27,4 +27,21 @@ namespace Rogue.Ptb.Core.Tests.Specs
 		private static Task task;
 		private static Task subTask;
 	}
+
+	public class When_setting_a_task_more_important_than_a_task_that_is_transitively_more_important_than_itself : SortingContext
+	{
+		Establish context = () =>
+			{
+				tasks = CreateTasksStaggered("Task3", "Task2", "Task1");
+				tasks[2].IsMoreImportantThan(tasks[1]);
+				tasks[1].IsMoreImportantThan(tasks[0]);
+			};
+
+		Because of = () => result = tasks[0].CanBeMoreImportantThan(tasks[2]);
+
+		It should_not_be_allowed = () => result.ShouldBeFalse();
+
+		private static bool result;
+
+	}
 }

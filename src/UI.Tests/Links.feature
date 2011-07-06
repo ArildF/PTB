@@ -82,4 +82,18 @@ Scenario: Should not be able to set a subtask more important than its parent
 	| Two   |
 	| Three |
 
+Scenario: Should not be able to set a subtask more important than a task that is transitively more important
+	Given that the following tasks already exist and are loaded:
+	| Title |
+	| One   |
+	| Two   |
+	| Three |
+	When I set task "Three" to be more important than task "Two"
+	And I set task "Two" to be more important than task "One"
+	And I set task "One" to be more important than task "Three"
+	Then the tasks should be in this order:
+	| Title   |
+	| Three	  |
+	| Two   |
+	| One |
 

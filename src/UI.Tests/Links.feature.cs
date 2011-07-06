@@ -260,6 +260,47 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             testRunner.CollectScenarioErrors();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should not be able to set a subtask more important than a task that is transitive" +
+            "ly more important")]
+        public virtual void ShouldNotBeAbleToSetASubtaskMoreImportantThanATaskThatIsTransitivelyMoreImportant()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should not be able to set a subtask more important than a task that is transitive" +
+                    "ly more important", ((string[])(null)));
+#line 85
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table11.AddRow(new string[] {
+                        "One"});
+            table11.AddRow(new string[] {
+                        "Two"});
+            table11.AddRow(new string[] {
+                        "Three"});
+#line 86
+ testRunner.Given("that the following tasks already exist and are loaded:", ((string)(null)), table11);
+#line 91
+ testRunner.When("I set task \"Three\" to be more important than task \"Two\"");
+#line 92
+ testRunner.And("I set task \"Two\" to be more important than task \"One\"");
+#line 93
+ testRunner.And("I set task \"One\" to be more important than task \"Three\"");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table12.AddRow(new string[] {
+                        "Three"});
+            table12.AddRow(new string[] {
+                        "Two"});
+            table12.AddRow(new string[] {
+                        "One"});
+#line 94
+ testRunner.Then("the tasks should be in this order:", ((string)(null)), table12);
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
     }
 }
 #endregion

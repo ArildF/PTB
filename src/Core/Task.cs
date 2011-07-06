@@ -203,6 +203,15 @@ namespace Rogue.Ptb.Core
 			{
 				return false;
 			}
+			if (otherTask.LessImportantTasks.Contains(this))
+			{
+				return true;
+			}
+
+			if (otherTask.LessImportantTasksTransitively().FirstOrDefault(t => t == this) != null)
+			{
+				return false;
+			}
 
 			return true;
 		}
