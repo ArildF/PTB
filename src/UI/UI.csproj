@@ -160,6 +160,7 @@
     <Compile Include="Services\DebugService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UIRegistry.cs" />
+    <Compile Include="ValueConverters\IndentToMarginConverter.cs" />
     <Compile Include="ValueConverters\TaskStateToColumnConverter.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TaskBoardViewModel.cs" />

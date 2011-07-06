@@ -11,6 +11,7 @@ namespace Rogue.Ptb.UI.ViewModels
 	{
 		private readonly Task _task;
 		private bool _isEditing;
+		private bool _isSelected;
 
 
 		public TaskViewModel(Task task)
@@ -108,8 +109,26 @@ namespace Rogue.Ptb.UI.ViewModels
 			}
 		}
 
+		public bool IsSelected
+		{
+			get
+			{
+				return _isSelected;
+			}
+			set
+			{
+				this.RaiseAndSetIfChanged(t => t.IsSelected, value);
+			}
+		}
+
+		public int IndentLevel
+		{
+			get { return _task.Parent != null ? 1 : 0; }
+		}
+
 		public void BeginEdit()
 		{
+			Select();
 			IsEditing = true;
 		}
 
@@ -125,6 +144,26 @@ namespace Rogue.Ptb.UI.ViewModels
 			_task.IsMoreImportantThan(leastImportant.Task);
 
 			raisePropertyChanged(null);
+		}
+
+		public TaskViewModel CreateSubTask()
+		{
+			return new TaskViewModel(_task.CreateSubTask());
+		}
+
+		public void Select()
+		{
+			IsSelected = true;
+		}
+
+		public bool CanMakeMoreImportantThan(TaskViewModel leastImportant)
+		{
+			return _task.CanBeMoreImportantThan(leastImportant.Task);
+		}
+
+		public void Deselect()
+		{
+			IsSelected = false;
 		}
 	}
 }

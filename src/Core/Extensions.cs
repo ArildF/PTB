@@ -86,6 +86,21 @@ namespace Rogue.Ptb.Core
 
 			public int Compare(Task x, Task y)
 			{
+				if (x.Parent == y)
+				{
+					return 1;
+				}
+
+				if (y.Parent == x)
+				{
+					return -1;
+				}
+
+				if (x.Parent != y.Parent)
+				{
+					return Compare(x.Parent ?? x, y.Parent ?? y);
+				}
+
 				if (x.State != y.State)
 				{
 					return _sortKeys[y.State] - _sortKeys[x.State];

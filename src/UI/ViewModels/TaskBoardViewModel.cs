@@ -20,6 +20,7 @@ namespace Rogue.Ptb.UI.ViewModels
 		private readonly IEventAggregator _bus;
 		private readonly ICommandResolver _commandResolver;
 		private List<Task> _tasks;
+		private TaskViewModel _selectedTask;
 
 		public TaskBoardViewModel(IRepositoryProvider repositoryProvider, IEventAggregator bus, ICommandResolver commandResolver)
 		{
@@ -37,10 +38,18 @@ namespace Rogue.Ptb.UI.ViewModels
 				.SubscribeOn(RxApp.DeferredScheduler)
 				.Subscribe(_ => OnSaveAllTasks(null));
 
+			Tasks.ItemChanged
+				.Where(c => c.PropertyName == "IsSelected")
+				.SubscribeOn(RxApp.DeferredScheduler)
+				.Select(c => (TaskViewModel)c.Sender)
+				.Subscribe(IsSelectedChanged);
+
+
 			Tasks.ChangeTrackingEnabled = true;
 
 			_bus.ListenOnScheduler<DatabaseChanged>(OnDatabaseChanged);
 			_bus.ListenOnScheduler<CreateNewTask>(OnCreateNewTask);
+			_bus.ListenOnScheduler<CreateNewSubTask>(OnCreateNewSubTask);
 			_bus.ListenOnScheduler<SaveAllTasks>(OnSaveAllTasks);
 			_bus.ListenOnScheduler<ReloadAllTasks>(evt => Reload());
 			_bus.ListenOnScheduler<ReSort>(evt => Reorder());
@@ -50,6 +59,26 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			DragCommand.OfType<DragCommandArgs>().Subscribe(OnNext);
 
+		}
+
+
+		private void IsSelectedChanged(TaskViewModel viewModel)
+		{
+			if (!viewModel.IsSelected)
+			{
+				return;
+			}
+			if (viewModel == _selectedTask)
+			{
+				return;
+			}
+			if (_selectedTask != null)
+			{
+				_selectedTask.IsSelected = false;
+			}
+
+			_selectedTask = viewModel;
+			this.RaisePropertyChanged(vm => vm.SelectedTask);
 		}
 
 		private void OnNext(DragCommandArgs dragCommandArgs)
@@ -68,16 +97,31 @@ namespace Rogue.Ptb.UI.ViewModels
 			var mostImportant = indexTarget < indexDragged ? dragged : target;
 			var leastImportant = mostImportant == target ? dragged : target;
 
-			mostImportant.IsMoreImportantThan(leastImportant);
-
-			Reorder();
+			if (mostImportant.CanMakeMoreImportantThan(leastImportant))
+			{
+				mostImportant.IsMoreImportantThan(leastImportant);
+				Reorder();
+			}
 		}
 
-		
 
 		public ReactiveCommand DragCommand { get; private set; }
 
 		public SortableReactiveCollection<TaskViewModel> Tasks { get; private set; }
+
+		public TaskViewModel SelectedTask
+		{
+			get {
+				return _selectedTask;
+			}
+			set {
+				this.RaiseAndSetIfChanged(vm => vm.SelectedTask, value);
+				if (value != null && !value.IsSelected)
+				{
+					value.IsSelected = true;
+				}
+			}
+		}
 
 		private void OnSaveAllTasks(SaveAllTasks ignored)
 		{
@@ -118,7 +162,25 @@ namespace Rogue.Ptb.UI.ViewModels
 			Tasks.Insert(0, taskViewModel);
 			_tasks.Add(task);
 
+			SelectedTask = taskViewModel;
 			taskViewModel.BeginEdit();
+		}
+
+		private void OnCreateNewSubTask(CreateNewSubTask obj)
+		{
+			if (SelectedTask == null)
+			{
+				return;
+			}
+
+			var newTaskViewModel = SelectedTask.CreateSubTask();
+			var indexToInsert = Tasks.IndexOf(SelectedTask) + 1;
+			Tasks.Insert(indexToInsert, newTaskViewModel);
+			_tasks.Add(newTaskViewModel.Task);
+
+			SelectedTask = newTaskViewModel;
+
+			newTaskViewModel.BeginEdit();
 		}
 
 		private IRepository<Task> NewRepository()
@@ -133,6 +195,15 @@ namespace Rogue.Ptb.UI.ViewModels
 		public ICommand Resolve(CommandName commandName)
 		{
 			return _commandResolver.Resolve(commandName);
+		}
+
+		public void Deselect()
+		{
+			if (Tasks == null)
+			{
+				return;
+			}
+			Tasks.Where(t => t.IsSelected).ForEach(t => t.Deselect());
 		}
 	}
 }

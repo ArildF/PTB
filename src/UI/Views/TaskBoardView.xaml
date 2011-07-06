@@ -10,6 +10,7 @@
     
     <UserControl.Resources>
 		<vc:TaskStateToColumnConverter x:Key="TaskStateToColumnConverter"/>
+		<vc:IndentToMarginConverter x:Key="IndentToMarginConverter"/>
 		<ObjectDataProvider x:Key="DesignDataContext" d:IsDataSource="True" ObjectType="{x:Type design:DummyTaskBoardViewModel}"/>
 		
 		<Style TargetType="GridSplitter">
@@ -22,6 +23,9 @@
 			<BeginStoryboard Storyboard="{StaticResource DraggedOverUpwards}"/>
 		</EventTrigger>
 	</UserControl.Triggers>
+	<i:Interaction.Behaviors>
+		<Behaviors:CommandForEventBehavior Event="PreviewMouseDown" Passthrough="True" Action="Deselect"/>
+	</i:Interaction.Behaviors>
 
 	<ScrollViewer VerticalScrollBarVisibility="Auto">
 		<StackPanel d:DataContext="{StaticResource DesignDataContext}">
@@ -85,6 +89,24 @@
 									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="0"/>
 								</DoubleAnimationUsingKeyFrames>
 							</Storyboard>
+							<Storyboard x:Key="OnSelected">
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="taskControl">
+									<SplineDoubleKeyFrame KeyTime="0:0:0.05" Value="1.12"/>
+								</DoubleAnimationUsingKeyFrames>
+
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="taskControl">
+									<SplineDoubleKeyFrame KeyTime="0:0:0.05" Value="1.12"/>
+								</DoubleAnimationUsingKeyFrames>
+							</Storyboard>
+							<Storyboard x:Key="OnDeselected">
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="taskControl">
+									<SplineDoubleKeyFrame KeyTime="0:0:0.05" Value="1.0"/>
+								</DoubleAnimationUsingKeyFrames>
+
+								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="taskControl">
+									<SplineDoubleKeyFrame KeyTime="0:0:0.05" Value="1.0"/>
+								</DoubleAnimationUsingKeyFrames>
+							</Storyboard>
 						</DataTemplate.Resources>
 						
 
@@ -93,7 +115,8 @@
 							Behaviors:DragListItemElementBehavior.IsDragTargetGrid="True" RenderTransformOrigin="0.5,0.5"
 							Behaviors:DragListItemElementBehavior.CurrentlyDraggedOver="AcceptsDrag"
 							Tag="{Binding Title}"
-							  >
+							>
+							
 							
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="3*" SharedSizeGroup="NotStarted"/>
@@ -123,7 +146,19 @@
 										<TranslateTransform/>
 									</TransformGroup>
 								</Grid.RenderTransform>
-								<Views:TaskControl x:Name="taskControl">
+								<Views:TaskControl x:Name="taskControl" IsSelected="{Binding IsSelected}"
+												   RenderTransformOrigin="0.5,0.5"
+												   Margin="{Binding IndentLevel, 
+													Converter={StaticResource IndentToMarginConverter}, ConverterParameter=10.0}"
+												   >
+									<Views:TaskControl.RenderTransform>
+										<TransformGroup>
+											<ScaleTransform/>
+											<SkewTransform/>
+											<RotateTransform/>
+											<TranslateTransform/>
+										</TransformGroup>
+									</Views:TaskControl.RenderTransform>
 								</Views:TaskControl>
 							</Grid>
 							
@@ -150,7 +185,15 @@
 									<BeginStoryboard Storyboard="{StaticResource DragOverDownwards_Exit}"/>
 								</Trigger.ExitActions>
 							</Trigger>
-									 
+							<Trigger Property="IsSelected" SourceName="taskControl" Value="True">
+								<Trigger.EnterActions>
+									<BeginStoryboard Storyboard="{StaticResource OnSelected}"/>
+								</Trigger.EnterActions>
+								<Trigger.ExitActions>
+									<BeginStoryboard Storyboard="{StaticResource OnDeselected}"/>
+								</Trigger.ExitActions>
+							</Trigger>
+
 						</DataTemplate.Triggers>
 
 					</DataTemplate>

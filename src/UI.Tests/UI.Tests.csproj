@@ -164,6 +164,11 @@
     <Compile Include="Steps\events.cs" />
     <Compile Include="Steps\TaskBoardSteps.cs" />
     <Compile Include="Steps\TasksSteps.cs" />
+    <Compile Include="Tasks.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Tasks.feature</DependentUpon>
+    </Compile>
     <Compile Include="TaskToolTip.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -205,6 +210,10 @@
       <LastGenOutput>NewTask.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="Tasks.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Tasks.feature.cs</LastGenOutput>
+    </None>
     <None Include="TaskToolTip.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>TaskToolTip.feature.cs</LastGenOutput>

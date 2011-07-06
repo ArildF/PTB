@@ -5,6 +5,8 @@
 		
 	}
 
+	public class CreateNewSubTask : ICommandEvent{}
+
 	public class SaveAllTasks : ICommandEvent{}
 
 	public class ReloadAllTasks : ICommandEvent{}

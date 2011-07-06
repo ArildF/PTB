@@ -80,9 +80,24 @@ namespace Rogue.Ptb.Core
 		{
 			get
 			{
-				return Links.Where(link => link.Type == LinkType.LessImportantThan)
-					.Select(link => link.LinkTo);
+				return FindRelatedTasks(LinkType.LessImportantThan);
 			}
+		}
+
+		public virtual IEnumerable<Task> SubTasks
+		{
+			get { return FindRelatedTasks(LinkType.Child); }
+		}
+
+		public virtual Task Parent
+		{
+			get { return FindRelatedTasks(LinkType.Parent).FirstOrDefault(); }
+		}
+
+
+		public override string ToString()
+		{
+			return Title;
 		}
 
 		public virtual void Start()
@@ -130,6 +145,12 @@ namespace Rogue.Ptb.Core
 			Modified();
 		}
 
+		private IEnumerable<Task> FindRelatedTasks(LinkType linkType)
+		{
+			return Links.Where(link => link.Type == linkType)
+				.Select(link => link.LinkTo);
+		}
+
 		private void Modified()
 		{
 			ModifiedDate = DateTimeHelper.Now;
@@ -137,6 +158,10 @@ namespace Rogue.Ptb.Core
 
 		public virtual void IsMoreImportantThan(Task otherTask)
 		{
+			if (!CanBeMoreImportantThan(otherTask))
+			{
+				throw new InvalidOperationException(String.Format("Cannot make {0} more important than {1}", this, otherTask));
+			}
 			AddLink(otherTask, LinkType.MoreImportantThan);
 			otherTask.AddLink(this, LinkType.LessImportantThan);
 		}
@@ -161,6 +186,25 @@ namespace Rogue.Ptb.Core
 		{
 			AddLink(otherTask, LinkType.LessImportantThan);
 			otherTask.AddLink(this, LinkType.MoreImportantThan);
+		}
+
+		public virtual Task CreateSubTask()
+		{
+			var subTask = new Task();
+			AddLink(subTask, LinkType.Child);
+			subTask.AddLink(this, LinkType.Parent);
+
+			return subTask;
+		}
+
+		public virtual bool CanBeMoreImportantThan(Task otherTask)
+		{
+			if (Parent != null && otherTask.Parent == null)
+			{
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

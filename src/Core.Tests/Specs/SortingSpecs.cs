@@ -107,9 +107,9 @@ namespace Rogue.Ptb.Core.Tests.Specs
 	public class When_sorting_tasks_with_the_same_state_and_no_dependencies : SortingContext
 	{
 		Establish context = () =>
-			{
-				tasks = CreateTasksStaggered("Task 3", "Task 1", "Task 2");
-			};
+		{
+			tasks = CreateTasksStaggered("Task 3", "Task 1", "Task 2");
+		};
 
 		Because of = () => tasks.InPlaceSort();
 
@@ -118,5 +118,40 @@ namespace Rogue.Ptb.Core.Tests.Specs
 
 	}
 
+	[Subject("Sorting tasks")]
+	public class When_sorting_tasks_with_subtasks : SortingContext
+	{
+		Establish context = () =>
+		{
+			tasks = CreateTasksStaggered("Task 3", "Task 1", "Task 2");
+			CreateSubTask(tasks[1], "Task 1a");
+
+			CreateSubTask(tasks[0], "Task 3b");
+			CreateSubTask(tasks[0], "Task 3a");
+
+			CreateSubTask(tasks[2], "Task 2c");
+			CreateSubTask(tasks[2], "Task 2b");
+			CreateSubTask(tasks[2], "Task 2a");
+
+		};
+
+		private static void CreateSubTask(Task task, string title)
+		{
+			DateTimeHelper.MoveAheadBy(TimeSpan.FromSeconds(60));
+
+			var subTask = task.CreateSubTask();
+			subTask.Title = title;
+			tasks.Add(subTask);
+		}
+
+		Because of = () => tasks.InPlaceSort();
+
+		private It should_sort_the_subtasks_with_their_parents_but_ordered_by_create_date_descending = 
+			() => TaskOrderShouldBe(
+				"Task 2", "Task 2a", "Task 2b", "Task 2c",
+				"Task 1", "Task 1a", 
+				"Task 3", "Task 3a", "Task 3b", "Task 3c");
+
+	}
 
 }

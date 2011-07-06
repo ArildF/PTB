@@ -47,6 +47,10 @@
 									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
 									/>
+				<ribbon:RibbonButton Label="New subtask" Name="CreateNewSubTask"
+									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+									 Command="{me:ResolveCommand}"
+									/>
 				<ribbon:RibbonButton Label="Save" Name="SaveAllTasks"
 									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"

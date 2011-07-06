@@ -8,12 +8,17 @@
 			 xmlns:vc="clr-namespace:Rogue.Ptb.UI.ValueConverters" 
 			 xmlns:design="clr-namespace:Rogue.Ptb.UI.DesignTime" mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-			 ToolTipService.ToolTip="{Binding ToolTip}">
+			 ToolTipService.ToolTip="{Binding ToolTip}"
+			  >
 	<UserControl.Resources>
 		<ObjectDataProvider x:Key="DesignDataContext" d:IsDataSource="True" ObjectType="{x:Type design:DummyTaskViewModel}"/>
 	</UserControl.Resources>
 	<UserControl.Template>
 		<ControlTemplate>
+			
+			<ControlTemplate.Resources>
+				
+			</ControlTemplate.Resources>
 
 
 			<Border Margin="10" BorderBrush="#FFFDFF00" CornerRadius="5" 
@@ -22,10 +27,18 @@
 									x:Name="_border"
 									MinHeight="80"
 									Style="{StaticResource TaskBoardTaskStyle}"
-									d:DataContext="{StaticResource DesignDataContext}">
+									d:DataContext="{StaticResource DesignDataContext}"
+					TextBlock.Foreground="Black"
+					
+					
+					>
+					<i:Interaction.Behaviors>
+						<Behaviors:CommandForEventBehavior Event="MouseDown" Action="Select" Passthrough="True"/>
+					</i:Interaction.Behaviors>
 					<Border.Effect>
 						<DropShadowEffect BlurRadius="10" ShadowDepth="10"/>
 					</Border.Effect>
+				
 					<Grid Height="Auto" Width="Auto" VerticalAlignment="Stretch" Margin="5">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="*"/>
@@ -76,6 +89,8 @@
 					<Setter TargetName="_textBox" Property="Visibility" Value="Visible"/>
 					<Setter TargetName="_textBox" Property="Behaviors:FocusBehaviors.IsFocused" Value="true"/>
 				</DataTrigger>
+				
+				
 
 			</ControlTemplate.Triggers>
 		</ControlTemplate>

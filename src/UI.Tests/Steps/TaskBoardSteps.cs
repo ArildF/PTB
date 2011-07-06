@@ -322,7 +322,9 @@ namespace Rogue.Ptb.UI.Tests.Steps
 				var links = new Expression<Func<Task, object>>[]
 					{
 						t => t.LessImportantTasks,
-						t => t.MoreImportantTasks
+						t => t.MoreImportantTasks,
+						t => t.Parent,
+						t => t.SubTasks
 					};
 
 				CheckDates(oldTask, newTask, dateFuncs);

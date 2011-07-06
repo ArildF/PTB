@@ -19,6 +19,8 @@ namespace Rogue.Ptb.UI.Behaviors
 			}
 		}
 
+		public bool Passthrough { get; set; }
+
 
 		protected override void ImportantPropertyChanged()
 		{
@@ -54,7 +56,7 @@ namespace Rogue.Ptb.UI.Behaviors
 			if (handled)
 			{
 				var handledProp = e.GetType().GetProperty("Handled");
-				if (handledProp != null && handledProp.CanWrite)
+				if (handledProp != null && handledProp.CanWrite && !Passthrough)
 				{
 					handledProp.SetValue(e, true, null);
 				}

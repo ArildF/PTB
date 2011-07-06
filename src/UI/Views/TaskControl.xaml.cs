@@ -20,6 +20,15 @@ namespace Rogue.Ptb.UI.Views
 	/// </summary>
 	public partial class TaskControl : UserControl
 	{
+		public static readonly DependencyProperty IsSelectedProperty =
+			DependencyProperty.Register("IsSelected", typeof (object), typeof (TaskControl));
+
+		public bool IsSelected
+		{
+			get { return (bool) GetValue(IsSelectedProperty); }
+			set { SetValue(IsSelectedProperty, value); }
+		}
+
 		public TaskControl()
 		{
 			//  MUST do this BEFORE InitializeComponent()

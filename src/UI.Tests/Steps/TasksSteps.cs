@@ -93,6 +93,39 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 		}
 
+		[When(@"I select task \#(\d+)")]
+		public void WhenISelectTask1(int num)
+		{
+			_context.TaskBoardViewModel.Tasks.Skip(num - 1).First().Select();
+		}
+
+		[When(@"click new subtask")]
+		public void WhenClickNewSubtask()
+		{
+			_context.Publish<CreateNewSubTask>(null);
+		}
+
+		[When(@"I select task '(.*)'")]
+		public void WhenISelectTaskYo(string taskTitle)
+		{
+			var vm = _context.FindTaskVM(taskTitle);
+
+			_context.TaskBoardViewModel.SelectedTask = vm;
+		}
+
+
+		[When(@"I add a subtask ""(.*)"" to task ""(.*)""")]
+		public void WhenIAddASubtaskThree_AToTaskThree(string subtaskName, string task)
+		{
+			var vm = _context.FindTaskVM(task);
+
+			_context.TaskBoardViewModel.SelectedTask = vm;
+			_context.Publish<CreateNewSubTask>(null);
+
+			_context.TaskBoardViewModel.SelectedTask.Title = subtaskName;
+		}
+
+
 		[StepArgumentTransformation]
 		public TaskState ConvertToTaskState(string str)
 		{
@@ -114,18 +147,72 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.TaskBoardViewModel.Tasks.Count.Should().BeGreaterThan(1);
 		}
 
+		[Then(@"the new task should be in position \#(\d+)")]
+		public void ThenTheNewTaskShouldBeInPosition2(int pos)
+		{
+			_context.TaskBoardViewModel.Tasks.Select((vm, index) => new {Vm = vm, Index = index})
+				.Where(obj => obj.Vm == _context.NewestTask)
+				.Select(obj => obj.Index).First().Should().Be(pos - 1);
+
+		}
+
 		[Then(@"the new task should have a created date like now")]
 		public void ThenTheNewTaskShouldHaveACreatedDateLikeNow()
 		{
-			_context.TaskBoardViewModel.Tasks.First().Task.CreatedDate.Should().BeAboutNow();
-
+			_context.NewestTask.Task.CreatedDate.Should().BeAboutNow();
 		}
+
+		[Then(@"task \#(\d+) should be in edit mode")]
+		public void ThenTask2ShouldBeInEditMode(int num)
+		{
+			_context.TaskByOrdinal(num).IsEditing.Should().BeTrue();
+		}
+
+		[Then(@"task \#(\d+) should be selected")]
+		public void ThenTask1ShouldBeSelected(int num)
+		{
+			_context.TaskByOrdinal(num).Should().Be(_context.TaskBoardViewModel.SelectedTask);
+			_context.TaskByOrdinal(num).IsSelected.Should().BeTrue();
+		}
+
+		[When(@"I begin editing task \#(\d+)")]
+		public void WhenIBeginEditingTask2(int num)
+		{
+			_context.TaskByOrdinal(num).BeginEdit();
+		}
+
+		[When(@"I deselect all")]
+		public void WhenIDeselectAll()
+		{
+			_context.TaskBoardViewModel.Deselect();
+		}
+
+
+		[Then(@"task \#(\d+) should not be selected")]
+		public void ThenTask1ShouldNotBeSelected(int num)
+		{
+			_context.TaskByOrdinal(num).IsSelected.Should().Be(false);
+		}
+
 
 		[Then(@"the new task should have a modified date like now")]
 		public void ThenTheNewTaskShouldHaveAModifiedDateLikeNow()
 		{
-			_context.TaskBoardViewModel.Tasks.First().Task.ModifiedDate.Should().BeAboutNow();
+			_context.NewestTask.Task.ModifiedDate.Should().BeAboutNow();
 		}
+
+		[Then(@"the new task should be indented (\d+) place")]
+		public void ThenTheNewTaskShouldBeIndented1Place(int indent)
+		{
+			_context.NewestTask.IndentLevel.Should().Be(indent);
+		}
+
+		[Then(@"the new task should be selected")]
+		public void ThenTheNewTaskShouldBeSelected()
+		{
+			_context.NewestTask.Should().Be(_context.TaskBoardViewModel.SelectedTask);
+		}
+
 
 		[Then(@"task \#(\d+) should be ""(.*)""")]
 		public void ThenTheTaskShouldBeInProgress(int ordinal, TaskState state)
@@ -153,20 +240,20 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[Then(@"the new task should be displayed first")]
 		public void ThenTheNewTaskShouldBeDisplayedFirst()
 		{
-			_context.TaskBoardViewModel.Tasks.First().Task.Title.Should().Be(String.Empty);
+			_context.NewestTask.Task.Title.Should().Be(String.Empty);
 		}
 
 		[Then(@"the new task should be in edit mode")]
 		public void ThenTheNewTaskShouldBeInEditMode()
 		{
-			_context.TaskBoardViewModel.Tasks.First(t => String.IsNullOrEmpty(t.Title)).IsEditing.Should().BeTrue();
+			_context.NewestTask.IsEditing.Should().BeTrue();
 
 		}
 
 		[Then(@"the task should not be started")]
 		public void ThenTheTaskShouldNotBeStarted()
 		{
-			_context.TaskBoardViewModel.Tasks.First().Task.State.Should().Be(TaskState.NotStarted);
+			_context.NewestTask.Task.State.Should().Be(TaskState.NotStarted);
 		}
 
 		[Then(@"the tooltip should show")]

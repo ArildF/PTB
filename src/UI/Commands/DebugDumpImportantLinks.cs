@@ -38,7 +38,11 @@ namespace Rogue.Ptb.UI.Commands
 		{
 			return task.Title + " LessImportantTasks: " + DumpLinks(task.LessImportantTasks) +
 			       Environment.NewLine +
-			       task.Title + " MoreImportantTasks: " + DumpLinks(task.MoreImportantTasks);
+			       task.Title + " MoreImportantTasks: " + DumpLinks(task.MoreImportantTasks) + 
+				   Environment.NewLine + 
+				   task.Title + " Subtasks: " + DumpLinks(task.SubTasks) + 
+				   Environment.NewLine + 
+				   task.Title + " Parent: " + task.Parent ?? "";
 		}
 
 		private static string DumpLinks(IEnumerable<Task> lessImportantTasks)

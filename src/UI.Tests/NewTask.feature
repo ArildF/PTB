@@ -11,6 +11,7 @@ Scenario: Add new tasks
     Then a new task should be created
     And the new task should be displayed first
     And the new task should be in edit mode
+	And the new task should be selected
     And the task should not be started
 
 
@@ -19,3 +20,15 @@ Scenario: Created date
     When I click new task
     Then the new task should have a created date like now
     And the new task should have a modified date like now
+
+Scenario: Subtasks
+	Given that the following tasks already exist and are loaded:
+    |Title      |
+    |Yo         |
+	When I select task 'Yo'
+	And click new subtask
+	Then a new task should be created
+	And the new task should be in edit mode
+	And the new task should be in position #2
+	And the new task should be indented 1 place
+	And the new task should be selected

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
@@ -41,7 +42,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_container.Inject<IDialogDisplayer>(_dialogDisplayer.Object);
 			_container.Inject(Options);
 
-			var settings = new UI.Properties.Settings {LastRecentlyUsedTaskboards = null};
+			var settings = new Properties.Settings {LastRecentlyUsedTaskboards = null};
 			settings.Providers.Clear();
 			_container.Inject(settings);
 
@@ -130,7 +131,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 				if (createSchema)
 				{
 					
-					new SchemaExport(config).Execute(false, true, false, session.Connection, Console.Out);
+					new SchemaExport(config).Execute(false, true, false, session.Connection, StreamWriter.Null);
 				}
 
 				return _sessionFactory = factory;
@@ -179,6 +180,16 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public TaskViewModel FindTaskVM(string taskName)
 		{
 			return TaskBoardViewModel.Tasks.First(t => t.Title == taskName);
+		}
+
+		public TaskViewModel NewestTask
+		{
+			get { return TaskBoardViewModel.Tasks.OrderByDescending(t => t.Task.CreatedDate).First(); }
+		}
+
+		public TaskViewModel TaskByOrdinal(int num)
+		{
+			return TaskBoardViewModel.Tasks.Skip(num - 1).First();
 		}
 	}
 }

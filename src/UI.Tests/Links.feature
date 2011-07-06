@@ -52,4 +52,34 @@ Scenario: Importance is reflexive
 	Then task "Three" should be more important than task "One"
 	And task "One" should be less important than task "Three"
 
+Scenario: Subtasks are sorted with their parents
+	Given that the following tasks already exist and are loaded:
+	| Title |
+	| One   |
+	| Two   |
+	| Three |	
+	When I set task "Three" to be more important than task "One"
+	And I add a subtask "Three-A" to task "Three"
+	Then the tasks should be in this order:
+	| Title   |
+	| Three   |
+	| Three-A |
+	|One|
+	|Two|
+
+Scenario: Should not be able to set a subtask more important than its parent
+	Given that the following tasks already exist and are loaded:
+	| Title |
+	| One   |
+	| Two   |
+	| Three |
+	When I add a subtask "One-A" to task "One"
+	And I set task "One-A" to be more important than task "One"
+	Then the tasks should be in this order:
+	| Title   |
+	| One   |
+	| One-A   |
+	| Two   |
+	| Three |
+
 
