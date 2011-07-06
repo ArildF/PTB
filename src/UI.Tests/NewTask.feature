@@ -26,28 +26,3 @@ Scenario: Created date
     When I click new task
     Then the new task should have a created date like now
     And the new task should have a modified date like now
-
-Scenario: Subtasks
-	Given that the following tasks already exist and are loaded:
-    |Title      |
-    |Yo         |
-	When I select task 'Yo'
-	And click new subtask
-	Then a new task should be created
-	And the new task should be in edit mode
-	And the new task should be in position #2
-	And the new task should be indented 1 place
-	And the new task should be selected
-
-Scenario: Subtasks of subtasks
-	Given that the following tasks already exist and are loaded:
-    |Title      |
-    |Yo         |
-	When I select task 'Yo'
-	And click new subtask
-	And click new subtask
-	Then a new task should be created
-	And the new task should be in edit mode
-	And the new task should be in position #3
-	And the new task should be indented 2 places
-	And the new task should be selected

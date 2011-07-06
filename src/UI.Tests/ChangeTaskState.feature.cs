@@ -129,23 +129,6 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             testRunner.CollectScenarioErrors();
         }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Starting a subtask should start the parent")]
-        public virtual void StartingASubtaskShouldStartTheParent()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Starting a subtask should start the parent", ((string[])(null)));
-#line 29
-this.ScenarioSetup(scenarioInfo);
-#line 30
- testRunner.Given("that task #1 has a subtask \"Sub a\"");
-#line 31
- testRunner.When("I drag task #2 to the \"In Progress\" column");
-#line 32
- testRunner.Then("task #1 should be \"In Progress\"");
-#line hidden
-            testRunner.CollectScenarioErrors();
-        }
     }
 }
 #endregion

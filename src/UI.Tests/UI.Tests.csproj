@@ -149,6 +149,11 @@
     <Compile Include="Steps\LinksSteps.cs" />
     <Compile Include="Steps\ShellSteps.cs" />
     <Compile Include="Steps\VersionSteps.cs" />
+    <Compile Include="SubTasks.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubTasks.feature</DependentUpon>
+    </Compile>
     <Compile Include="TaskBoardManagement.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -200,6 +205,10 @@
     <None Include="Shell.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Shell.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SubTasks.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SubTasks.feature.cs</LastGenOutput>
     </None>
     <None Include="TaskBoardManagement.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
