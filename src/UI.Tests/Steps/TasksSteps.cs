@@ -209,7 +209,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.NewestTask.Task.ModifiedDate.Should().BeAboutNow();
 		}
 
-		[Then(@"the new task should be indented (\d+) place")]
+		[Then(@"the new task should be indented (\d+) place(?:s)?")]
 		public void ThenTheNewTaskShouldBeIndented1Place(int indent)
 		{
 			_context.NewestTask.IndentLevel.Should().Be(indent);

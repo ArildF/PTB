@@ -123,7 +123,7 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public int IndentLevel
 		{
-			get { return _task.Parent != null ? 1 : 0; }
+			get { return _task.AncestorCount(); }
 		}
 
 		public void BeginEdit()

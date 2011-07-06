@@ -12,6 +12,16 @@ namespace Rogue.Ptb.Core
 
 		}
 
+		public static int AncestorCount(this Task self)
+		{
+			int i = 0;
+			Task current = self;
+			while ((current = current.Parent) != null)
+			{
+				i++;
+			}
+			return i;
+		}
 		public static bool AllLessImportantThanOrIndifferentTo(this IEnumerable<Task> self, Task comparee)
 		{
 			return self.All(t => LessImportantThanOrIndifferentTo(t, comparee));

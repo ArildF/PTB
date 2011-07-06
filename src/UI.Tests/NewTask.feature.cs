@@ -155,6 +155,40 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             testRunner.CollectScenarioErrors();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Subtasks of subtasks")]
+        public virtual void SubtasksOfSubtasks()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Subtasks of subtasks", ((string[])(null)));
+#line 42
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table3.AddRow(new string[] {
+                        "Yo"});
+#line 43
+ testRunner.Given("that the following tasks already exist and are loaded:", ((string)(null)), table3);
+#line 46
+ testRunner.When("I select task \'Yo\'");
+#line 47
+ testRunner.And("click new subtask");
+#line 48
+ testRunner.And("click new subtask");
+#line 49
+ testRunner.Then("a new task should be created");
+#line 50
+ testRunner.And("the new task should be in edit mode");
+#line 51
+ testRunner.And("the new task should be in position #3");
+#line 52
+ testRunner.And("the new task should be indented 2 places");
+#line 53
+ testRunner.And("the new task should be selected");
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
     }
 }
 #endregion
