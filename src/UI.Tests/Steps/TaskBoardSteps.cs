@@ -262,12 +262,19 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_exportedDtos.Length.Should().Be(num);
 		}
 
-		[Then(@"the tasks should be in this order:")]
-		public void ThenTheTasksShouldBeInThisOrder(Table table)
+		[Then(@"the (visible )?tasks should be in this order:")]
+		public void ThenTheTasksShouldBeInThisOrder(string visible, Table table)
 		{
-			_context.TaskBoardViewModel.Tasks.Count.Should().Be(table.RowCount);
+			var vms = _context.TaskBoardViewModel.Tasks.Select(t =>  t);
+			
+			if (visible == "visible ")
+			{
+				vms = vms.Where(vm => vm.IsVisible);
+			}
 
-			var tasks = _context.TaskBoardViewModel.Tasks.Select(t => t.Title).Zip(
+			vms.Count().Should().Be(table.RowCount);
+
+			var tasks = vms.Select(t => t.Title).Zip(
 				table.Rows.Select(r => r[0]), Tuple.Create);
 
 			foreach (var tuple in tasks)

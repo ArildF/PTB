@@ -4,4 +4,29 @@
 		<Setter Property="TextBlock.FontFamily" Value="Georgia"/>
 		<Setter Property="TextBlock.FontSize" Value="11pt"/>
 	</Style>
+	
+	<Style x:Key="ExpandoButtonStyle" TargetType="Button">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="Button">
+					<Border BorderThickness="0,0.5,0,0" BorderBrush="Black" x:Name="_border" 
+							HorizontalAlignment="Stretch">
+						<Grid HorizontalAlignment="Stretch">
+							<ContentPresenter HorizontalAlignment="Stretch" TextBlock.TextAlignment="Center"
+											  VerticalAlignment="Center"/>
+						</Grid>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="Content" Value="-">
+							<Setter Property="BorderThickness" TargetName="_border" Value="0,0,0,0"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+				
+		</Setter>
+		<Setter Property="HorizontalAlignment" Value="Stretch"/>
+		<Style.Triggers>
+		</Style.Triggers>
+	</Style>
 </ResourceDictionary>

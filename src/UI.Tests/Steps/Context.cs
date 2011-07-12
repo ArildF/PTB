@@ -9,6 +9,7 @@ using FluentNHibernate.Cfg.Db;
 using Moq;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
+using ReactiveUI.Xaml;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.ViewModels;
@@ -52,6 +53,9 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			TaskBoardViewModel = Get<TaskBoardViewModel>();
 			ToolbarViewModel = Get<ToolbarViewModel>();
 			ShellViewModel = Get<ShellViewModel>();
+
+
+		
 		}
 
 		public ShellViewModel ShellViewModel { get; private set; }
@@ -186,6 +190,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		{
 			get { return TaskBoardViewModel.Tasks.OrderByDescending(t => t.Task.CreatedDate).First(); }
 		}
+
 
 		public TaskViewModel TaskByOrdinal(int num)
 		{

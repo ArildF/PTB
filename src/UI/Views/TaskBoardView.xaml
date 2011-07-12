@@ -11,6 +11,7 @@
     <UserControl.Resources>
 		<vc:TaskStateToColumnConverter x:Key="TaskStateToColumnConverter"/>
 		<vc:IndentToMarginConverter x:Key="IndentToMarginConverter"/>
+		<vc:BoolToCollapsedConverter x:Key="BoolToCollapsedConverter"/>
 		<ObjectDataProvider x:Key="DesignDataContext" d:IsDataSource="True" ObjectType="{x:Type design:DummyTaskBoardViewModel}"/>
 		
 		<Style TargetType="GridSplitter">
@@ -115,6 +116,8 @@
 							Behaviors:DragListItemElementBehavior.IsDragTargetGrid="True" RenderTransformOrigin="0.5,0.5"
 							Behaviors:DragListItemElementBehavior.CurrentlyDraggedOver="AcceptsDrag"
 							Tag="{Binding Title}"
+							Visibility="{Binding IsVisible, Converter={StaticResource BoolToCollapsedConverter}}"
+							
 							>
 							
 							

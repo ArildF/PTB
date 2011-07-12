@@ -123,6 +123,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 
 		[When(@"I add a subtask ""(.*)"" to task ""(.*)""")]
+		[Given(@"I add a subtask ""(.*)"" to task ""(.*)""")]
 		public void WhenIAddASubtaskThree_AToTaskThree(string subtaskName, string task)
 		{
 			var vm = _context.FindTaskVM(task);
@@ -148,11 +149,32 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.TaskBoardViewModel.Tasks[ordinal - 1].State = state;
 		}
 
+		[When(@"I collapse the hierarchy for task ""(.*)""")]
+		[When(@"I expand the hierarchy for task ""(.*)""")]
+		public void WhenICollapseTheHierarchyForTaskTwo(TaskViewModel vm)
+		{
+			vm.ToggleCollapseHierarchyCommand.Execute(null);
+		}
+
 
 		[Then(@"a new task should be created")]
 		public void ThenANewTaskShouldBeCreated()
 		{
 			_context.TaskBoardViewModel.Tasks.Count.Should().BeGreaterThan(1);
+		}
+
+		[Then(@"task ""(.*)"" should be collapsable")]
+		public void ThenTaskTwoShouldBeCollapsable(string title)
+		{
+			var vm = _context.FindTaskVM(title);
+			vm.CanCollapse.Should().BeTrue();
+		}
+
+		[Then(@"task ""(.*)"" should be expandable")]
+		public void ThenTaskTwoShouldBeExpandable(string title)
+		{
+			var vm = _context.FindTaskVM(title);
+			vm.CanExpand.Should().BeTrue();
 		}
 
 		[Then(@"the new task should be in position \#(\d+)")]
@@ -207,6 +229,12 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public void ThenTheNewTaskShouldHaveAModifiedDateLikeNow()
 		{
 			_context.NewestTask.Task.ModifiedDate.Should().BeAboutNow();
+		}
+
+		[Then(@"task ""(.*)"" should show a collapse button")]
+		public void ThenTaskTwoShouldShowACollapseButton(TaskViewModel vm)
+		{
+			vm.Collapsable.Should().BeTrue();
 		}
 
 		[Then(@"the new task should be indented (\d+) place(?:s)?")]

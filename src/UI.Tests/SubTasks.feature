@@ -82,3 +82,61 @@ Scenario: Should not be able to set a subtask more important than a task that is
 	| Two   |
 	| One |
 
+Scenario: Collapsable hierarchy
+	Given that the following tasks already exist and are loaded:
+	| Title |
+	| One   |
+	| Two   |
+	And I add a subtask "Two-A" to task "Two"
+	And I add a subtask "Two-B" to task "Two"
+	Then task "Two" should be collapsable
+	And task "Two" should show a collapse button
+
+Scenario: Collapse hierarchy
+	Given that the following tasks already exist and are loaded:
+	| Title |
+	| One   |
+	| Two   |
+	| Three |
+	And I add a subtask "Two-A" to task "Two"
+	And I add a subtask "Two-B" to task "Two"
+	When I collapse the hierarchy for task "Two"
+	Then the visible tasks should be in this order:
+	| Title   |
+	| One |
+	| Two   |
+	| Three	  |
+	And task "Two" should be expandable
+
+Scenario: Collapsing should collapse entire hierarchy
+	Given that the following tasks already exist and are loaded:
+	| Title |
+	| One   |
+	| Two   |
+	And I add a subtask "One-A" to task "One"
+	And I add a subtask "One-A-a" to task "One-A"
+	And I add a subtask "One-A-b" to task "One-A"
+	When I collapse the hierarchy for task "One"
+	Then the visible tasks should be in this order:
+	| Title |
+	| One   |
+	| Two   |
+
+Scenario: Expanding should expand entire hierarchy
+	Given that the following tasks already exist and are loaded:
+	| Title |
+	| One   |
+	| Two   |
+	And I add a subtask "One-A" to task "One"
+	And I add a subtask "One-A-a" to task "One-A"
+	And I add a subtask "One-A-b" to task "One-A"
+	When I collapse the hierarchy for task "One"
+	And I expand the hierarchy for task "One"
+	Then the visible tasks should be in this order:
+	| Title   |
+	| One     |
+	| One-A   |
+	| One-A-b |
+	| One-A-a |
+	| Two   |
+

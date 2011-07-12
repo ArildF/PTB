@@ -1,7 +1,11 @@
-﻿using System.Diagnostics;
-using ReactiveUI;
-using Rogue.Ptb.Core;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows.Input;
+using ReactiveUI;
+using ReactiveUI.Xaml;
+using Rogue.Ptb.Core;
 using System;
 
 namespace Rogue.Ptb.UI.ViewModels
@@ -10,14 +14,24 @@ namespace Rogue.Ptb.UI.ViewModels
 	public class TaskViewModel : ViewModelBase
 	{
 		private readonly Task _task;
+		private readonly Func<Task, TaskViewModel> _viewModelMapper;
 		private bool _isEditing;
 		private bool _isSelected;
+		private bool _isVisible;
 
 
-		public TaskViewModel(Task task)
+		public TaskViewModel(Task task, Func<Task, TaskViewModel> viewModelMapper)
 		{
 			_task = task;
+			_viewModelMapper = viewModelMapper;
 			_isEditing = false;
+			_isVisible = true;
+
+
+			var cmd = new ReactiveCommand();
+			cmd.Subscribe(_ => ToggleCollapseHierarchy());
+
+			ToggleCollapseHierarchyCommand = cmd;
 		}
 
 		public TaskState State
@@ -126,6 +140,34 @@ namespace Rogue.Ptb.UI.ViewModels
 			get { return _task.AncestorCount(); }
 		}
 
+		public bool IsVisible
+		{
+			get {
+				return _isVisible;
+			}
+			private set
+			{
+				this.RaiseAndSetIfChanged(vm => vm.IsVisible, value);
+			}
+		}
+
+		public ICommand ToggleCollapseHierarchyCommand { get; private set; }
+
+		public bool CanCollapse
+		{
+			get { return ChildVMs().All(vm => vm.IsVisible); }
+		}
+
+		public bool CanExpand
+		{
+			get { return ChildVMs().Any(vm => !vm.IsVisible); }
+		}
+
+		public bool Collapsable
+		{
+			get { return _task.SubTasks.Any(); }
+		}
+
 		public void BeginEdit()
 		{
 			Select();
@@ -148,7 +190,7 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public TaskViewModel CreateSubTask()
 		{
-			return new TaskViewModel(_task.CreateSubTask());
+			return new TaskViewModel(_task.CreateSubTask(), _viewModelMapper);
 		}
 
 		public void Select()
@@ -169,6 +211,46 @@ namespace Rogue.Ptb.UI.ViewModels
 		public void NotifyStateChanged()
 		{
 			this.RaisePropertyChanged(t => t.State);
+		}
+
+		public IEnumerable<TaskViewModel> ChildVMs()
+		{
+			return _task.SubTasks.Select(_viewModelMapper);
+		}
+
+		public void Hide()
+		{
+			IsVisible = false;
+		}
+
+		public void Show()
+		{
+			IsVisible = true;
+		}
+
+		private void ToggleCollapseHierarchy()
+		{
+			this.RaisePropertyChanging(vm => vm.CanCollapse);
+			this.RaisePropertyChanging(vm => vm.CanExpand);
+
+			bool collapse = CanCollapse;
+			foreach (var taskViewModel in ChildVMs())
+			{
+				taskViewModel.ToggleCollapseHierarchy();
+
+				if (collapse)
+				{
+					taskViewModel.Hide();
+				}
+				else
+				{
+					taskViewModel.Show();
+				}
+
+			}
+
+			this.RaisePropertyChanged(vm => vm.CanCollapse);
+			this.RaisePropertyChanged(vm => vm.CanExpand);
 		}
 	}
 }
