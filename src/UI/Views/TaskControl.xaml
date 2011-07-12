@@ -55,7 +55,7 @@
 							</i:Interaction.Behaviors>
 						</TextBlock>
 					<TextBox TextWrapping="Wrap" x:Name="_textBox" 
-								 VerticalAlignment="Stretch" 
+								 VerticalAlignment="Center" 
 								TextAlignment="Center"
 								 Text="{Binding Title}"
 								 Visibility="Collapsed"
