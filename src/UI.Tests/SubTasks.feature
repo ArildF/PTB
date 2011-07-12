@@ -140,3 +140,30 @@ Scenario: Expanding should expand entire hierarchy
 	| One-A-a |
 	| Two   |
 
+Scenario: Collapse all
+	Given that the following tasks already exist and are loaded:
+	| Title |
+	| One   |
+	| Two   |
+	And I add a subtask "One-A" to task "One"
+	And I add a subtask "One-A-a" to task "One-A"
+	And I add a subtask "One-A-b" to task "One-A"
+	And I add a subtask "Two-A" to task "Two"
+	When I click Collapse All
+	Then the visible tasks should be in this order:
+	| Title |
+	| One   |
+	| Two   |
+
+Scenario: All tasks should be collapsed by default
+	Given I load a taskboard with the following tasks and subtasks
+	| Title | Subtasks     |
+	| One   | One-A;One-B  |
+	| Two   | Two-A;Two-B |
+	| Three |              |
+	Then the visible tasks should be in this order:
+	| Title |
+	| One   |
+	| Two   |
+	| Three |
+

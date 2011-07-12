@@ -176,6 +176,12 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.GetCommand<ImportTaskBoard>().Execute(null);
 		}
 
+		[When(@"I click Collapse All")]
+		public void WhenIClickCollapseAll()
+		{
+			_context.Publish<CollapseAll>();
+		}
+
 
 		[Given(@"that everything is saved")]
 		public void GivenThatEverythingIsSaved()

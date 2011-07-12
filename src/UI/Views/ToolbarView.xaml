@@ -55,6 +55,10 @@
 									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
 									/>
+				<ribbon:RibbonButton Label="Collapse All" Name="CollapseAll"
+									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+									 Command="{me:ResolveCommand}"
+									/>
 
 			</ribbon:RibbonGroup>
 

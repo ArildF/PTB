@@ -40,6 +40,34 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.Publish(new DatabaseChanged(@"C:\foo\bar.taskboard"));
 		}
 
+		[Given(@"I load a taskboard with the following tasks and subtasks")]
+		public void GivenILoadATaskboardWithTheFollowingTasksAndSubtasks(Table table)
+		{
+			Given("that I have created a new database");
+
+			using (var repos = _context.Get<IRepository<Task>>())
+			{
+				var tasks = new List<Task>();
+				foreach (var tableRow in table.Rows)
+				{
+					DateTimeHelper.MoveAheadBy(TimeSpan.FromSeconds(-5));
+					var task = new Task { Title = tableRow["Title"] };
+
+					var subtasks = tableRow["Subtasks"].Split(';');
+					foreach (var subtaskTitle in subtasks)
+					{
+						var subtask = task.CreateSubTask();
+
+						subtask.Title = subtaskTitle;
+						tasks.Add(subtask);
+					}
+					tasks.Add(task);
+				}
+				repos.SaveAll(tasks);
+			}
+			_context.Publish(new DatabaseChanged(@"C:\foo\bar.taskboard"));
+		}
+
 		[Given(@"that task \#(\d+) has a subtask ""(.*)""")]
 		public void GivenThatTask1HasASubtaskSubA(int num, string title)
 		{

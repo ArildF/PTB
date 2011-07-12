@@ -413,6 +413,82 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             testRunner.CollectScenarioErrors();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Collapse all")]
+        public virtual void CollapseAll()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Collapse all", ((string[])(null)));
+#line 143
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table17.AddRow(new string[] {
+                        "One"});
+            table17.AddRow(new string[] {
+                        "Two"});
+#line 144
+ testRunner.Given("that the following tasks already exist and are loaded:", ((string)(null)), table17);
+#line 148
+ testRunner.And("I add a subtask \"One-A\" to task \"One\"");
+#line 149
+ testRunner.And("I add a subtask \"One-A-a\" to task \"One-A\"");
+#line 150
+ testRunner.And("I add a subtask \"One-A-b\" to task \"One-A\"");
+#line 151
+ testRunner.And("I add a subtask \"Two-A\" to task \"Two\"");
+#line 152
+ testRunner.When("I click Collapse All");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table18.AddRow(new string[] {
+                        "One"});
+            table18.AddRow(new string[] {
+                        "Two"});
+#line 153
+ testRunner.Then("the visible tasks should be in this order:", ((string)(null)), table18);
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("All tasks should be collapsed by default")]
+        public virtual void AllTasksShouldBeCollapsedByDefault()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("All tasks should be collapsed by default", ((string[])(null)));
+#line 158
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title",
+                        "Subtasks"});
+            table19.AddRow(new string[] {
+                        "One",
+                        "One-A;One-B"});
+            table19.AddRow(new string[] {
+                        "Two",
+                        "Two-A;Two-B"});
+            table19.AddRow(new string[] {
+                        "Three",
+                        ""});
+#line 159
+ testRunner.Given("I load a taskboard with the following tasks and subtasks", ((string)(null)), table19);
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table20.AddRow(new string[] {
+                        "One"});
+            table20.AddRow(new string[] {
+                        "Two"});
+            table20.AddRow(new string[] {
+                        "Three"});
+#line 164
+ testRunner.Then("the visible tasks should be in this order:", ((string)(null)), table20);
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
     }
 }
 #endregion

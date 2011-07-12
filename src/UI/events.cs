@@ -14,4 +14,6 @@
 	public class ReSort : ICommandEvent {}
 
 	public class ApplicationIdle {}
+
+	public class CollapseAll : ICommandEvent{}
 }

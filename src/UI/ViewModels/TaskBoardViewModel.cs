@@ -59,12 +59,24 @@ namespace Rogue.Ptb.UI.ViewModels
 			_bus.ListenOnScheduler<SaveAllTasks>(OnSaveAllTasks);
 			_bus.ListenOnScheduler<ReloadAllTasks>(evt => Reload());
 			_bus.ListenOnScheduler<ReSort>(evt => Reorder());
+			_bus.ListenOnScheduler<CollapseAll>(evt => OnCollapseAll());
 
 			DragCommand = new ReactiveCommand();
 
 
 			DragCommand.OfType<DragCommandArgs>().Subscribe(OnNext);
 
+		}
+
+		private void OnCollapseAll()
+		{
+			foreach (var taskViewModel in Tasks)
+			{
+				if (taskViewModel.Collapsable && taskViewModel.CanCollapse)
+				{
+					taskViewModel.ToggleCollapseHierarchyCommand.Execute(null);
+				}
+			}
 		}
 
 
@@ -148,6 +160,8 @@ namespace Rogue.Ptb.UI.ViewModels
 			_repository = NewRepository();
 
 			Reload();
+
+			OnCollapseAll();
 		}
 
 		private void Reload()

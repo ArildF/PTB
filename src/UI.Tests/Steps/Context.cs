@@ -159,7 +159,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 		}
 
-		public void Publish<T>(T message)
+		public void Publish<T>(T message = default(T))
 		{
 			Get<IEventAggregator>().Publish(message);
 		}
