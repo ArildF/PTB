@@ -28,7 +28,7 @@ namespace Rogue.Ptb.Core.Tests.Specs
 		private static Task subTask;
 	}
 
-	public class When_setting_a_task_more_important_than_a_task_that_is_transitively_more_important_than_itself : SortingContext
+	public class When_setting_a_task_more_important_than_a_task_that_is_transitively_more_important_than_itself : TaskContext
 	{
 		Establish context = () =>
 			{

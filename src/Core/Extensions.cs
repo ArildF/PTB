@@ -14,13 +14,16 @@ namespace Rogue.Ptb.Core
 
 		public static int AncestorCount(this Task self)
 		{
-			int i = 0;
+			return Ancestors(self).Count();
+		}
+
+		public static IEnumerable<Task> Ancestors(this Task self)
+		{
 			Task current = self;
 			while ((current = current.Parent) != null)
 			{
-				i++;
+				yield return current;
 			}
-			return i;
 		}
 		public static bool AllLessImportantThanOrIndifferentTo(this IEnumerable<Task> self, Task comparee)
 		{
@@ -106,9 +109,38 @@ namespace Rogue.Ptb.Core
 					return -1;
 				}
 
+				// the comparands must be on the same level for the comparison to be meaningful
+				// walk up the ancestor chain till we find a level where they both have the 
+				// same parent (or null).
 				if (x.Parent != y.Parent)
 				{
-					return Compare(x.Parent ?? x, y.Parent ?? y);
+					int ancestorCountX = x.AncestorCount();
+					int ancestorCountY = y.AncestorCount();
+					int diff = ancestorCountX - ancestorCountY;
+					if (diff > 0)
+					{
+						x = x.Ancestors().Skip(diff -1).First();
+
+						// x is child of y, must sort after y
+						if (x == y)
+						{
+							return 1;
+						}
+					}
+					else
+					{
+						y = y.Ancestors().Skip((-diff) - 1).First();
+
+						// y is child of x, most sort after x
+						if (x == y)
+						{
+							return -1;
+						}
+					}
+
+					// now x and y are on the same level, and we can compare.
+					int retval = Compare(x, y);
+					return retval;
 				}
 
 				if (x.State != y.State)

@@ -6,7 +6,7 @@ using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.Core.Tests.Specs
 {
-	public class SortingContext
+	public class TaskContext
 	{
 		protected static IList<Task> tasks;
 
@@ -30,10 +30,21 @@ namespace Rogue.Ptb.Core.Tests.Specs
 				title.ShouldEqual(titles[idx++]);
 			}
 		}
+
+		protected static Task CreateSubTask(Task task, string title)
+		{
+			DateTimeHelper.MoveAheadBy(TimeSpan.FromSeconds(60));
+
+			var subTask = task.CreateSubTask();
+			subTask.Title = title;
+			tasks.Add(subTask);
+
+			return subTask;
+		}
 	}
 
 	[Subject("Sorting tasks")]
-	public class When_sorting_tasks_that_have_relative_priorities_set : SortingContext
+	public class When_sorting_tasks_that_have_relative_priorities_set : TaskContext
 	{
 		Establish context = () =>
 			{
@@ -49,7 +60,7 @@ namespace Rogue.Ptb.Core.Tests.Specs
 	}
 
 	[Subject("Sorting tasks")]
-	public class When_sorting_tasks_that_have_multiple_relative_priorities_set : SortingContext
+	public class When_sorting_tasks_that_have_multiple_relative_priorities_set : TaskContext
 	{
 		Establish context = () =>
 		{
@@ -66,7 +77,7 @@ namespace Rogue.Ptb.Core.Tests.Specs
 	}
 
 	[Subject("Sorting tasks")]
-	public class When_sorting_tasks_that_have_relative_priorities_set_and_different_states : SortingContext
+	public class When_sorting_tasks_that_have_relative_priorities_set_and_different_states : TaskContext
 	{
 		Establish context = () =>
 			{
@@ -84,7 +95,7 @@ namespace Rogue.Ptb.Core.Tests.Specs
 	}
 
 	[Subject("Sorting tasks")]
-	public class When_sorting_tasks_that_have_different_states : SortingContext
+	public class When_sorting_tasks_that_have_different_states : TaskContext
 	{
 		Establish context = () =>
 			{
@@ -104,7 +115,7 @@ namespace Rogue.Ptb.Core.Tests.Specs
 	}
 
 	[Subject("Sorting tasks")]
-	public class When_sorting_tasks_with_the_same_state_and_no_dependencies : SortingContext
+	public class When_sorting_tasks_with_the_same_state_and_no_dependencies : TaskContext
 	{
 		Establish context = () =>
 		{
@@ -119,7 +130,7 @@ namespace Rogue.Ptb.Core.Tests.Specs
 	}
 
 	[Subject("Sorting tasks")]
-	public class When_sorting_tasks_with_subtasks : SortingContext
+	public class When_sorting_tasks_with_subtasks : TaskContext
 	{
 		Establish context = () =>
 		{
@@ -135,15 +146,6 @@ namespace Rogue.Ptb.Core.Tests.Specs
 
 		};
 
-		private static void CreateSubTask(Task task, string title)
-		{
-			DateTimeHelper.MoveAheadBy(TimeSpan.FromSeconds(60));
-
-			var subTask = task.CreateSubTask();
-			subTask.Title = title;
-			tasks.Add(subTask);
-		}
-
 		Because of = () => tasks.InPlaceSort();
 
 		private It should_sort_the_subtasks_with_their_parents_but_ordered_by_create_date_descending = 
@@ -152,6 +154,31 @@ namespace Rogue.Ptb.Core.Tests.Specs
 				"Task 1", "Task 1a", 
 				"Task 3", "Task 3a", "Task 3b", "Task 3c");
 
+	}
+
+	[Subject("Sorting tasks")]
+	public class When_sorting_tasks_with_subtasks_of_subtasks : TaskContext
+	{
+		Establish context = () =>
+			{
+				tasks = CreateTasksStaggered("1");
+				var one = tasks[0];
+
+				CreateSubTask(one, "1c");
+				CreateSubTask(one, "1b");
+				var oneA = CreateSubTask(one, "1a");
+				CreateSubTask(oneA, "1a1");
+
+			};
+
+		Because of = () => tasks.InPlaceSort();
+
+		It should_sort_subtasks_with_their_parents = () => TaskOrderShouldBe(
+			"1",
+				"1a",
+					"1a1",
+				"1b",
+				"1c");
 	}
 
 }
