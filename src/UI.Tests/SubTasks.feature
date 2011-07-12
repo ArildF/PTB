@@ -7,8 +7,8 @@ Scenario: Subtasks
 	Given that the following tasks already exist and are loaded:
 	|Title      |
 	|Yo         |
-	When I select task 'Yo'
-	And click new subtask
+	When I select task "Yo"
+	And I click new subtask
 	Then a new task should be created
 	And the new task should be in edit mode
 	And the new task should be in position #2
@@ -19,9 +19,9 @@ Scenario: Subtasks of subtasks
 	Given that the following tasks already exist and are loaded:
 	|Title      |
 	|Yo         |
-	When I select task 'Yo'
-	And click new subtask
-	And click new subtask
+	When I select task "Yo"
+	And I click new subtask
+	And I click new subtask
 	Then a new task should be created
 	And the new task should be in edit mode
 	And the new task should be in position #3
@@ -166,4 +166,33 @@ Scenario: All tasks should be collapsed by default
 	| One   |
 	| Two   |
 	| Three |
+
+Scenario: Selected task after creating subtask should be the original parent
+	Given that the following tasks already exist and are loaded:
+	| Title |
+	| Task  |
+	And I select task "Task"
+	And I click new subtask
+	When I finish editing the selected task
+	Then task "Task" should be selected
+
+Scenario: Creating a subtask should automatically expand the parent
+	Given I load a taskboard with the following tasks and subtasks
+	| Title | Subtasks     |
+	| One   | One-A;One-B  |
+	| Two   | Two-A;Two-B |
+	| Three |              |
+	And I select task "Two"
+	When I click new subtask
+	Then task "Two" should be expanded
+	And the visible tasks should be in this order:
+	| Title |
+	| One   |
+	| Two   |
+	|       |
+	| Two-A |
+	| Two-B |
+	| Three |
+
+
 

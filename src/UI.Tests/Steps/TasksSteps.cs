@@ -135,13 +135,15 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.TaskBoardViewModel.Tasks.Skip(num - 1).First().Select();
 		}
 
-		[When(@"click new subtask")]
+		[When(@"I click new subtask")]
+		[Given(@"I click new subtask")]	
 		public void WhenClickNewSubtask()
 		{
 			_context.Publish<CreateNewSubTask>(null);
 		}
 
-		[When(@"I select task '(.*)'")]
+		[When(@"I select task ""(.*)""")]
+		[Given(@"I select task ""(.*)""")]
 		public void WhenISelectTaskYo(string taskTitle)
 		{
 			var vm = _context.FindTaskVM(taskTitle);
@@ -192,6 +194,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		}
 
 		[Then(@"task ""(.*)"" should be collapsable")]
+		[Then(@"task ""(.*)"" should be expanded")]
 		public void ThenTaskTwoShouldBeCollapsable(string title)
 		{
 			var vm = _context.FindTaskVM(title);
@@ -233,10 +236,23 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.TaskByOrdinal(num).IsSelected.Should().BeTrue();
 		}
 
+		[Then(@"task ""(.*)"" should be selected")]
+		public void ThenTheSelectedTaskShouldBeTask(string title)
+		{
+			_context.FindTaskVM(title).Should().Be(_context.TaskBoardViewModel.SelectedTask);
+		}
+
+
 		[When(@"I begin editing task \#(\d+)")]
 		public void WhenIBeginEditingTask2(int num)
 		{
 			_context.TaskByOrdinal(num).BeginEdit();
+		}
+
+		[When(@"I finish editing the selected task")]
+		public void WhenIFinishEditingTheSelectedTask()
+		{
+			_context.TaskBoardViewModel.SelectedTask.EndEdit();
 		}
 
 		[When(@"I deselect all")]

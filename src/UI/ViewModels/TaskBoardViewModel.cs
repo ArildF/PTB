@@ -141,6 +141,11 @@ namespace Rogue.Ptb.UI.ViewModels
 				return _selectedTask;
 			}
 			set {
+				if (_selectedTask != null && _selectedTask.IsSelected)
+				{
+					_selectedTask.IsSelected = false;
+				}
+
 				this.RaiseAndSetIfChanged(vm => vm.SelectedTask, value);
 				if (value != null && !value.IsSelected)
 				{
@@ -211,14 +216,31 @@ namespace Rogue.Ptb.UI.ViewModels
 				return;
 			}
 
+			if (SelectedTask.CanExpand)
+			{
+				SelectedTask.ToggleCollapseHierarchyCommand.Execute(null);
+			}
+
 			var newTaskViewModel = SelectedTask.CreateSubTask();
 			var indexToInsert = Tasks.IndexOf(SelectedTask) + 1;
 			Tasks.Insert(indexToInsert, newTaskViewModel);
 			_tasks.Add(newTaskViewModel.Task);
 
+			var parentTask = SelectedTask;
+
 			SelectedTask = newTaskViewModel;
 
 			newTaskViewModel.BeginEdit();
+
+			IDisposable subscription = null;
+			subscription = SelectedTask.ObservableForProperty(vm => vm.IsEditing)
+				.Where(oc => !newTaskViewModel.IsEditing)
+				.SubscribeOn(RxApp.DeferredScheduler)
+				.Subscribe(oc =>
+				{
+					SelectedTask = parentTask;
+					subscription.Dispose();
+				});
 		}
 
 		private IRepository<Task> NewRepository()

@@ -69,9 +69,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
  testRunner.Given("that the following tasks already exist and are loaded:", ((string)(null)), table1);
 #line 10
- testRunner.When("I select task \'Yo\'");
+ testRunner.When("I select task \"Yo\"");
 #line 11
- testRunner.And("click new subtask");
+ testRunner.And("I click new subtask");
 #line 12
  testRunner.Then("a new task should be created");
 #line 13
@@ -101,11 +101,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.Given("that the following tasks already exist and are loaded:", ((string)(null)), table2);
 #line 22
- testRunner.When("I select task \'Yo\'");
+ testRunner.When("I select task \"Yo\"");
 #line 23
- testRunner.And("click new subtask");
+ testRunner.And("I click new subtask");
 #line 24
- testRunner.And("click new subtask");
+ testRunner.And("I click new subtask");
 #line 25
  testRunner.Then("a new task should be created");
 #line 26
@@ -486,6 +486,81 @@ this.ScenarioSetup(scenarioInfo);
                         "Three"});
 #line 164
  testRunner.Then("the visible tasks should be in this order:", ((string)(null)), table20);
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Selected task after creating subtask should be the original parent")]
+        public virtual void SelectedTaskAfterCreatingSubtaskShouldBeTheOriginalParent()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Selected task after creating subtask should be the original parent", ((string[])(null)));
+#line 170
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table21.AddRow(new string[] {
+                        "Task"});
+#line 171
+ testRunner.Given("that the following tasks already exist and are loaded:", ((string)(null)), table21);
+#line 174
+ testRunner.And("I select task \"Task\"");
+#line 175
+ testRunner.And("I click new subtask");
+#line 176
+ testRunner.When("I finish editing the selected task");
+#line 177
+ testRunner.Then("task \"Task\" should be selected");
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Creating a subtask should automatically expand the parent")]
+        public virtual void CreatingASubtaskShouldAutomaticallyExpandTheParent()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating a subtask should automatically expand the parent", ((string[])(null)));
+#line 179
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title",
+                        "Subtasks"});
+            table22.AddRow(new string[] {
+                        "One",
+                        "One-A;One-B"});
+            table22.AddRow(new string[] {
+                        "Two",
+                        "Two-A;Two-B"});
+            table22.AddRow(new string[] {
+                        "Three",
+                        ""});
+#line 180
+ testRunner.Given("I load a taskboard with the following tasks and subtasks", ((string)(null)), table22);
+#line 185
+ testRunner.And("I select task \"Two\"");
+#line 186
+ testRunner.When("I click new subtask");
+#line 187
+ testRunner.Then("task \"Two\" should be expanded");
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table23.AddRow(new string[] {
+                        "One"});
+            table23.AddRow(new string[] {
+                        "Two"});
+            table23.AddRow(new string[] {
+                        ""});
+            table23.AddRow(new string[] {
+                        "Two-A"});
+            table23.AddRow(new string[] {
+                        "Two-B"});
+            table23.AddRow(new string[] {
+                        "Three"});
+#line 188
+ testRunner.And("the visible tasks should be in this order:", ((string)(null)), table23);
 #line hidden
             testRunner.CollectScenarioErrors();
         }
