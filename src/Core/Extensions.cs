@@ -131,7 +131,7 @@ namespace Rogue.Ptb.Core
 					{
 						y = y.Ancestors().Skip((-diff) - 1).First();
 
-						// y is child of x, most sort after x
+						// y is child of x, must sort after x
 						if (x == y)
 						{
 							return -1;

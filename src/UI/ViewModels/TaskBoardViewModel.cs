@@ -70,7 +70,7 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		private void OnCollapseAll()
 		{
-			foreach (var taskViewModel in Tasks)
+			foreach (var taskViewModel in Tasks.Where(tvm => tvm.IndentLevel == 0))
 			{
 				if (taskViewModel.Collapsable && taskViewModel.CanCollapse)
 				{
