@@ -49,6 +49,7 @@
     <Reference Include="NHibernate.ByteCode.Castle">
       <HintPath>..\packages\NHibernate.3.0.0.2001\lib\NHibernate.ByteCode.Castle.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="ReactiveUI">
       <HintPath>..\packages\reactiveui-core.2.0.0.2\lib\Net4\ReactiveUI.dll</HintPath>
     </Reference>
@@ -83,8 +84,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildPath.cs" />
     <Compile Include="DateTimeHelper.cs" />
     <Compile Include="EventAggregator.cs" />
     <Compile Include="Extensions.cs" />
