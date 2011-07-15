@@ -10,7 +10,7 @@ namespace Rogue.Ptb.Infrastructure.Tests.Specs
 	{
 		Establish context = () =>
 			{
-				builder = BuildPath.From(0, 0).To(10, 10).CurveTo(15, 15, SweepDirection.Clockwise);
+				builder = BuildPath.From(0, 0).LineTo(10, 10).CurveTo(15, 15, SweepDirection.Clockwise);
 			};
 
 
@@ -34,5 +34,17 @@ namespace Rogue.Ptb.Infrastructure.Tests.Specs
 
 		private static PathGeometry geometry;
 		private static BuildPath.IPathBuilder builder;
+	}
+
+	[Subject(typeof (BuildPath))]
+	public class When_constructing_a_path_geometry_through_the_fluent_API_with_two_figures
+	{
+		Establish context = () => builder = BuildPath.From(0, 0).LineTo(10, 10).NewFigureFrom(0, 10).LineTo(10, 0);
+		Because of = () => geometry = builder.Build();
+
+		It should_have_two_figures = () => geometry.Figures.Count.ShouldEqual(2);
+
+		private static BuildPath.IPathBuilder builder;
+		private static PathGeometry geometry;
 	}
 }

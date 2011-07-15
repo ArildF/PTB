@@ -9,9 +9,10 @@ namespace Rogue.Ptb.Infrastructure
 	{
 		public interface IPathBuilder
 		{
-			IPathBuilder To(double x, double y);
+			IPathBuilder LineTo(double x, double y);
 			IPathBuilder CurveTo(double x, double y, SweepDirection direction);
 			PathGeometry Build();
+			IPathBuilder NewFigureFrom(double x, double y);
 		}
 
 		public static IPathBuilder From(double x, double y)
@@ -21,8 +22,9 @@ namespace Rogue.Ptb.Infrastructure
 
 		private class PathBuilder : IPathBuilder
 		{
-			private readonly Point _startPoint;
-			private readonly List<PathSegment> _segments = new List<PathSegment>();
+			private Point _startPoint;
+			private readonly List<PathFigure> _figures = new List<PathFigure>(); 
+			private List<PathSegment> _segments = new List<PathSegment>();
 			private bool _currentIsStroked;
 
 			private Point _currentPoint;
@@ -33,7 +35,7 @@ namespace Rogue.Ptb.Infrastructure
 				_currentIsStroked = true;
 			}
 
-			public IPathBuilder To(double x, double y)
+			public IPathBuilder LineTo(double x, double y)
 			{
 				_currentPoint = new Point(x, y);
 				_segments.Add(new LineSegment(_currentPoint, _currentIsStroked));
@@ -52,12 +54,28 @@ namespace Rogue.Ptb.Infrastructure
 
 			public PathGeometry Build()
 			{
-				var figures = new[]
-					{
-						new PathFigure(_startPoint, _segments, false),
-					};
-				return new PathGeometry(figures);
+				FinalizeFigure();
+				return new PathGeometry(_figures);
 			}
+
+			public IPathBuilder NewFigureFrom(double x, double y)
+			{
+				FinalizeFigure();
+				_startPoint = new Point(x, y);
+				return this;
+			}
+
+			private void FinalizeFigure()
+			{
+				_figures.Add(new PathFigure(_startPoint, _segments, false));
+
+				_segments = new List<PathSegment>();
+			}
+		}
+
+		public static IPathBuilder From(Point startPoint)
+		{
+			return new PathBuilder(startPoint.X, startPoint.Y);
 		}
 	}
 }

@@ -155,7 +155,7 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public bool CanCollapse
 		{
-			get { return ChildVMs().All(vm => vm.IsVisible); }
+			get { return ChildVMs().Any(vm => vm.IsVisible); }
 		}
 
 		public bool CanExpand
