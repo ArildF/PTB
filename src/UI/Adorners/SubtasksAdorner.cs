@@ -21,7 +21,13 @@ namespace Rogue.Ptb.UI.Adorners
 		{
 		}
 
-		protected override void OnRender(System.Windows.Media.DrawingContext dc)
+		protected override Size MeasureOverride(Size constraint)
+		{
+			var result = base.MeasureOverride(constraint);
+			return result;
+		}
+
+		protected override void OnRender(DrawingContext dc)
 		{
 			base.OnRender(dc);
 

@@ -90,7 +90,7 @@
 									<SplineDoubleKeyFrame KeyTime="0:0:0.037" Value="0"/>
 								</DoubleAnimationUsingKeyFrames>
 							</Storyboard>
-							<Storyboard x:Key="OnSelected">
+							<Storyboard x:Key="OnSelected" >
 								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="taskControl">
 									<SplineDoubleKeyFrame KeyTime="0:0:0.05" Value="1.12"/>
 								</DoubleAnimationUsingKeyFrames>
