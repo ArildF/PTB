@@ -55,7 +55,8 @@ namespace Rogue.Ptb.Infrastructure
 			public PathGeometry Build()
 			{
 				FinalizeFigure();
-				return new PathGeometry(_figures);
+				var pathGeometry = new PathGeometry(_figures);
+				return pathGeometry;
 			}
 
 			public IPathBuilder NewFigureFrom(double x, double y)
@@ -67,7 +68,8 @@ namespace Rogue.Ptb.Infrastructure
 
 			private void FinalizeFigure()
 			{
-				_figures.Add(new PathFigure(_startPoint, _segments, false));
+				var pathFigure = new PathFigure(_startPoint, _segments, false);
+				_figures.Add(pathFigure);
 
 				_segments = new List<PathSegment>();
 			}

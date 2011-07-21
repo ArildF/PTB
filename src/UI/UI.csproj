@@ -121,6 +121,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Adorners\SubtasksAdorner.cs" />
+    <Compile Include="Adorners\TaskboardAdornerBase.cs" />
+    <Compile Include="Adorners\TaskPriorityAdorner.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

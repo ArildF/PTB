@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Interactivity;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Rogue.Ptb.Infrastructure;
+using Castle.Core;
 using Rogue.Ptb.UI.Adorners;
 
 namespace Rogue.Ptb.UI.Views
@@ -18,6 +14,7 @@ namespace Rogue.Ptb.UI.Views
 	public partial class TaskBoardView : ITaskBoardView
 	{
 		private SubtasksAdorner _subtasksAdorner;
+		private  TaskPriorityAdorner _taskPriorityAdorner;
 
 		public TaskBoardView()
 		{
@@ -36,7 +33,10 @@ namespace Rogue.Ptb.UI.Views
 		{
 			var layer = AdornerLayer.GetAdornerLayer(_itemsControl);
 			_subtasksAdorner = new SubtasksAdorner(_itemsControl);
+			_taskPriorityAdorner = new TaskPriorityAdorner(_itemsControl);
+
 			layer.Add(_subtasksAdorner);
+			layer.Add(_taskPriorityAdorner);
 		}
 
 		public TaskBoardView(ITaskBoardViewModel vm) : this()
@@ -51,7 +51,19 @@ namespace Rogue.Ptb.UI.Views
 
 		private void OnTaskSelectionAnimationCompleted(object sender, EventArgs e)
 		{
-			_subtasksAdorner.InvalidateVisual();
+			InvalidateAdorners();
+		}
+
+		private void InvalidateAdorners()
+		{
+			GetAdorners().ForEach(ad => ad.InvalidateVisual());
+		}
+
+
+		private IEnumerable<Adorner> GetAdorners()
+		{
+			yield return _subtasksAdorner;
+			yield return _taskPriorityAdorner;
 		}
 	}
 
