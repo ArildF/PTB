@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Concurrency;
 using System.Linq.Expressions;
+using System.Windows.Threading;
 using ReactiveUI;
 using Rogue.Ptb.Infrastructure;
 using System.Linq;
@@ -56,6 +58,53 @@ namespace Rogue.Ptb.UI
 			aggregator.Listen<T>().SubscribeOn(RxApp.DeferredScheduler).Subscribe(handler);
 		}
 
+		public static IObservable<IObservedChange<T, object>> PropertyOnAnyChanged<T, TRet>(
+			this IReactiveCollection<T> self, Expression<Func<T, TRet>> expression)
+		{
+			var name = expression.PropertyName();
+
+			return self.ItemChanged.Where(t => t.PropertyName == name);
+		}
+
+		public static IObservable<T> ObserveOnIdle<T>(this IObservable<T>  self)
+		{
+			return self.ObserveOn(new IdleDispatcher(Dispatcher.CurrentDispatcher));
+		}
+
+		private class IdleDispatcher : IScheduler
+		{
+			private readonly Dispatcher _dispatcher;
+
+			public IdleDispatcher(Dispatcher dispatcher)
+			{
+				_dispatcher = dispatcher;
+			}
+
+			public IDisposable Schedule(Action action)
+			{
+				_dispatcher.Invoke(action, DispatcherPriority.ApplicationIdle);
+				return NopDisposable.Instance;
+			}
+
+			public IDisposable Schedule(Action action, TimeSpan dueTime)
+			{
+				throw new NotImplementedException();
+			}
+
+			public DateTimeOffset Now
+			{
+				get { throw new NotImplementedException(); }
+			}
+
+			private class NopDisposable : IDisposable
+			{
+				public static IDisposable Instance = new NopDisposable();
+				public void Dispose()
+				{
+					
+				}
+			}
+		}
 	}
 
 }

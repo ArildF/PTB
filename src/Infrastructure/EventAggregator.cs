@@ -19,13 +19,22 @@ namespace Rogue.Ptb.Infrastructure
 			subject.OnNext(message);
 		}
 
+		public void AddSource<T>(IObservable<T> observable)
+		{
+			var subject = GetSubject<T>();
+			observable.Subscribe(subject);
+		}
+
 		private Subject<T> GetSubject<T>()
 		{
 			object subject;
-			if (!_events.TryGetValue(typeof(T), out subject))
+			lock (_events)
 			{
-				subject = new Subject<T>();
-				_events[typeof (T)] = subject;
+				if (!_events.TryGetValue(typeof (T), out subject))
+				{
+					subject = new Subject<T>();
+					_events[typeof (T)] = subject;
+				}
 			}
 
 			return (Subject<T>)subject;

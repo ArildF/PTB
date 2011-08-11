@@ -39,6 +39,11 @@ namespace Rogue.Ptb.UI.ViewModels
 			get { return _task.State; }
 			set
 			{
+				if (value == _task.State)
+				{
+					return;
+				}
+
 				this.RaisePropertyChanging(t => t.State);
 
 				ApplyNewState(value);

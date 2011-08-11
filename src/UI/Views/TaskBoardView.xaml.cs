@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Concurrency;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media.Animation;
 using Castle.Core;
+using ReactiveUI;
+using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Adorners;
+using System.Linq;
+using Rogue.Ptb.UI;
 
 namespace Rogue.Ptb.UI.Views
 {
@@ -13,6 +18,7 @@ namespace Rogue.Ptb.UI.Views
 	/// </summary>
 	public partial class TaskBoardView : ITaskBoardView
 	{
+		private readonly IEventAggregator _aggregator;
 		private SubtasksAdorner _subtasksAdorner;
 		private  TaskPriorityAdorner _taskPriorityAdorner;
 
@@ -39,9 +45,13 @@ namespace Rogue.Ptb.UI.Views
 			layer.Add(_taskPriorityAdorner);
 		}
 
-		public TaskBoardView(ITaskBoardViewModel vm) : this()
+		public TaskBoardView(ITaskBoardViewModel vm, IEventAggregator aggregator) : this()
 		{
+			_aggregator = aggregator;
 			DataContext = vm;
+
+			_aggregator.Listen<TaskStateChanged>().Delay(TimeSpan.FromMilliseconds(50))
+				.ObserveOnIdle().Subscribe(_ => InvalidateAdorners());
 		}
 
 		public UIElement Element

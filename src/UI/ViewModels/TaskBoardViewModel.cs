@@ -61,6 +61,10 @@ namespace Rogue.Ptb.UI.ViewModels
 			_bus.ListenOnScheduler<ReSort>(evt => Reorder());
 			_bus.ListenOnScheduler<CollapseAll>(evt => OnCollapseAll());
 
+
+			_bus.AddSource(Tasks.PropertyOnAnyChanged(vm => vm.State)
+				.Select(_ => new TaskStateChanged()));
+
 			DragCommand = new ReactiveCommand();
 
 

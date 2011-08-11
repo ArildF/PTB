@@ -73,7 +73,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[BeforeTestRun]
 		public static void BeforeTestRun()
 		{
-			HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
+            //HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
 			//TODO: implement logic that has to run before the entire test run
 		}
 

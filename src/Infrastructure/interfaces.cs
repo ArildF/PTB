@@ -10,5 +10,6 @@ namespace Rogue.Ptb.Infrastructure
 	{
 		IObservable<T> Listen<T>();
 		void Publish<T>(T message = default(T));
+		void AddSource<T>(IObservable<T> observable);
 	}
 }
