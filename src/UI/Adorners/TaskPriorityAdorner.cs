@@ -15,10 +15,8 @@ namespace Rogue.Ptb.UI.Adorners
 		{
 		}
 
-		protected override void OnRender(DrawingContext drawingContext)
+		protected override void DoRender(DrawingContext drawingContext)
 		{
-			base.OnRender(drawingContext);
-
 			var items = from vm in GetViewModels()
 			            where vm.IsVisible
 			            let fe = FrameworkElementFromItem(vm)
@@ -44,14 +42,15 @@ namespace Rogue.Ptb.UI.Adorners
 			var startPoint = FindPoint(mostImportant, new Point(mostImportant.ActualWidth/2, mostImportant.ActualHeight));
 			var endPoint = FindPoint(leastImportant, new Point(leastImportant.ActualWidth/2, 0));
 
-			var midPoint = new Point((startPoint.X + endPoint.X)* 0.5, (startPoint.Y + ((endPoint.Y - startPoint.Y) * 0.66)));
+
+			var vector = Point.Subtract(endPoint, startPoint);
+
+			var midPoint = Point.Add(startPoint, Vector.Multiply(vector, 0.66));
 
 			Transform arrowTransform = Transform.Identity;
-			if (Math.Abs(startPoint.X - endPoint.X) > Double.Epsilon)
+			double angle;
+			if (Math.Abs((angle = Vector.AngleBetween(vector, new Vector(0, -1))) - 0) > double.Epsilon)
 			{
-				var vector = Point.Subtract(endPoint, startPoint);
-				var angle = Vector.AngleBetween(new Vector(0, 1), vector);
-
 				arrowTransform = new RotateTransform(angle, midPoint.X, midPoint.Y);
 			}
 
@@ -64,6 +63,8 @@ namespace Rogue.Ptb.UI.Adorners
 			dc.PushTransform(arrowTransform);
 
 			dc.DrawGeometry(null, _pen, arrow);
+
+			dc.Pop();
 		}
 	}
 }

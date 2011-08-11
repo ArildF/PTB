@@ -16,10 +16,8 @@ namespace Rogue.Ptb.UI.Adorners
 		{
 		}
 
-		protected override void OnRender(DrawingContext dc)
+		protected override void DoRender(DrawingContext dc)
 		{
-			base.OnRender(dc);
-
 			foreach (var tuple in FindSuperTasks())
 			{
 				FrameworkElement parentTaskElement = tuple.Item1;

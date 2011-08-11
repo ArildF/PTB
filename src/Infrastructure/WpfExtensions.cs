@@ -39,6 +39,22 @@ namespace Rogue.Ptb.Infrastructure
 
 		}
 
+        public static T FindParentOfType<T>(this DependencyObject obj) where T: DependencyObject
+        {
+            var parent = VisualTreeHelper.GetParent(obj);
+            if (parent == null)
+            {
+                return null;
+            }
+
+            if (parent is T)
+            {
+                return (T) parent;
+            }
+
+            return FindParentOfType<T>(parent);
+        }
+
 		private static bool DoFindVisualChildPath<T>(DependencyObject element, string name, Stack<int> stack) where T:FrameworkElement
 		{
 			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
