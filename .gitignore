@@ -27,4 +27,5 @@ ProxiesBin
 *.sdf
 *.opensdf
 *.obj
+.idea
 
