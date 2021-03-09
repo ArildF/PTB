@@ -1,10 +1,8 @@
-﻿using System;
-using Rogue.Ptb.UI.Commands;
-using Rogue.Ptb.UI.Properties;
+﻿using Rogue.Ptb.UI.Commands;
 using Rogue.Ptb.UI.Registration;
 using Rogue.Ptb.UI.Services;
 using Rogue.Ptb.UI.Views;
-using StructureMap.Configuration.DSL;
+using StructureMap;
 
 namespace Rogue.Ptb.UI
 {

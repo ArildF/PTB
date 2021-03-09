@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
+using System.Reactive.Linq;
 using System.Windows.Controls;
 using Microsoft.Win32;
-using ReactiveUI.Xaml;
+using ReactiveUI;
 
 namespace Rogue.Ptb.UI.Views
 {
@@ -11,13 +11,12 @@ namespace Rogue.Ptb.UI.Views
 	{
 		public ExportTaskBoardDialog()
 		{
-			var canExecute = from ea in Observable.FromEvent<TextChangedEventArgs>(_pathTextBox, "TextChanged")
+			var canExecute = from ea in Observable.FromEventPattern(_pathTextBox, "TextChanged")
 			                 let path = _pathTextBox.Text
 			                 let directory = Path.GetDirectoryName(path)
 			                 select Directory.Exists(directory);
 
-			var command = new ReactiveCommand(canExecute);
-			command.Subscribe(_ => ReturnValue = new ExportTaskBoardDialogResult(_pathTextBox.Text));
+			var command = ReactiveCommand.Create(() => ReturnValue = new ExportTaskBoardDialogResult(_pathTextBox.Text), canExecute);
 			OkCommand = command;
 
 			Title = "Export taskboard";

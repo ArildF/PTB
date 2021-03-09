@@ -9,12 +9,12 @@ namespace Rogue.Ptb.UI.ViewModels
 	{
 		void IReactivePropertyChangingObject.OnPropertyChanging(string propertyName)
 		{
-			raisePropertyChanging(propertyName);
+			// raisePropertyChanging(propertyName);
 		}
-
+		
 		void IReactivePropertyChangingObject.OnPropertyChanged(string propertyName)
 		{
-			raisePropertyChanged(propertyName);
+			// raisePropertyChanged(propertyName);
 		}
 	}
 }

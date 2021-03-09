@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using ReactiveUI;
-using ReactiveUI.Xaml;
 using Rogue.Ptb.Core;
 using System;
+using System.Reactive;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
@@ -28,8 +27,8 @@ namespace Rogue.Ptb.UI.ViewModels
 			_isVisible = true;
 
 
-			var cmd = new ReactiveCommand();
-			cmd.Subscribe(_ => ToggleCollapseHierarchy());
+			var cmd = ReactiveCommand.Create<Unit>(_ => ToggleCollapseHierarchy());
+			cmd.Subscribe();
 
 			ToggleCollapseHierarchyCommand = cmd;
 		}
@@ -82,7 +81,7 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public string Title
 		{
-			get { return _task.Title; }
+			get => _task.Title;
 			set { this.SetAndRaisePropertyChanged(t => t.Title, value, val  => _task.Title = val); }
 		}
 
@@ -99,7 +98,7 @@ namespace Rogue.Ptb.UI.ViewModels
 				return _isEditing;
 			}
 			set {
-				this.RaiseAndSetIfChanged(tvm => tvm.IsEditing, value);
+				this.RaiseAndSetIfChanged(ref _isEditing, value);
 			}
 		}
 
@@ -130,30 +129,16 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public bool IsSelected
 		{
-			get
-			{
-				return _isSelected;
-			}
-			set
-			{
-				this.RaiseAndSetIfChanged(t => t.IsSelected, value);
-			}
+			get => _isSelected;
+			set => this.RaiseAndSetIfChanged(ref _isSelected, value);
 		}
 
-		public int IndentLevel
-		{
-			get { return _task.AncestorCount(); }
-		}
+		public int IndentLevel => _task.AncestorCount();
 
 		public bool IsVisible
 		{
-			get {
-				return _isVisible;
-			}
-			private set
-			{
-				this.RaiseAndSetIfChanged(vm => vm.IsVisible, value);
-			}
+			get => _isVisible;
+			private set => this.RaiseAndSetIfChanged(ref _isVisible, value);
 		}
 
 		public ICommand ToggleCollapseHierarchyCommand { get; private set; }
@@ -186,16 +171,16 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public void IsMoreImportantThan(TaskViewModel leastImportant)
 		{
-			raisePropertyChanging(null);
+			this.RaisePropertyChanging();
 
 			_task.IsMoreImportantThan(leastImportant.Task);
 
-			raisePropertyChanged(null);
+			this.RaisePropertyChanged();
 		}
 
 		public TaskViewModel CreateSubTask()
 		{
-			return new TaskViewModel(_task.CreateSubTask(), _viewModelMapper);
+			return new(_task.CreateSubTask(), _viewModelMapper);
 		}
 
 		public void Select()

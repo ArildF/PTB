@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows.Input;
+using DynamicData;
+using DynamicData.Binding;
 using ReactiveUI;
-using ReactiveUI.Xaml;
 using Rogue.Ptb.Core;
-using NHibernate.Linq;
+using NHibernate.Util;
 using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Behaviors;
 using Rogue.Ptb.UI.Commands;
-using Rogue.Ptb.UI.Infrastructure;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
@@ -28,48 +31,48 @@ namespace Rogue.Ptb.UI.ViewModels
 			_bus = bus;
 			_commandResolver = commandResolver;
 
-			Tasks = new SortableReactiveCollection<TaskViewModel>();
+			var tasks = new ObservableCollectionExtended<TaskViewModel>();
 
-			Tasks.ItemChanged
+			var suspension = tasks.SuspendNotifications();
+
+			var ocs = tasks.ToObservableChangeSet();
+			ocs
 				.Throttle(TimeSpan.FromSeconds(5))
-				.Select(c => c.Sender)
-				.Where(c =>  _repository != null)
-				.Where(task => !task.IsEditing)
-				.SubscribeOn(RxApp.DeferredScheduler)
+				.Filter(_ =>  _repository != null)
+				.Filter(c => !c.IsEditing)
+				.ObserveOnDispatcher()
 				.Subscribe(_ => OnSaveAllTasks(null));
 
-			Tasks.ItemChanged
-				.Where(c => c.PropertyName == "IsSelected")
-				.SubscribeOn(RxApp.DeferredScheduler)
-				.Select(c => c.Sender)
+			ocs
+				.AutoRefresh(t => t.IsSelected)
+				.ToCollection()
+				.SelectMany(c => c)
 				.Subscribe(IsSelectedChanged);
 
-			Tasks.ItemChanged
-				.Where(c => c.PropertyName == "State")
-				.SubscribeOn(RxApp.DeferredScheduler)
-				.Select(c => c.Sender)
+			ocs
+				.AutoRefresh(c => c.State)
+				.ToCollection()
+				.SelectMany(c => c)
 				.Subscribe(StateChanged);
 
 
-			Tasks.ChangeTrackingEnabled = true;
+			suspension.Dispose();
+
+			Tasks = tasks;
 
 			_bus.ListenOnScheduler<DatabaseChanged>(OnDatabaseChanged);
 			_bus.ListenOnScheduler<CreateNewTask>(OnCreateNewTask);
 			_bus.ListenOnScheduler<CreateNewSubTask>(OnCreateNewSubTask);
 			_bus.ListenOnScheduler<SaveAllTasks>(OnSaveAllTasks);
-			_bus.ListenOnScheduler<ReloadAllTasks>(evt => Reload());
-			_bus.ListenOnScheduler<ReSort>(evt => Reorder());
-			_bus.ListenOnScheduler<CollapseAll>(evt => OnCollapseAll());
+			_bus.ListenOnScheduler<ReloadAllTasks>(_ => Reload());
+			_bus.ListenOnScheduler<ReSort>(_ => Reorder());
+			_bus.ListenOnScheduler<CollapseAll>(_ => OnCollapseAll());
 
 
-			_bus.AddSource(Tasks.PropertyOnAnyChanged(vm => vm.State)
+			_bus.AddSource(ocs.AutoRefresh(vm => vm.State)
 				.Select(_ => new TaskStateChanged()));
 
-			DragCommand = new ReactiveCommand();
-
-
-			DragCommand.OfType<DragCommandArgs>().Subscribe(OnNext);
-
+			DragCommand = ReactiveCommand.Create<DragCommandArgs>(OnNext);
 		}
 
 		private void OnCollapseAll()
@@ -135,9 +138,9 @@ namespace Rogue.Ptb.UI.ViewModels
 		}
 
 
-		public ReactiveCommand DragCommand { get; private set; }
+		public ReactiveCommand<DragCommandArgs, Unit> DragCommand { get; private set; }
 
-		public SortableReactiveCollection<TaskViewModel> Tasks { get; private set; }
+		public ObservableCollectionExtended<TaskViewModel> Tasks { get; private set; }
 
 		public TaskViewModel SelectedTask
 		{
@@ -150,7 +153,7 @@ namespace Rogue.Ptb.UI.ViewModels
 					_selectedTask.IsSelected = false;
 				}
 
-				this.RaiseAndSetIfChanged(vm => vm.SelectedTask, value);
+				this.RaiseAndSetIfChanged(ref _selectedTask, value);
 				if (value != null && !value.IsSelected)
 				{
 					value.IsSelected = true;
@@ -199,10 +202,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			Tasks.Insert(0, taskViewModel);
 			_tasks.Add(task);
 
-			if (SelectedTask != null)
-			{
-				SelectedTask.Deselect();
-			}
+			SelectedTask?.Deselect();
 
 			SelectedTask = taskViewModel;
 			taskViewModel.BeginEdit();
@@ -238,12 +238,12 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			IDisposable subscription = null;
 			subscription = SelectedTask.ObservableForProperty(vm => vm.IsEditing)
-				.Where(oc => !newTaskViewModel.IsEditing)
-				.SubscribeOn(RxApp.DeferredScheduler)
-				.Subscribe(oc =>
+				.Where(_ => !newTaskViewModel.IsEditing)
+				.SubscribeOn(RxApp.MainThreadScheduler)
+				.Subscribe(_ =>
 				{
 					SelectedTask = parentTask;
-					subscription.Dispose();
+					subscription?.Dispose();
 				});
 		}
 

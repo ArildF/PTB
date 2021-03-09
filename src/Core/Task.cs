@@ -17,7 +17,7 @@ namespace Rogue.Ptb.Core
 			CreatedDate = ModifiedDate = DateTimeHelper.Now;
 			Id = Guid.NewGuid();
 			_title = "";
-			Links = new HashedSet<Link>();
+			Links = new HashSet<Link>();
 		}
 
 		public virtual Guid Id { get; private set; }
@@ -58,7 +58,7 @@ namespace Rogue.Ptb.Core
 			get; private set;
 		}
 
-		protected internal virtual Iesi.Collections.Generic.ISet<Link> Links
+		protected internal virtual ISet<Link> Links
 		{
 			get; private set;
 		}

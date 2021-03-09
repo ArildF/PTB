@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
-using NHibernate.Linq;
 using System.Linq;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
+using NHibernate.Util;
 using Rogue.Ptb.Core.Initializers;
 
 namespace Rogue.Ptb.Core
@@ -28,7 +28,7 @@ namespace Rogue.Ptb.Core
 
 		public virtual ISessionFactory GetSessionFactory()
 		{
-			return _factory ?? (_factory = CreateSessionFactory());
+			return _factory ??= CreateSessionFactory();
 		}
 
 		public virtual void CreateNewDatabase(string path)
@@ -92,7 +92,7 @@ namespace Rogue.Ptb.Core
 			}
 
 			var factory = Fluently.Configure()
-				.Database(MsSqlCeConfiguration.Standard
+				.Database(SQLiteConfiguration.Standard
 							.ConnectionString(c => c.Is(connString)))
 				.Mappings(mc => mc.FluentMappings.AddFromAssemblyOf<SessionFactoryProvider>())
 				.ExposeConfiguration(config =>

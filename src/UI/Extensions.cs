@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Concurrency;
 using System.Linq.Expressions;
 using System.Windows.Threading;
 using ReactiveUI;
 using Rogue.Ptb.Infrastructure;
-using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 
 namespace Rogue.Ptb.UI
 {
@@ -55,16 +54,16 @@ namespace Rogue.Ptb.UI
 
 		public static void ListenOnScheduler<T>(this IEventAggregator aggregator, Action<T> handler)
 		{
-			aggregator.Listen<T>().SubscribeOn(RxApp.DeferredScheduler).Subscribe(handler);
+			aggregator.Listen<T>().SubscribeOn(RxApp.MainThreadScheduler).Subscribe(handler);
 		}
 
-		public static IObservable<IObservedChange<T, object>> PropertyOnAnyChanged<T, TRet>(
-			this IReactiveCollection<T> self, Expression<Func<T, TRet>> expression)
-		{
-			var name = expression.PropertyName();
-
-			return self.ItemChanged.Where(t => t.PropertyName == name);
-		}
+		// public static IObservable<IObservedChange<T, object>> PropertyOnAnyChanged<T, TRet>(
+		// 	this IReactiveCollection<T> self, Expression<Func<T, TRet>> expression)
+		// {
+		// 	var name = expression.PropertyName();
+		//
+		// 	return self.ItemChanged.Where(t => t.PropertyName == name);
+		// }
 
 		public static IObservable<T> ObserveOnIdle<T>(this IObservable<T>  self)
 		{
@@ -80,13 +79,18 @@ namespace Rogue.Ptb.UI
 				_dispatcher = dispatcher;
 			}
 
-			public IDisposable Schedule(Action action)
+			public IDisposable Schedule<TState>(TState state, Func<IScheduler, TState, IDisposable> action)
 			{
 				_dispatcher.Invoke(action, DispatcherPriority.ApplicationIdle);
 				return NopDisposable.Instance;
 			}
 
-			public IDisposable Schedule(Action action, TimeSpan dueTime)
+			public IDisposable Schedule<TState>(TState state, TimeSpan dueTime, Func<IScheduler, TState, IDisposable> action)
+			{
+				throw new NotImplementedException();
+			}
+
+			public IDisposable Schedule<TState>(TState state, DateTimeOffset dueTime, Func<IScheduler, TState, IDisposable> action)
 			{
 				throw new NotImplementedException();
 			}

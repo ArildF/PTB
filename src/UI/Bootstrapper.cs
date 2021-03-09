@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Controls;
 using System.Windows.Threading;
-using NHibernate.Linq;
-using ReactiveUI;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Views;
 using StructureMap;
+using StructureMap.Configuration.DSL;
 using System.Linq;
+using NHibernate.Util;
 
 namespace Rogue.Ptb.UI
 {
@@ -36,12 +34,14 @@ namespace Rogue.Ptb.UI
 					ce.AddRegistry<UIRegistry>();
 					ce.AddRegistry<CoreRegistry>();
 					ce.AddRegistry<InfrastructureRegistry>();
-					ce.For<Func<Dialog, DialogHost>>().Use(c => 
-						uc => Container.With(uc).With(c.GetInstance<IShellView>()).GetInstance<DialogHost>());
+					ce.For<Func<Dialog, DialogHost>>().Use<Func<Dialog, DialogHost>>(
+						c => 
+							uc => 
+								Container.With(uc).With(c.GetInstance<IShellView>()).GetInstance<DialogHost>());
 					ce.For<Options>().Singleton().Use(options);
 				});
 
-			RxApp.GetFieldNameForPropertyNameFunc = propName => "_" + Char.ToLower(propName[0]) + propName.Substring(1);
+			// RxApp.GetFieldNameForPropertyNameFunc = propName => "_" + Char.ToLower(propName[0]) + propName.Substring(1);
 
 			SetUpIdleHandler();
 
@@ -59,7 +59,7 @@ namespace Rogue.Ptb.UI
 
 		private Options ParseOptions(IEnumerable<string> args)
 		{
-			return new Options {TaskboardPath = args.FirstOrDefault()};
+			return new() {TaskboardPath = args.FirstOrDefault()};
 		}
 
 		public IShellView CreateShell()

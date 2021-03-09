@@ -8,21 +8,13 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Castle.Core" Version="4.4.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="Moq" Version="4.16.0" />
+    <PackageReference Include="ReactiveUI.WPF" Version="13.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Antlr" Version="3.1.3.42154" />
-    <PackageReference Include="Castle.Core" Version="2.5.1" />
-    <PackageReference Include="FluentNHibernate" Version="1.1.1.694" />
-    <PackageReference Include="Iesi.Collections" Version="1.0.1" />
-    <PackageReference Include="NHibernate" Version="3.0.0.2001" />
-    <PackageReference Include="reactiveui" Version="2.0.0.2" />
-    <PackageReference Include="reactiveui-core" Version="2.0.0.2" />
-    <PackageReference Include="reactiveui-xaml" Version="2.0.0.2" />
-    <PackageReference Include="Rx-Core" Version="1.0.2838.0" />
-    <PackageReference Include="Rx-Interactive" Version="1.0.2838.0" />
-    <PackageReference Include="Rx-Main" Version="1.0.2838.0" />
-    <PackageReference Include="structuremap" Version="2.6.1.0" />
+    <PackageReference Include="NHibernate" Version="5.3.5" />
+    <PackageReference Include="structuremap" Version="4.7.1" />
   </ItemGroup>
 </Project>

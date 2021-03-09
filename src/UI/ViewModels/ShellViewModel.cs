@@ -33,7 +33,7 @@ namespace Rogue.Ptb.UI.ViewModels
 		public string Title
 		{
 			get { return _title; }
-			set { this.RaiseAndSetIfChanged(vm => vm.Title, value); }
+			set { this.RaiseAndSetIfChanged(ref _title, value); }
 		}
 
 		public ICommand Resolve(CommandName commandName)

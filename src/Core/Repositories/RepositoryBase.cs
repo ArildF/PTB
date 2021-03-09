@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Castle.Core;
 using NHibernate;
 using NHibernate.Linq;
+using NHibernate.Util;
 using Extensions = Rogue.Ptb.Infrastructure.Extensions;
 
 namespace Rogue.Ptb.Core.Repositories
@@ -50,7 +52,7 @@ namespace Rogue.Ptb.Core.Repositories
 			{
 				foreach (var item in items)
 				{
-					_session.SaveOrUpdateCopy(item);
+					_session.SaveOrUpdate(item);
 				}
 				
 				tx.Commit();

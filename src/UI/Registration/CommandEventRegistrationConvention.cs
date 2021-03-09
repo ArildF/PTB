@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows.Input;
 using Rogue.Ptb.UI.Commands;
-using StructureMap.Configuration.DSL;
+using StructureMap;
 using StructureMap.Graph;
+using StructureMap.Graph.Scanning;
 
 namespace Rogue.Ptb.UI.Registration
 {
@@ -10,11 +11,18 @@ namespace Rogue.Ptb.UI.Registration
 	{
 		public void Process(Type type, Registry registry)
 		{
-			if (!type.IsAbstract && typeof(ICommandEvent).IsAssignableFrom(type))
-			{
-				registry.AddType(typeof(ICommand), typeof(EventCommand<>).MakeGenericType(type), type.Name);
-			}
+			
 		}
 
+		public void ScanTypes(TypeSet types, Registry registry)
+		{
+			foreach (var type in types.AllTypes())
+			{
+				if (!type.IsAbstract && typeof(ICommandEvent).IsAssignableFrom(type))
+				{
+					registry.AddType(typeof(ICommand), typeof(EventCommand<>).MakeGenericType(type), type.Name);
+				}
+			}
+		}
 	}
 }

@@ -17,10 +17,10 @@ namespace Rogue.Ptb.UI.Views
 		{
 			DataContext = vm;
 
-			mainGrid.Children.Add(toolbarView.Element);
+			MainGrid.Children.Add(toolbarView.Element);
 			Grid.SetRow(toolbarView.Element, 0);
 
-			mainGrid.Children.Add(taskBoardView.Element);
+			MainGrid.Children.Add(taskBoardView.Element);
 			Grid.SetRow(taskBoardView.Element, 1);
 		}
 

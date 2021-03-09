@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Concurrency;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media.Animation;
-using Castle.Core;
-using ReactiveUI;
+using NHibernate.Util;
 using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Adorners;
-using System.Linq;
-using Rogue.Ptb.UI;
 
 namespace Rogue.Ptb.UI.Views
 {

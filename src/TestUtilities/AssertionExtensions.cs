@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentAssertions;
+using FluentAssertions.Primitives;
 using Rogue.Ptb.Infrastructure;
 
 namespace TestUtilities
