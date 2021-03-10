@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
 			 xmlns:Behaviors="clr-namespace:Rogue.Ptb.UI.Behaviors" 
 			 xmlns:vc="clr-namespace:Rogue.Ptb.UI.ValueConverters" 
-			 xmlns:design="clr-namespace:Rogue.Ptb.UI.DesignTime" mc:Ignorable="d" 
+			 xmlns:design="clr-namespace:Rogue.Ptb.UI.DesignTime"
+			 xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+			 mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
 			 ToolTipService.ToolTip="{Binding ToolTip}"
 			  >
@@ -34,9 +35,9 @@
 					
 					
 					>
-					<i:Interaction.Behaviors>
+					<b:Interaction.Behaviors>
 						<Behaviors:CommandForEventBehavior Event="MouseDown" Action="Select" Passthrough="True"/>
-					</i:Interaction.Behaviors>
+					</b:Interaction.Behaviors>
 					<Border.Effect>
 						<DropShadowEffect BlurRadius="10" ShadowDepth="10"/>
 					</Border.Effect>
@@ -50,9 +51,9 @@
 								   Fill="{StaticResource ResourceKey=thatsmyboy_Simple_Red_Checkmark}"/>
 						<TextBlock TextAlignment="Center" Text="{Binding Title}" Margin="2" 
 								   x:Name="_textBlock" Cursor="IBeam" TextWrapping="Wrap" VerticalAlignment="Center">
-							<i:Interaction.Behaviors>
+							<b:Interaction.Behaviors>
 								<Behaviors:CommandForEventBehavior Event="MouseDown" Action="BeginEdit"/>
-							</i:Interaction.Behaviors>
+							</b:Interaction.Behaviors>
 						</TextBlock>
 					<TextBox TextWrapping="Wrap" x:Name="_textBox" 
 								 VerticalAlignment="Center" 
@@ -60,11 +61,11 @@
 								 Text="{Binding Title}"
 								 Visibility="Collapsed"
 								>
-						<i:Interaction.Behaviors>
+						<b:Interaction.Behaviors>
 							<Behaviors:CommandForEventBehavior Event="LostFocus" Action="EndEdit"/>
 							<Behaviors:SelectAllOnFocusBehavior/>
 							<Behaviors:KeyCommandBehavior Key="Enter" Action="EndEdit"/>
-						</i:Interaction.Behaviors>
+						</b:Interaction.Behaviors>
 					</TextBox>
 					
 					<Button Grid.Row="2" 

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 using System.Windows.Media;
+using Microsoft.Xaml.Behaviors;
 using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.Behaviors

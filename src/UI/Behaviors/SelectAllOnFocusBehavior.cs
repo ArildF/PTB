@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
 namespace Rogue.Ptb.UI.Behaviors
 {

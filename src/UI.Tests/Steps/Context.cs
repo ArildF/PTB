@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
@@ -9,12 +8,10 @@ using FluentNHibernate.Cfg.Db;
 using Moq;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
-using ReactiveUI.Xaml;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.ViewModels;
 using StructureMap;
-using NHibernate.Linq;
 
 namespace Rogue.Ptb.UI.Tests.Steps
 {
@@ -48,7 +45,10 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_container.Inject(settings);
 
 			var startables = _container.Model.GetAllPossible<IStartable>();
-			TypeHelperExtensionMethods.ForEach(startables, startup => startup.Start());
+			foreach (var startable in startables)
+			{
+				startable.Start();
+			}
 
 			TaskBoardViewModel = Get<TaskBoardViewModel>();
 			ToolbarViewModel = Get<ToolbarViewModel>();

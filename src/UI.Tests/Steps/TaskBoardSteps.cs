@@ -12,6 +12,8 @@ using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Commands;
 using TechTalk.SpecFlow;
 using FluentAssertions;
+using FluentAssertions.Equivalency;
+using NHibernate.Util;
 
 namespace Rogue.Ptb.UI.Tests.Steps
 {
@@ -342,12 +344,14 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 				CheckDates(oldTask, newTask, dateFuncs);
 
-				newTask.ShouldHave().AllProperties().But(
-					t => t.CreatedDate,
-					dateFuncs.Skip(1).Concat(links).ToArray()
-					).EqualTo(oldTask);
+				var options = new EquivalencyAssertionOptions<Task>().IncludingAllDeclaredProperties();
 
-				
+				foreach (var expression in dateFuncs.Skip(1).Concat(links))
+				{
+					options = options.Excluding(expression);
+				}
+
+				newTask.Should().BeEquivalentTo(oldTask, _ => options);
 			}
 		}
 
