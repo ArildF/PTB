@@ -17,14 +17,15 @@ namespace Rogue.Ptb.Core
 
 		public virtual Task LinkTo
 		{
-			get; private set;
+			get; protected internal set;
 		}
 
 		public virtual LinkType Type
 		{
-			get; private set; 
+			get;
+			protected internal set;
 		}
 
-		public virtual Guid Id { get; private set; }
+		public virtual Guid Id { get; protected internal set; }
 	}
 }

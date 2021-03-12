@@ -20,7 +20,7 @@ namespace Rogue.Ptb.Core
 			Links = new HashSet<Link>();
 		}
 
-		public virtual Guid Id { get; private set; }
+		public virtual Guid Id { get; protected internal set; }
 
 		public virtual string Title
 		{
@@ -34,38 +34,38 @@ namespace Rogue.Ptb.Core
 
 		public virtual TaskState State
 		{
-			get; private set;
+			get; protected internal set ;
 
 		}
 
 		public virtual DateTime CreatedDate
 		{
-			get; private set;
+			get; protected internal set;
 		}
 
 		public virtual DateTime ModifiedDate
 		{
-			get; private set;
+			get; protected internal set;
 		}
 
 		public virtual DateTime? StartedDate
 		{
-			get; private set;
+			get; protected internal set;
 		}
 
 		public virtual DateTime? CompletedDate
 		{
-			get; private set;
+			get; protected internal set;
 		}
 
 		protected internal virtual ISet<Link> Links
 		{
-			get; private set;
+			get; set;
 		}
 
-		public virtual DateTime? AbandonedDate { get; private set; }
+		public virtual DateTime? AbandonedDate { get; protected internal set; }
 
-		public virtual DateTime? StateChangedDate { get; private set; }
+		public virtual DateTime? StateChangedDate { get; protected internal set; }
 
 		public virtual IEnumerable<Task> LessImportantTasks
 		{

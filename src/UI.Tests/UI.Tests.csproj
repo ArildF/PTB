@@ -138,13 +138,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="FluentNHibernate" Version="3.1.0" />
+    <PackageReference Include="log4net" Version="2.0.12" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="NHibernate" Version="5.3.5" />
-    <PackageReference Include="NUnit" Version="2.5.7.10213" />
+    <PackageReference Include="NUnit" Version="3.13.1" />
     <PackageReference Include="reactiveui" Version="13.1.1" />
-    <PackageReference Include="SpecFlow" Version="1.4.0" />
+    <PackageReference Include="SpecFlow" Version="3.7.13" />
+    <PackageReference Include="SpecFlow.NUnit" Version="3.7.13" />
     <PackageReference Include="structuremap" Version="4.7.1" />
   </ItemGroup>
 </Project>

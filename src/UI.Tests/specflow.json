@@ -1,0 +1,5 @@
+﻿{
+  "specflow" : {
+    "unitTestProvider" : { "name" : "NUnit"}
+  }
+}

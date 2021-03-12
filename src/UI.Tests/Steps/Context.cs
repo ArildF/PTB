@@ -121,7 +121,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 				}
 				
 				var config = Fluently.Configure()
-					.Database(MsSqlCeConfiguration.Standard
+					.Database(SQLiteConfiguration.Standard
 					          	.ConnectionString(connString))
 					          	.Mappings(mc => mc.FluentMappings.AddFromAssemblyOf<SessionFactoryProvider>())
 					          	.BuildConfiguration();
