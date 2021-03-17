@@ -11,13 +11,15 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Machine.Fakes" Version="0.2.3.3" />
-    <PackageReference Include="Machine.Fakes.Moq" Version="0.2.3.3" />
-    <PackageReference Include="Machine.Specifications" Version="0.4.13.0" />
+    <PackageReference Include="Machine.Fakes" Version="2.11.0" />
+    <PackageReference Include="Machine.Fakes.Moq" Version="2.11.0" />
+    <PackageReference Include="Machine.Specifications" Version="1.0.0" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.1" />
+    <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
     <PackageReference Include="Moq" Version="4.16.0" />
-    <PackageReference Include="NUnit" Version="2.5.7.10213" />
-    <PackageReference Include="SpecFlow" Version="1.4.0" />
+    <PackageReference Include="NUnit" Version="3.13.1" />
+    <PackageReference Include="SpecFlow" Version="3.7.38" />
   </ItemGroup>
 </Project>
