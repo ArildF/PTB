@@ -194,5 +194,8 @@ Scenario: Creating a subtask should automatically expand the parent
 	| Two-B |
 	| Three |
 
+Scenario: Foo
+	When foo
+
 
 

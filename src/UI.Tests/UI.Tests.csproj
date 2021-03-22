@@ -15,12 +15,6 @@
       <HintPath>..\..\..\..\..\bin\NHProf\HibernatingRhinos.Profiler.Appender.v4.0.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\..\lib\System.Data.SQLite.DLL</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="ChangeTaskState.feature.cs">
@@ -149,5 +143,6 @@
     <PackageReference Include="SpecFlow" Version="3.7.13" />
     <PackageReference Include="SpecFlow.NUnit" Version="3.7.13" />
     <PackageReference Include="structuremap" Version="4.7.1" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
   </ItemGroup>
 </Project>

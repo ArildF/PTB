@@ -78,13 +78,13 @@ namespace Rogue.Ptb.Core
 				Path.GetFileNameWithoutExtension(path) + ".nhconfiguration");
 			var serializer = new BinaryFormatter();
 
-			if (!createSchema && File.Exists(configurationFile))
-			{
-				var configuration = (Configuration) serializer.Deserialize(File.OpenRead(configurationFile));
-
-				return Fluently.Configure(configuration).BuildSessionFactory();
-			}
-			string connString = String.Format("Data Source={0};Persist Security Info=False", path);
+			// if (!createSchema && File.Exists(configurationFile))
+			// {
+			// 	var configuration = (Configuration) serializer.Deserialize(File.OpenRead(configurationFile));
+			//
+			// 	return Fluently.Configure(configuration).BuildSessionFactory();
+			// }
+			string connString = $"Data Source={path};Version=3;BinaryGuid=False;Persist Security Info=False";
 
 			if (createSchema)
 			{
@@ -102,7 +102,7 @@ namespace Rogue.Ptb.Core
 						BuildSchema(config);
 					}
 
-					serializer.Serialize(File.OpenWrite(configurationFile), config);
+					// serializer.Serialize(File.OpenWrite(configurationFile), config);
 				})
 				//.Diagnostics(dc => dc.Enable().OutputToFile("Diagnostics.txt"))
 				.BuildSessionFactory();

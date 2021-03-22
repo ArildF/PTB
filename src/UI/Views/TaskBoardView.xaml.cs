@@ -48,7 +48,9 @@ namespace Rogue.Ptb.UI.Views
 			DataContext = vm;
 
 			_aggregator.Listen<TaskStateChanged>().Delay(TimeSpan.FromMilliseconds(50))
-				.ObserveOnIdle().Subscribe(_ => InvalidateAdorners());
+				.ObserveOnDispatcher()
+				.ObserveOnIdle()
+				.Subscribe(_ => InvalidateAdorners());
 		}
 
 		public UIElement Element

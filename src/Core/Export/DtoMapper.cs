@@ -1,29 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Glue;
+using AutoMapper;
 
 namespace Rogue.Ptb.Core.Export
 {
 	public class DtoMapper : IDtoMapper
 	{
-		private readonly Mapping<Task, TaskDto> _taskMapping;
+		private readonly IMapper _mapper;
 
-		public DtoMapper()
+		public DtoMapper(IMapper mapper)
 		{
-			_taskMapping = new Mapping<Task, TaskDto>();
-
-			_taskMapping.AutoRelateEqualNames();
+			_mapper = mapper;
 		}
 
 
 		public IEnumerable<TaskDto> MapTasksToDtos(IEnumerable<Task> tasks)
 		{
-			return tasks.Select(t => _taskMapping.Map(t));
+			var first = tasks.First();
+			var firstDto = _mapper.Map<TaskDto>(first);
+			return tasks.Select(t => _mapper.Map<TaskDto>(t));
 		}
 
 		public IEnumerable<Task> MapDtosToTasks(IEnumerable<TaskDto> taskDtos)
 		{
-			return taskDtos.Select(dto => _taskMapping.Map(dto));
+			return taskDtos.Select(dto => _mapper.Map<Task>(dto));
 		}
 
 

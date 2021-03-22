@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Iesi.Collections.Generic;
 using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.Core
 {
-	[DebuggerDisplay("{Title}")]
+	[DebuggerDisplay("{Title}: Id: {Id}")]
 	public class Task
 	{
 		private string _title;
@@ -184,7 +183,7 @@ namespace Rogue.Ptb.Core
 				Links.Remove(existingLink);
 			}
 
-			Links.Add(new Link(otherTask, type));
+			Links.Add(new Link(this, otherTask, type));
 		}
 
 		public virtual void IsLessImportantThan(Task otherTask)

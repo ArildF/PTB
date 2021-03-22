@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using FluentNHibernate.Diagnostics;
 using Moq;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
@@ -106,25 +108,37 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			public IList<string> OpenedDatabases { get; private set; }
 
+			public class SqlStatementInterceptor : EmptyInterceptor
+			{
+				public override NHibernate.SqlCommand.SqlString OnPrepareStatement(NHibernate.SqlCommand.SqlString sql)
+				{
+					Trace.WriteLine(sql.ToString());
+					return sql;
+				}
+			}
+
 			public override  ISessionFactory CreateSessionFactory(string path = "MyData.sdf", bool createSchema = false)
 			{
 				var filename = Path.GetFileName(path);
 				filename = Path.Combine(DatabasePath, filename);
 
-				string connString = String.Format("Data Source={0};Persist Security Info=False;",
-				                                                  filename);
+				string connString = String.Format(
+					$"Data Source={filename};Version=3;BinaryGuid=False;Persist Security Info=False");
+				                                                  
 
 				if (createSchema)
 				{
 					var services = _container.GetInstance<IDatabaseServices>();
 					services.CreateDatabaseFile(connString);
 				}
-				
+
 				var config = Fluently.Configure()
 					.Database(SQLiteConfiguration.Standard
-					          	.ConnectionString(connString))
-					          	.Mappings(mc => mc.FluentMappings.AddFromAssemblyOf<SessionFactoryProvider>())
-					          	.BuildConfiguration();
+						.ConnectionString(connString))
+					.Mappings(mc => mc.FluentMappings.AddFromAssemblyOf<SessionFactoryProvider>())
+					.ExposeConfiguration(c => c.SetInterceptor(new SqlStatementInterceptor()))
+					.Diagnostics(d => d.Enable(true).RegisterListener(new StringLambdaOutputListener(s => Debug.WriteLine(s))))
+					.BuildConfiguration();
 
 
 				var factory = config.BuildSessionFactory();

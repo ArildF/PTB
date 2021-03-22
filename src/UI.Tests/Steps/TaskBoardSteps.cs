@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml.Serialization;
+using AutoMapper;
 using NHibernate.Linq;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Core.Export;
@@ -44,7 +45,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[Given(@"a varied set of tasks loaded into the taskboard")]
 		public void GivenAVariedSetOfTasksLoadedIntoTheTaskboard()
 		{
-			Given("that I have created a new database");
+			GivenThatIHaveCreatedANewDatabase();
 			var repos = _context.Get<IRepository<Task>>();
 
 			var tasks = Enumerable.Range(0, 100).Select(_ => CreateRandomTask()).ToArray();
@@ -218,6 +219,28 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			_context.Publish(new ReloadAllTasks());
 		}
 
+		[When(@"foo")]
+		public void WhenFoo()
+		{
+			var filename = Path.GetTempFileName();
+			_context.Get<ISessionFactoryProvider>().CreateNewDatabase(filename);
+
+			var task = new Task {Title = "Parent task"};
+			var childTask = task.CreateSubTask();
+			childTask.Title = "Child task";
+
+			using (var repos = _context.Get<ITasksRepository>())
+				repos.SaveAll(new[] { task, childTask });
+
+			using (var repos = _context.Get<ITasksRepository>())
+			{
+				var loadedTasks = repos.FindAll().ToArray();
+				Console.WriteLine(loadedTasks);
+			}
+
+		}
+
+
 
 
 		[Then(@"a new taskboard database should be created in ""(.*)""")]
@@ -225,6 +248,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		{
 			_context.CreatedDatabases.Last().Should().BeEquivalentTo(path);
 		}
+
 
 		[Then(@"a taskboard should be loaded from ""(.*)""")]
 		public void ThenATaskboardShouldBeLoadedFromCFooBar_Taskboard(string path)
@@ -260,7 +284,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			using (var stream = File.OpenRead(path))
 			{
 				_exportedDtos = (TaskDto[])serializer.Deserialize(stream);
-				var mappings = new DtoMapper();
+				var mappings = new DtoMapper(_context.Get<IMapper>());
 			}
 		}
 
@@ -321,7 +345,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			foreach (var newTask in newTasks)
 			{
 				Task task = newTask;
-				var oldTask = _loadedTasks.Where(t => t.Id == task.Id).FirstOrDefault();
+				var oldTask = _loadedTasks.FirstOrDefault(t => t.Id == task.Id);
 				oldTask.Should().NotBeNull();
 
 				var dateFuncs = new Expression<Func<Task, object>>[]

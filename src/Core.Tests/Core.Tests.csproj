@@ -13,16 +13,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
     <PackageReference Include="NUnit" Version="3.13.1" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Machine.Fakes" Version="0.2.3.3" />
-    <PackageReference Include="Machine.Fakes.Moq" Version="0.2.3.3" />
-    <PackageReference Include="Machine.Specifications" Version="0.4.13.0" />
+    <PackageReference Include="Machine.Fakes" Version="2.11.0" />
+    <PackageReference Include="Machine.Fakes.Moq" Version="2.11.0" />
+    <PackageReference Include="Machine.Specifications" Version="1.0.0" />
     <PackageReference Include="Moq" Version="4.16.0" />
-    <PackageReference Include="SpecFlow" Version="1.4.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Persistence\When_saving_a_task_with_links.cs" />

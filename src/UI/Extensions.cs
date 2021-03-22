@@ -81,7 +81,7 @@ namespace Rogue.Ptb.UI
 
 			public IDisposable Schedule<TState>(TState state, Func<IScheduler, TState, IDisposable> action)
 			{
-				_dispatcher.Invoke(action, DispatcherPriority.ApplicationIdle);
+				_dispatcher.Invoke(() => action(this, state), DispatcherPriority.ApplicationIdle);
 				return NopDisposable.Instance;
 			}
 

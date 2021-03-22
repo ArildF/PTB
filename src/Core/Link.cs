@@ -4,8 +4,9 @@ namespace Rogue.Ptb.Core
 {
 	public class Link
 	{
-		public Link(Task linkTo, LinkType type)
+		public Link(Task task, Task linkTo, LinkType type)
 		{
+			Task = task;
 			LinkTo = linkTo;
 			Type = type;
 		}
@@ -27,5 +28,6 @@ namespace Rogue.Ptb.Core
 		}
 
 		public virtual Guid Id { get; protected internal set; }
+		public virtual Task Task { get; protected internal set; }
 	}
 }

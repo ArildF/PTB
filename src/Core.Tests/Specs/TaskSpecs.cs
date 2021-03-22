@@ -22,7 +22,7 @@ namespace Rogue.Ptb.Core.Tests.Specs
 			subTask.CanBeMoreImportantThan(task).ShouldBeFalse();
 
 		private It should_throw_if_attempting_to_make_the_subtask_more_important_than_itself = () =>
-			Catch.Exception(() => subTask.IsMoreImportantThan(task)).ShouldBeOfType<InvalidOperationException>();
+			Catch.Exception(() => subTask.IsMoreImportantThan(task)).ShouldBeOfExactType<InvalidOperationException>();
 
 		private static Task task;
 		private static Task subTask;
