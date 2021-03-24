@@ -29,6 +29,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
+    <PackageReference Include="ModernWpfUis" Version="1.2.0" />
     <PackageReference Include="reactiveui" Version="13.1.1" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
     <PackageReference Include="NHibernate" Version="5.3.5" />
