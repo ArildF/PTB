@@ -1,4 +1,4 @@
-﻿<ribbon:RibbonWindow x:Class="Rogue.Ptb.UI.Views.ShellView"
+﻿<Window x:Class="Rogue.Ptb.UI.Views.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon" 
@@ -15,4 +15,4 @@
         </Grid.RowDefinitions>
        
     </Grid>
-</ribbon:RibbonWindow>
+</Window>
