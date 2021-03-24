@@ -99,6 +99,11 @@
 					<Setter TargetName="_textBox" Property="Visibility" Value="Visible"/>
 					<Setter TargetName="_textBox" Property="Behaviors:FocusBehaviors.IsFocused" Value="true"/>
 				</DataTrigger>
+				<!-- <DataTrigger Binding="{Binding IsEditing}" Value="false"> -->
+				<!-- 	<Setter TargetName="_textBlock" Property="Visibility" Value="Visible"/> -->
+				<!-- 	<Setter TargetName="_textBox" Property="Visibility" Value="Collapsed"/> -->
+				<!-- 	<Setter TargetName="_textBox" Property="Behaviors:FocusBehaviors.IsFocused" Value="false"/> -->
+				<!-- </DataTrigger> -->
 				
 				<DataTrigger Binding="{Binding CanCollapse}" Value="true">
 					<Setter TargetName="_collapseButton" Property="Content" Value="-"/>

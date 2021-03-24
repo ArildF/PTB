@@ -14,7 +14,7 @@ namespace Rogue.Ptb.UI
 		public static void SetAndRaisePropertyChanged<TVm, TProperty>(this TVm self, 
 			Expression<Func<TVm, TProperty>> func, 
 			TProperty value,
-			Action<TProperty> setter) where TVm : IReactivePropertyChangingObject
+			Action<TProperty> setter) where TVm : IReactiveObject
 		{
 			var currentValue = func.Compile()(self);
 
@@ -23,23 +23,23 @@ namespace Rogue.Ptb.UI
 				return;
 			}
 
-			self.OnPropertyChanging(func.PropertyName());
+			self.RaisePropertyChanging(func.PropertyName());
 			setter(value);
-			self.OnPropertyChanged(func.PropertyName());
+			self.RaisePropertyChanged(func.PropertyName());
 		}
 
 		public static void RaisePropertyChanging<TVm, TProperty>(this TVm self,
 			Expression<Func<TVm, TProperty>> func)
-			where TVm : IReactivePropertyChangingObject
+			where TVm : IReactiveObject
 		{
-			self.OnPropertyChanging(func.PropertyName());
+			self.RaisePropertyChanging(func.PropertyName());
 		}
 
 		public static void RaisePropertyChanged<TVm, TProperty>(this TVm self,
 			Expression<Func<TVm, TProperty>> func)
-			where TVm : IReactivePropertyChangingObject
+			where TVm : IReactiveObject
 		{
-			self.OnPropertyChanged(func.PropertyName());
+			self.RaisePropertyChanged(func.PropertyName());
 		}
 
 		public static string PropertyName<T, TRet>(

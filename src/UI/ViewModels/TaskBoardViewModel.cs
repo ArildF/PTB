@@ -44,15 +44,13 @@ namespace Rogue.Ptb.UI.ViewModels
 				.Subscribe(_ => OnSaveAllTasks(null));
 
 			ocs
-				.AutoRefresh(t => t.IsSelected)
-				.ToCollection()
-				.SelectMany(c => c)
+				.WhenPropertyChanged(t => t.IsSelected)
+				.Select(pv => pv.Sender)
 				.Subscribe(IsSelectedChanged);
 
 			ocs
-				.AutoRefresh(c => c.State)
-				.ToCollection()
-				.SelectMany(c => c)
+				.WhenPropertyChanged(c => c.State)
+				.Select(pv => pv.Sender)
 				.Subscribe(StateChanged);
 
 
@@ -69,7 +67,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			_bus.ListenOnScheduler<CollapseAll>(_ => OnCollapseAll());
 
 
-			_bus.AddSource(ocs.AutoRefresh(vm => vm.State)
+			_bus.AddSource(ocs.WhenPropertyChanged(t => t.State)
 				.Select(_ => new TaskStateChanged()));
 
 			DragCommand = ReactiveCommand.Create<DragCommandArgs>(OnNext);
@@ -91,7 +89,10 @@ namespace Rogue.Ptb.UI.ViewModels
 		{
 			if (model.Task.Parent != null)
 			{
-				Tasks.Where(t => t.Task == model.Task.Parent).ForEach(vm => vm.NotifyStateChanged());
+				foreach (var vm in Tasks.Where(t => t.Task == model.Task.Parent))
+				{
+					vm.NotifyStateChanged();
+				}
 			}
 		}
 

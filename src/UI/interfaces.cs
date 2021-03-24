@@ -46,12 +46,6 @@ namespace Rogue.Ptb.UI
 
 	public interface ICommandEvent {}
 
-	public interface IReactivePropertyChangingObject
-	{
-		void OnPropertyChanging(string propertyName);
-		void OnPropertyChanged(string propertyName);
-
-	}
 
 	public interface IDialogDisplayer
 	{

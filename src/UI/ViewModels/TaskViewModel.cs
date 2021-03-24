@@ -35,7 +35,7 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public TaskState State
 		{
-			get { return _task.State; }
+			get => _task.State;
 			set
 			{
 				if (value == _task.State)
@@ -43,11 +43,11 @@ namespace Rogue.Ptb.UI.ViewModels
 					return;
 				}
 
-				this.RaisePropertyChanging(t => t.State);
+				this.RaisePropertyChanging();
 
 				ApplyNewState(value);
 
-				this.RaisePropertyChanged(t => t.State);
+				this.RaisePropertyChanged();
 				this.RaisePropertyChanged(t => t.ToolTip);
 			}
 		}
@@ -94,12 +94,8 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public bool IsEditing
 		{
-			get {
-				return _isEditing;
-			}
-			set {
-				this.RaiseAndSetIfChanged(ref _isEditing, value);
-			}
+			get => _isEditing;
+			set => this.RaiseAndSetIfChanged(ref _isEditing, value);
 		}
 
 		public string ToolTip
