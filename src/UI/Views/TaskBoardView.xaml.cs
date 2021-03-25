@@ -37,7 +37,7 @@ namespace Rogue.Ptb.UI.Views
 			var layer = AdornerLayer.GetAdornerLayer(_itemsControl);
 			_subtasksAdorner = new SubtasksAdorner(_itemsControl);
 			_taskPriorityAdorner = new TaskPriorityAdorner(_itemsControl);
-
+			
 			layer.Add(_subtasksAdorner);
 			layer.Add(_taskPriorityAdorner);
 		}

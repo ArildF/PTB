@@ -41,6 +41,10 @@ namespace Rogue.Ptb.UI.Adorners
 	    private void HookWndProc(UIElement adornedElement)
 	    {
 	        var window = adornedElement.FindParentOfType<Window>();
+	        if (window == null)
+	        {
+		        return;
+	        }
 
 	        var src = (HwndSource)PresentationSource.FromVisual(window);
 

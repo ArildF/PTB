@@ -3,80 +3,83 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary" 
+             xmlns:ui="http://schemas.modernwpf.com/2019"
+             xmlns:Fluent="urn:fluent-ribbon"
 			 mc:Ignorable="d" 
 			 xmlns:me="clr-namespace:Rogue.Ptb.UI.MarkupExtensions" xmlns:Commands="clr-namespace:Rogue.Ptb.UI.Commands" d:DesignHeight="300" d:DesignWidth="300">
 	<UserControl.Resources>
-		<Style TargetType="ribbon:RibbonButton">
+		<Style TargetType="Fluent:Button">
 		</Style> 
 	</UserControl.Resources>
-    <ribbon:Ribbon Grid.Row="0">
-        <ribbon:RibbonTab Header="Taskboard">
-        	<ribbon:RibbonGroup Header="Maintenance" Margin="0">
-        		<ribbon:RibbonButton Content="Create" Label="Create" Name="CreateTaskBoard"
-									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+    <Fluent:Ribbon>
+	    <Fluent:Ribbon.Menu>
+		    <Fluent:Backstage />
+	    </Fluent:Ribbon.Menu>
+	 
+	    <Fluent:RibbonTabItem Header="Taskboard">
+   	<Fluent:RibbonGroupBox Header="Maintenance" Margin="0">
+   		<Fluent:Button Header="Create" Name="CreateTaskBoard"
+									 LargeIcon="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
 									/>
-				<ribbon:RibbonSplitButton Label="Open" Name="OpenTaskBoard"
-									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+				<Fluent:SplitButton Header="Open" Name="OpenTaskBoard"
+									 LargeIcon="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
 									 ItemsSource="{Binding LastRecentlyUsedTaskboards}">
-										  
-					<ribbon:RibbonSplitButton.ItemTemplate>
+										
+					<Fluent:SplitButton.ItemTemplate>
 						<DataTemplate>
-							<ribbon:RibbonMenuItem Header="{Binding Text}"  
-												   ImageSource="{StaticResource ResourceKey=nige_Database}"
+							<Fluent:MenuItem Header="{Binding Text}"
 												 Command="{me:ResolveCommand OpenTaskBoard}"
 												 CommandParameter="{Binding Text}"
-												   
+												
 												   />
+												   <!-- ImageSource="{StaticResource ResourceKey=nige_Database}" -->
 						</DataTemplate>
-					</ribbon:RibbonSplitButton.ItemTemplate>
-				</ribbon:RibbonSplitButton>
-				<ribbon:RibbonButton Content="Export" Label="Export" 
-									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+					</Fluent:SplitButton.ItemTemplate>
+				</Fluent:SplitButton>
+				<Fluent:Button Header="Export"
+									 LargeIcon="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand {x:Static Commands:GlobalCommandNames.ExportTaskBoardCommand}}"
 									/>
-				<ribbon:RibbonButton Content="Import" Label="Import" 
-									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+				<Fluent:Button Header="Import"
+									 LargeIcon="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand {x:Static Commands:GlobalCommandNames.ImportTaskBoardCommand}}"
 									/>
-			</ribbon:RibbonGroup>
-			<ribbon:RibbonGroup Header="Task">
-				<ribbon:RibbonButton Label="New task" Name="CreateNewTask"
-									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+			</Fluent:RibbonGroupBox>
+			<Fluent:RibbonGroupBox Header="Task">
+				<Fluent:Button Header="New task" Name="CreateNewTask"
+									 LargeIcon="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
 									/>
-				<ribbon:RibbonButton Label="New subtask" Name="CreateNewSubTask"
-									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+				<Fluent:Button Header="New subtask" Name="CreateNewSubTask"
+									 LargeIcon="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
 									/>
-				<ribbon:RibbonButton Label="Save" Name="SaveAllTasks"
-									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+				<Fluent:Button Header="Save" Name="SaveAllTasks"
+									 LargeIcon="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
 									/>
-				<ribbon:RibbonButton Label="Collapse All" Name="CollapseAll"
-									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+				<Fluent:Button Header="Collapse All" Name="CollapseAll"
+									 LargeIcon="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand}"
 									/>
-
-			</ribbon:RibbonGroup>
-
-		</ribbon:RibbonTab>
-
-        <ribbon:RibbonTab Header="File"/>
-        <ribbon:RibbonTab Header="Filters"/>
-		<ribbon:RibbonTab Header="Debug">
-			<ribbon:RibbonGroup>
-				<ribbon:RibbonButton Label="Show importance"
-									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+   
+			</Fluent:RibbonGroupBox>
+  
+		</Fluent:RibbonTabItem>
+  
+        <Fluent:RibbonTabItem Header="Filters"/>
+		<Fluent:RibbonTabItem Header="Debug">
+			<Fluent:RibbonGroupBox>
+				<Fluent:Button Header="Show importance"
+									 LargeIcon="{StaticResource ResourceKey=nige_Database}"
 									 Command="{me:ResolveCommand {x:Static Commands:GlobalCommandNames.DebugDumpImportantLinks}}"/>
-				<ribbon:RibbonButton Label="Resort"
-									 LargeImageSource="{StaticResource ResourceKey=nige_Database}"
+				<Fluent:Button Header="Resort"
+									 LargeIcon="{StaticResource ResourceKey=nige_Database}"
 									  Command="{me:ResolveCommand ReSort}"/>
-									  
-			</ribbon:RibbonGroup>
-		</ribbon:RibbonTab>
-
-    </ribbon:Ribbon>
+									
+			</Fluent:RibbonGroupBox>
+		</Fluent:RibbonTabItem>
+    </Fluent:Ribbon>
 </UserControl>

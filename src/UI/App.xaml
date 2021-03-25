@@ -13,6 +13,8 @@
 				<ResourceDictionary Source="Resources/Styles.xaml"/>
                 <ui:ThemeResources RequestedTheme="Dark" AccentColor="Red"/>
                 <ui:XamlControlsResources />
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/themes/dark.red.xaml"/>
     		</ResourceDictionary.MergedDictionaries>
     	</ResourceDictionary>
 		

@@ -11,13 +11,6 @@
     <StartupObject>Rogue.Ptb.UI.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Expression.Interactions" />
-    <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Microsoft.Windows.Shell.dll</HintPath>
-    </Reference>
-    <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\RibbonControlsLibrary.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <AppDesigner Include="Properties\" />
@@ -27,6 +20,7 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Fluent.Ribbon" Version="8.0.3" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
     <PackageReference Include="ModernWpfUis" Version="1.2.0" />
