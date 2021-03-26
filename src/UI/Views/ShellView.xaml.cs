@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using ModernWpf;
 
 namespace Rogue.Ptb.UI.Views
 {
@@ -22,6 +23,9 @@ namespace Rogue.Ptb.UI.Views
 
 			MainGrid.Children.Add(taskBoardView.Element);
 			Grid.SetRow(taskBoardView.Element, 1);
+			
+			ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+			ControlzEx.Theming.ThemeManager.Current.ChangeThemeBaseColor(Application.Current, "Dark");
 		}
 
 		public Window Window
