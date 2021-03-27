@@ -6,6 +6,7 @@
 					 xmlns:me="clr-namespace:Rogue.Ptb.UI.MarkupExtensions"
 	xmlns:commands="clr-namespace:Rogue.Ptb.UI.Commands"
 	xmlns:fluent="urn:fluent-ribbon"
+        Icon="../Resources/Art/Icon.png"
 	Title="{Binding Title}" Height="800" Width="800">
 	<Window.InputBindings>
 		<KeyBinding Gesture="CTRL+N"

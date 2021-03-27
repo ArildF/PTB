@@ -31,4 +31,8 @@
     <PackageReference Include="ReactiveUI.WPF" Version="13.1.1" />
     <PackageReference Include="structuremap" Version="4.7.1" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\Art\Icon.png" />
+    <Resource Include="Resources\Art\Icon.png" />
+  </ItemGroup>
 </Project>
