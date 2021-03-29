@@ -10,10 +10,11 @@ namespace Rogue.Ptb.UI.Adorners
 {
 	public class SubtasksAdorner : TaskboardAdornerBase
 	{
-		private readonly Pen _pen = new Pen(Brushes.Gray, 0.75);
+		private readonly Pen _pen = new(Brushes.Gray, 1.5);
 
 		public SubtasksAdorner(UIElement adornedElement) : base(adornedElement)
 		{
+			_pen.Brush = (Brush) Application.Current.FindResource("SystemControlForegroundBaseHighBrush");
 		}
 
 		protected override void DoRender(DrawingContext dc)

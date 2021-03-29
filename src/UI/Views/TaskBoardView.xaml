@@ -94,12 +94,13 @@
 							</Storyboard>
 							<Storyboard x:Key="OnSelected" >
 								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="taskControl">
-									<SplineDoubleKeyFrame KeyTime="0:0:0.05" Value="1.12"/>
+									<SplineDoubleKeyFrame KeyTime="0:0:0.05" Value="1.05"/>
 								</DoubleAnimationUsingKeyFrames>
 
 								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="taskControl">
-									<SplineDoubleKeyFrame KeyTime="0:0:0.05" Value="1.12"/>
+									<SplineDoubleKeyFrame KeyTime="0:0:0.05" Value="1.05"/>
 								</DoubleAnimationUsingKeyFrames>
+								
 							</Storyboard>
 							<Storyboard x:Key="OnDeselected">
 								<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="taskControl">

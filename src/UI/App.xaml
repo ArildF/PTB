@@ -14,7 +14,7 @@
 
                 <ResourceDictionary Source="/FluentWPF;component/Styles/Controls.xaml" />
 
-                <ui:ThemeResources RequestedTheme="Dark" AccentColor="Red">
+                <ui:ThemeResources RequestedTheme="Dark">
                     <ui:ThemeResources.ThemeDictionaries>
                         <ResourceDictionary x:Key="Light">
                             <ResourceDictionary.MergedDictionaries>

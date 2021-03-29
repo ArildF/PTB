@@ -93,6 +93,9 @@
 				<!-- 	<Setter TargetName="_border" Property="BorderBrush" Value="Black"/> -->
 				<!-- 	<Setter TargetName="_border" Property="Opacity" Value="0.5"/> -->
 				<!-- </DataTrigger> -->
+				<DataTrigger Binding="{Binding IsSelected}" Value="true">
+					<Setter TargetName="_border" Property="BorderBrush" Value="{DynamicResource SystemControlForegroundAccentBrush}"></Setter>
+				</DataTrigger>
 				<DataTrigger Binding="{Binding IsEditing}" Value="true">
 					<Setter TargetName="_textBlock" Property="Visibility" Value="Collapsed"/>
 					<Setter TargetName="_textBox" Property="Visibility" Value="Visible"/>
