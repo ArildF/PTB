@@ -7,6 +7,7 @@
 			xmlns:vc="clr-namespace:Rogue.Ptb.UI.ValueConverters" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:Behaviors="clr-namespace:Rogue.Ptb.UI.Behaviors" xmlns:Views="clr-namespace:Rogue.Ptb.UI.Views" xmlns:Commands="clr-namespace:Rogue.Ptb.UI.Commands" x:Class="Rogue.Ptb.UI.Views.TaskBoardView"
 			xmlns:me="clr-namespace:Rogue.Ptb.UI.MarkupExtensions"
 			xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+			xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
 			mc:Ignorable="d" d:DesignHeight="702" d:DesignWidth="789">
     
     <UserControl.Resources>

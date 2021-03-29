@@ -12,7 +12,9 @@
 					<Border BorderThickness="0,0.5,0,0" BorderBrush="Black" x:Name="_border" 
 							HorizontalAlignment="Stretch">
 						<Grid HorizontalAlignment="Stretch">
-							<ContentPresenter HorizontalAlignment="Stretch" TextBlock.TextAlignment="Center"
+							<ContentPresenter HorizontalAlignment="Stretch" 
+							                  TextBlock.TextAlignment="Center"
+							                  TextBlock.Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
 											  VerticalAlignment="Center"/>
 						</Grid>
 					</Border>

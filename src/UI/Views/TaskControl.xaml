@@ -7,7 +7,9 @@
 			 xmlns:vc="clr-namespace:Rogue.Ptb.UI.ValueConverters" 
 			 xmlns:design="clr-namespace:Rogue.Ptb.UI.DesignTime"
 			 xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+			 xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
 			 mc:Ignorable="d" 
+             Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
              d:DesignHeight="300" d:DesignWidth="300"
 			 ToolTipService.ToolTip="{Binding ToolTip}"
 			  >
@@ -24,16 +26,13 @@
 			</ControlTemplate.Resources>
 
 
-			<Border Margin="10" BorderBrush="#FFFDFF00" CornerRadius="5" 
+			<Border Margin="10" BorderBrush="{DynamicResource SystemControlForegroundBaseHighBrush}" CornerRadius="5" 
 									BorderThickness="2"
-									Background="White"
+									Background="{DynamicResource SystemControlBackgroundAltMediumBrush}"
 									x:Name="_border"
 									MinHeight="80"
 									Style="{StaticResource TaskBoardTaskStyle}"
 									d:DataContext="{StaticResource DesignDataContext}"
-					TextBlock.Foreground="Black"
-					
-					
 					>
 					<b:Interaction.Behaviors>
 						<Behaviors:CommandForEventBehavior Event="MouseDown" Action="Select" Passthrough="True"/>
@@ -73,27 +72,27 @@
 							Content="-"
 							x:Name="_collapseButton"
 							Style="{StaticResource ExpandoButtonStyle}"
-							Command="{Binding ToggleCollapseHierarchyCommand}"	
+							Command="{Binding ToggleCollapseHierarchyCommand}"
 							/>
 				</Grid>
 				</Border>
 
 				
 			<ControlTemplate.Triggers>
-				<DataTrigger Binding="{Binding State}" Value="InProgress">
-					<Setter TargetName="_border" Property="BorderBrush" Value="Yellow"/>
-				</DataTrigger>
-				<DataTrigger Binding="{Binding State}" Value="Complete">
-					<Setter TargetName="_border" Property="BorderBrush" Value="Green"/>
-					<Setter TargetName="_check" Property="Visibility" Value="Visible"/>
-				</DataTrigger>
-				<DataTrigger Binding="{Binding State}" Value="NotStarted">
-					<Setter TargetName="_border" Property="BorderBrush" Value="Red"/>
-				</DataTrigger>
-				<DataTrigger Binding="{Binding State}" Value="Abandoned">
-					<Setter TargetName="_border" Property="BorderBrush" Value="Black"/>
-					<Setter TargetName="_border" Property="Opacity" Value="0.5"/>
-				</DataTrigger>
+				<!-- <DataTrigger Binding="{Binding State}" Value="InProgress"> -->
+				<!-- 	<Setter TargetName="_border" Property="BorderBrush" Value="Yellow"/> -->
+				<!-- </DataTrigger> -->
+				<!-- <DataTrigger Binding="{Binding State}" Value="Complete"> -->
+				<!-- 	<Setter TargetName="_border" Property="BorderBrush" Value="Green"/> -->
+				<!-- 	<Setter TargetName="_check" Property="Visibility" Value="Visible"/> -->
+				<!-- </DataTrigger> -->
+				<!-- <DataTrigger Binding="{Binding State}" Value="NotStarted"> -->
+				<!-- 	<Setter TargetName="_border" Property="BorderBrush" Value="Red"/> -->
+				<!-- </DataTrigger> -->
+				<!-- <DataTrigger Binding="{Binding State}" Value="Abandoned"> -->
+				<!-- 	<Setter TargetName="_border" Property="BorderBrush" Value="Black"/> -->
+				<!-- 	<Setter TargetName="_border" Property="Opacity" Value="0.5"/> -->
+				<!-- </DataTrigger> -->
 				<DataTrigger Binding="{Binding IsEditing}" Value="true">
 					<Setter TargetName="_textBlock" Property="Visibility" Value="Collapsed"/>
 					<Setter TargetName="_textBox" Property="Visibility" Value="Visible"/>
