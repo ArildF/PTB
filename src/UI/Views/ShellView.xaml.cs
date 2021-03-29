@@ -28,9 +28,6 @@ namespace Rogue.Ptb.UI.Views
 			ControlzEx.Theming.ThemeManager.Current.ChangeThemeBaseColor(Application.Current, "Dark");
 		}
 
-		public Window Window
-		{
-			get { return this; }
-		}
+		public Window Window => this;
 	}
 }
