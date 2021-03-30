@@ -10,11 +10,29 @@
 			 xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
 			 mc:Ignorable="d" 
              Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="200" d:DesignWidth="300"
 			 ToolTipService.ToolTip="{Binding ToolTip}"
 			  >
 	<UserControl.Resources>
 		<ObjectDataProvider x:Key="DesignDataContext" d:IsDataSource="True" ObjectType="{x:Type design:DummyTaskViewModel}"/>
+		<DrawingBrush x:Key="BlackBackground">
+			<DrawingBrush.Drawing>
+				<DrawingGroup>
+					<GeometryDrawing>
+						<GeometryDrawing.Brush>
+							<LinearGradientBrush StartPoint="0,0" EndPoint="0,1" SpreadMethod="Pad">
+								<GradientStop Color="#000000" Offset="0" />
+								<GradientStop Color="#060606" Offset="0.82" />
+								<GradientStop Color="#000000" Offset="1" />
+							</LinearGradientBrush>
+						</GeometryDrawing.Brush>
+						<GeometryDrawing.Geometry>
+							<RectangleGeometry Rect="0,0 1,1" />
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+				</DrawingGroup>
+			</DrawingBrush.Drawing>
+		</DrawingBrush>
 	</UserControl.Resources>
 	<UserControl.Template>
 		<ControlTemplate>
@@ -27,14 +45,16 @@
 
 
 			<Border Margin="10" BorderBrush="{DynamicResource SystemControlForegroundBaseHighBrush}" CornerRadius="5" 
-									BorderThickness="2"
-									Background="{DynamicResource SystemControlBackgroundAltMediumBrush}"
+									BorderThickness="1"
+									Background = "{StaticResource BlackBackground}"
 									x:Name="_border"
 									MinHeight="80"
 									Style="{StaticResource TaskBoardTaskStyle}"
 									d:DataContext="{StaticResource DesignDataContext}"
 					>
-					<b:Interaction.Behaviors>
+				
+									<!-- Background="{DynamicResource SystemControlBackgroundAltMediumBrush}" -->
+				<b:Interaction.Behaviors>
 						<Behaviors:CommandForEventBehavior Event="MouseDown" Action="Select" Passthrough="True"/>
 					</b:Interaction.Behaviors>
 					<Border.Effect>
@@ -46,15 +66,21 @@
 							<RowDefinition Height="*"/>
 							<RowDefinition Height="Auto"/>
 						</Grid.RowDefinitions>
-						<Rectangle x:Name="_check" Grid.RowSpan="3" Visibility="Collapsed" 
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+						<Rectangle x:Name="_check" Grid.Column="2" Grid.Row="1" Visibility="Collapsed" 
 								   Fill="{StaticResource ResourceKey=thatsmyboy_Simple_Red_Checkmark}"/>
 						<TextBlock TextAlignment="Center" Text="{Binding Title}" Margin="2" 
+						           Grid.ColumnSpan="3"
 								   x:Name="_textBlock" Cursor="IBeam" TextWrapping="Wrap" VerticalAlignment="Center">
 							<b:Interaction.Behaviors>
 								<Behaviors:CommandForEventBehavior Event="MouseDown" Action="BeginEdit"/>
 							</b:Interaction.Behaviors>
 						</TextBlock>
-					<TextBox TextWrapping="Wrap" x:Name="_textBox" 
+					<TextBox TextWrapping="Wrap" x:Name="_textBox" Grid.ColumnSpan="3"
 								 VerticalAlignment="Center" 
 								TextAlignment="Center"
 								 Text="{Binding Title}"
@@ -67,7 +93,7 @@
 						</b:Interaction.Behaviors>
 					</TextBox>
 					
-					<Button Grid.Row="2" 
+					<Button Grid.Row="2" Grid.ColumnSpan="3"
 							Visibility="{Binding Collapsable, Converter={StaticResource BoolToCollapsedConverter}}" 
 							Content="-"
 							x:Name="_collapseButton"
@@ -79,22 +105,23 @@
 
 				
 			<ControlTemplate.Triggers>
-				<!-- <DataTrigger Binding="{Binding State}" Value="InProgress"> -->
-				<!-- 	<Setter TargetName="_border" Property="BorderBrush" Value="Yellow"/> -->
-				<!-- </DataTrigger> -->
-				<!-- <DataTrigger Binding="{Binding State}" Value="Complete"> -->
-				<!-- 	<Setter TargetName="_border" Property="BorderBrush" Value="Green"/> -->
-				<!-- 	<Setter TargetName="_check" Property="Visibility" Value="Visible"/> -->
-				<!-- </DataTrigger> -->
-				<!-- <DataTrigger Binding="{Binding State}" Value="NotStarted"> -->
-				<!-- 	<Setter TargetName="_border" Property="BorderBrush" Value="Red"/> -->
-				<!-- </DataTrigger> -->
-				<!-- <DataTrigger Binding="{Binding State}" Value="Abandoned"> -->
-				<!-- 	<Setter TargetName="_border" Property="BorderBrush" Value="Black"/> -->
-				<!-- 	<Setter TargetName="_border" Property="Opacity" Value="0.5"/> -->
-				<!-- </DataTrigger> -->
+				<DataTrigger Binding="{Binding State}" Value="InProgress">
+					<Setter TargetName="_border" Property="BorderBrush" Value="Yellow"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding State}" Value="Complete">
+					<Setter TargetName="_border" Property="BorderBrush" Value="Green"/>
+					<Setter TargetName="_check" Property="Visibility" Value="Visible"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding State}" Value="NotStarted">
+					<Setter TargetName="_border" Property="BorderBrush" Value="Blue"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding State}" Value="Abandoned">
+					<Setter TargetName="_border" Property="BorderBrush" Value="Black"/>
+					<Setter TargetName="_border" Property="Opacity" Value="0.5"/>
+				</DataTrigger>
 				<DataTrigger Binding="{Binding IsSelected}" Value="true">
-					<Setter TargetName="_border" Property="BorderBrush" Value="{DynamicResource SystemControlForegroundAccentBrush}"></Setter>
+					<!-- <Setter TargetName="_border" Property="BorderBrush" Value="{DynamicResource SystemControlForegroundAccentBrush}"></Setter> -->
+					<Setter TargetName="_border" Property="BorderThickness" Value="2.5"/>
 				</DataTrigger>
 				<DataTrigger Binding="{Binding IsEditing}" Value="true">
 					<Setter TargetName="_textBlock" Property="Visibility" Value="Collapsed"/>
