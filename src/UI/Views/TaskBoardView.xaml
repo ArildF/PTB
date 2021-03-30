@@ -43,13 +43,13 @@
 					<ColumnDefinition Width="3*" SharedSizeGroup="Completed"/>
 				</Grid.ColumnDefinitions>
 
-				<TextBlock Grid.Column="0" TextAlignment="Center"><Run Text="Not started"/></TextBlock>
+				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="0" TextAlignment="Center"><Run Text="Not started"/></TextBlock>
 				<GridSplitter Grid.Column="1" Width="3"/>
-				<TextBlock Grid.Column="2" TextAlignment="Center"><Run Text="In progress"/></TextBlock>
+				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="2" TextAlignment="Center"><Run Text="In progress"/></TextBlock>
 				<GridSplitter Grid.Column="3" Width="3"/>
-				<TextBlock Grid.Column="4" TextAlignment="Center"><Run Text="Completed"/></TextBlock>
+				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="4" TextAlignment="Center"><Run Text="Completed"/></TextBlock>
 				<GridSplitter Grid.Column="5" Width="3"/>
-				<TextBlock Grid.Column="6" TextAlignment="Center"><Run Text="Abandoned"/></TextBlock>
+				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="6" TextAlignment="Center"><Run Text="Abandoned"/></TextBlock>
 			</Grid>
 			<ItemsControl ItemsSource="{Binding Tasks}" x:Name="_itemsControl"
 				>
