@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media.Animation;
@@ -16,7 +18,6 @@ namespace Rogue.Ptb.UI.Views
 	/// </summary>
 	public partial class TaskBoardView : ITaskBoardView
 	{
-		private readonly IEventAggregator _aggregator;
 		private SubtasksAdorner _subtasksAdorner;
 		private  TaskPriorityAdorner _taskPriorityAdorner;
 
@@ -26,13 +27,10 @@ namespace Rogue.Ptb.UI.Views
 
 			Loaded += OnLoaded;
 
-			// var board = (Storyboard)_itemsControl.ItemTemplate.Resources["OnSelected"];
-			// board.Completed += OnTaskSelectionAnimationCompleted;
-			//
-			// board = (Storyboard) _itemsControl.ItemTemplate.Resources["OnDeselected"];
-			// board.Completed += OnTaskSelectionAnimationCompleted;
-
-			LayoutUpdated += OnTaskSelectionAnimationCompleted;
+			this.Events().LayoutUpdated
+				.Buffer(2) // skip layout updates caused by InvalidateAdorners
+				.ObserveOnDispatcher()
+				.Subscribe(_ => InvalidateAdorners());
 		}
 
 		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -45,26 +43,12 @@ namespace Rogue.Ptb.UI.Views
 			layer.Add(_taskPriorityAdorner);
 		}
 
-		public TaskBoardView(ITaskBoardViewModel vm, IEventAggregator aggregator) : this()
+		public TaskBoardView(ITaskBoardViewModel vm) : this()
 		{
-			_aggregator = aggregator;
 			DataContext = vm;
-
-			// _aggregator.Listen<TaskStateChanged>().Delay(TimeSpan.FromMilliseconds(50))
-			// 	.ObserveOnDispatcher()
-			// 	.ObserveOnIdle()
-			// 	.Subscribe(_ => InvalidateAdorners());
 		}
 
-		public UIElement Element
-		{
-			get { return this; }
-		}
-
-		private void OnTaskSelectionAnimationCompleted(object sender, EventArgs e)
-		{
-			InvalidateAdorners();
-		}
+		public UIElement Element => this;
 
 		private void InvalidateAdorners()
 		{
