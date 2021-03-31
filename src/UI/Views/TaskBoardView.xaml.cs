@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Documents;
@@ -25,11 +26,13 @@ namespace Rogue.Ptb.UI.Views
 
 			Loaded += OnLoaded;
 
-			var board = (Storyboard)_itemsControl.ItemTemplate.Resources["OnSelected"];
-			board.Completed += OnTaskSelectionAnimationCompleted;
+			// var board = (Storyboard)_itemsControl.ItemTemplate.Resources["OnSelected"];
+			// board.Completed += OnTaskSelectionAnimationCompleted;
+			//
+			// board = (Storyboard) _itemsControl.ItemTemplate.Resources["OnDeselected"];
+			// board.Completed += OnTaskSelectionAnimationCompleted;
 
-			board = (Storyboard) _itemsControl.ItemTemplate.Resources["OnDeselected"];
-			board.Completed += OnTaskSelectionAnimationCompleted;
+			LayoutUpdated += OnTaskSelectionAnimationCompleted;
 		}
 
 		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -47,10 +50,10 @@ namespace Rogue.Ptb.UI.Views
 			_aggregator = aggregator;
 			DataContext = vm;
 
-			_aggregator.Listen<TaskStateChanged>().Delay(TimeSpan.FromMilliseconds(50))
-				.ObserveOnDispatcher()
-				.ObserveOnIdle()
-				.Subscribe(_ => InvalidateAdorners());
+			// _aggregator.Listen<TaskStateChanged>().Delay(TimeSpan.FromMilliseconds(50))
+			// 	.ObserveOnDispatcher()
+			// 	.ObserveOnIdle()
+			// 	.Subscribe(_ => InvalidateAdorners());
 		}
 
 		public UIElement Element
@@ -65,7 +68,7 @@ namespace Rogue.Ptb.UI.Views
 
 		private void InvalidateAdorners()
 		{
-			GetAdorners().ForEach(ad => ad.InvalidateVisual());
+			GetAdorners().Where(ad => ad != null).ForEach(ad => ad.InvalidateVisual());
 		}
 
 
