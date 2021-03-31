@@ -5,9 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:design="clr-namespace:Rogue.Ptb.UI.DesignTime" 
 			xmlns:vc="clr-namespace:Rogue.Ptb.UI.ValueConverters" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:Behaviors="clr-namespace:Rogue.Ptb.UI.Behaviors" xmlns:Views="clr-namespace:Rogue.Ptb.UI.Views" xmlns:Commands="clr-namespace:Rogue.Ptb.UI.Commands" x:Class="Rogue.Ptb.UI.Views.TaskBoardView"
-			xmlns:me="clr-namespace:Rogue.Ptb.UI.MarkupExtensions"
 			xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-			xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
 			mc:Ignorable="d" d:DesignHeight="702" d:DesignWidth="789">
     
     <UserControl.Resources>
@@ -29,29 +27,27 @@
 	<b:Interaction.Behaviors>
 		<Behaviors:CommandForEventBehavior Event="PreviewMouseDown" Passthrough="True" Action="Deselect"/>
 	</b:Interaction.Behaviors>
+	
+	<Grid IsSharedSizeScope="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+		
+		
 
-	<ScrollViewer VerticalScrollBarVisibility="Auto">
-		<StackPanel d:DataContext="{StaticResource DesignDataContext}">
-			<Grid>
+		<ScrollViewer VerticalScrollBarVisibility="Auto" >
+		<StackPanel d:DataContext="{StaticResource DesignDataContext}" >
+			<Grid HorizontalAlignment="Stretch">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="3*" SharedSizeGroup="NotStarted"/>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition Width="3*" SharedSizeGroup="InProgress"/>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition Width="3*" SharedSizeGroup="Completed"/>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition Width="3*" SharedSizeGroup="Completed"/>
+					<ColumnDefinition Width="{Binding ElementName=CDNotStarted, Path=Width}" />
+					<ColumnDefinition Width="{Binding ElementName=CDInProgress, Path=Width}" />
+					<ColumnDefinition Width="{Binding ElementName=CDCompleted, Path=Width}"/>
+					<ColumnDefinition Width="{Binding ElementName=CDAbandoned, Path=Width}"/>
 				</Grid.ColumnDefinitions>
 
 				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="0" TextAlignment="Center"><Run Text="Not started"/></TextBlock>
-				<GridSplitter Grid.Column="1" Width="3"/>
-				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="2" TextAlignment="Center"><Run Text="In progress"/></TextBlock>
-				<GridSplitter Grid.Column="3" Width="3"/>
-				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="4" TextAlignment="Center"><Run Text="Completed"/></TextBlock>
-				<GridSplitter Grid.Column="5" Width="3"/>
-				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="6" TextAlignment="Center"><Run Text="Abandoned"/></TextBlock>
+				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="1" TextAlignment="Center"><Run Text="In progress"/></TextBlock>
+				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="2" TextAlignment="Center"><Run Text="Completed"/></TextBlock>
+				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="3" TextAlignment="Center"><Run Text="Abandoned"/></TextBlock>
 			</Grid>
-			<ItemsControl ItemsSource="{Binding Tasks}" x:Name="_itemsControl"
+			<ItemsControl ItemsSource="{Binding Tasks}" x:Name="_itemsControl" 
 				>
 				<b:Interaction.Behaviors>
 					<Behaviors:DragListItemElementBehavior AllElementsDraggable="False"/>
@@ -125,20 +121,12 @@
 							
 							
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="3*" SharedSizeGroup="NotStarted"/>
-								<ColumnDefinition Width="3"/>
-								<ColumnDefinition Width="3*" SharedSizeGroup="InProgress"/>
-								<ColumnDefinition Width="3"/>
-								<ColumnDefinition Width="3*" SharedSizeGroup="Completed"/>
-								<ColumnDefinition Width="3"/>
-								<ColumnDefinition Width="3*" SharedSizeGroup="Abandoned"/>
+								<ColumnDefinition Width="{Binding ElementName=CDNotStarted, Path=Width}" />
+								<ColumnDefinition Width="{Binding ElementName=CDInProgress, Path=Width}" />
+								<ColumnDefinition Width="{Binding ElementName=CDCompleted, Path=Width}"/>
+								<ColumnDefinition Width="{Binding ElementName=CDAbandoned, Path=Width}"/>
 							</Grid.ColumnDefinitions>
-							
-							<GridSplitter Grid.Column="1" Width="3"/>
-							<GridSplitter Grid.Column="3" Width="3"/>
-							<GridSplitter Grid.Column="5" Width="3"/>
-
-							<Border Grid.Column="0" Grid.ColumnSpan="8" x:Name="overlay"></Border>
+							<Border Grid.Column="0" Grid.ColumnSpan="4" x:Name="overlay"></Border>
 
 							<Grid x:Name="dragAnimationGrid"
 									Grid.Column="{Binding State, Converter={StaticResource TaskStateToColumnConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.5,0.5"
@@ -207,4 +195,17 @@
 			</ItemsControl>
 		</StackPanel>
 	</ScrollViewer>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" x:Name="CDNotStarted"/>
+			<ColumnDefinition Width="*" x:Name="CDInProgress"/>
+			<ColumnDefinition Width="*" x:Name="CDCompleted"/>
+			<ColumnDefinition Width="*" x:Name="CDAbandoned"/>
+			
+		</Grid.ColumnDefinitions>
+		<GridSplitter Grid.Column="0" Width="3"/>
+		<GridSplitter Grid.Column="1" Width="3"/>
+		<GridSplitter Grid.Column="2" Width="3"/>
+	</Grid>
+	</Grid>
 </UserControl>

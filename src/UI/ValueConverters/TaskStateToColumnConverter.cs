@@ -13,9 +13,9 @@ namespace Rogue.Ptb.UI.ValueConverters
 		private static readonly List<Tuple<TaskState, int>> _table = new List<Tuple<TaskState, int>>
 			{
 				Tuple.Create(TaskState.NotStarted, 0),
-				Tuple.Create(TaskState.InProgress, 2),
-				Tuple.Create(TaskState.Complete, 4),
-				Tuple.Create(TaskState.Abandoned, 6),
+				Tuple.Create(TaskState.InProgress, 1),
+				Tuple.Create(TaskState.Complete, 2),
+				Tuple.Create(TaskState.Abandoned, 3),
 			};
 
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
