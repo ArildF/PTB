@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -7,8 +8,9 @@ namespace Rogue.Ptb.Infrastructure
 {
 	public static class Extensions
 	{
-		public static IEnumerable<T> TraverseBy<T>(this T self, Func<T, T> traversal) where T:class
+		public static IEnumerable<T> TraverseBy<T>(this T self, Func<T, T> traversal, bool log = false) where T:class
 		{
+			Debug.WriteLineIf(log, $"Traversing, starting from {self}");
 			var next = self;
 			yield return next;
 
@@ -17,8 +19,10 @@ namespace Rogue.Ptb.Infrastructure
 				next = traversal(next);
 				if (next == null)
 				{
+					Debug.WriteLineIf(log, "      <found null>");
 					yield break;
 				}
+				Debug.WriteLineIf(log, $"      {next}");
 				yield return next;
 			}
 

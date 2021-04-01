@@ -157,12 +157,10 @@ namespace Rogue.Ptb.UI.Behaviors
 
 		private UIElement FindItemContainer()
 		{
-			var immediateChildren = AssociatedObject.Items.Cast<object>().Select(
-				obj => AssociatedObject.ItemContainerGenerator.ContainerFromItem(obj)).ToArray();
-			//var immediateChildren = VisualTreeHelper..GetChildren(AssociatedObject).Cast<DependencyObject>().ToArray();
+			var root = _movedObject.TraverseBy(elt => (UIElement) VisualTreeHelper.GetParent(elt))
+				.Last();
 
-			return _movedObject.TraverseBy(elt => (UIElement) VisualTreeHelper.GetParent(elt))
-				.First(elt => elt.In(immediateChildren));
+			return root;
 		}
 
 		protected UIElement RootElement
