@@ -46,13 +46,13 @@ namespace Rogue.Ptb.UI.Adorners
 
 			var vector = Point.Subtract(endPoint, startPoint);
 
-			var midPoint = Point.Add(startPoint, Vector.Multiply(vector, 0.5));
+			var midPoint = Point.Add(startPoint, Vector.Multiply(vector, 0.38));
 
 			Transform arrowTransform = Transform.Identity;
 			double angle;
 			if (Math.Abs((angle = Vector.AngleBetween(vector, new Vector(0, -1))) - 0) > double.Epsilon)
 			{
-				arrowTransform = new RotateTransform(angle, midPoint.X, midPoint.Y);
+				arrowTransform = new RotateTransform(-angle, midPoint.X, midPoint.Y);
 			}
 
 			var line = BuildPath.From(startPoint).LineTo(endPoint.X, endPoint.Y).Build();
