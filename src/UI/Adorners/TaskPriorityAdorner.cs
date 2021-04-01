@@ -46,7 +46,7 @@ namespace Rogue.Ptb.UI.Adorners
 
 			var vector = Point.Subtract(endPoint, startPoint);
 
-			var midPoint = Point.Add(startPoint, Vector.Multiply(vector, 0.66));
+			var midPoint = Point.Add(startPoint, Vector.Multiply(vector, 0.5));
 
 			Transform arrowTransform = Transform.Identity;
 			double angle;
@@ -56,8 +56,9 @@ namespace Rogue.Ptb.UI.Adorners
 			}
 
 			var line = BuildPath.From(startPoint).LineTo(endPoint.X, endPoint.Y).Build();
-			var arrow = BuildPath.From(midPoint.X - 3, midPoint.Y - 3).LineTo(midPoint.X, midPoint.Y)
-				.LineTo(midPoint.X + 3, midPoint.Y - 3).Build();
+			const int arrowSize = 6;
+			var arrow = BuildPath.From(midPoint.X - arrowSize, midPoint.Y - arrowSize).LineTo(midPoint.X, midPoint.Y)
+				.LineTo(midPoint.X + arrowSize, midPoint.Y - arrowSize).Build();
 
 			dc.DrawGeometry(null, _pen, line);
 
