@@ -93,6 +93,10 @@ namespace Rogue.Ptb.Core
 			get { return FindRelatedTasks(LinkType.Parent).FirstOrDefault(); }
 		}
 
+		public virtual bool IsLeaf => !SubTasks.Any();
+		
+		public virtual double? Progress { get; set; }
+
 
 		public override string ToString()
 		{

@@ -40,6 +40,7 @@
                 <ui:XamlControlsResources />
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
                 <!-- <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/themes/dark.red.xaml"/> -->
+                <ResourceDictionary Source="Controls/ProgressSlider.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

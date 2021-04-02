@@ -137,6 +137,29 @@ namespace Rogue.Ptb.UI.ViewModels
 			private set => this.RaiseAndSetIfChanged(ref _isVisible, value);
 		}
 
+		public bool IsProgressEnabled => _task.IsLeaf;
+
+		public double Progress
+		{
+			get => _task.IsLeaf 
+				? _task.Progress ?? 0 
+				: ChildVMs().Sum(vm => vm.Progress) / ChildVMs().Count();
+			set
+			{
+				_task.Progress = value;
+				if (_task.Parent != null)
+				{
+					var parentVM = _viewModelMapper(_task.Parent);
+					parentVM.NotifyProgressChanged();
+				}
+			}
+		}
+
+		public void NotifyProgressChanged()
+		{
+			this.RaisePropertyChanged(vm => vm.Progress);	
+		}
+
 		public ICommand ToggleCollapseHierarchyCommand { get; private set; }
 
 		public bool CanCollapse

@@ -65,6 +65,8 @@
 						<Grid.RowDefinitions>
 							<RowDefinition Height="*"/>
 							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition/>
@@ -92,16 +94,20 @@
 							<Behaviors:KeyCommandBehavior Key="Enter" Action="EndEdit"/>
 						</b:Interaction.Behaviors>
 					</TextBox>
+						<Slider Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" 
+						        IsEnabled="{Binding IsProgressEnabled}"
+						        Value="{Binding Progress}"
+						        Style="{DynamicResource ProgressSliderStyle}"/>
 					
-					<Button Grid.Row="2" Grid.ColumnSpan="3"
-							Visibility="{Binding Collapsable, Converter={StaticResource BoolToCollapsedConverter}}" 
-							Content="-"
-							x:Name="_collapseButton"
-							Style="{StaticResource ExpandoButtonStyle}"
-							Command="{Binding ToggleCollapseHierarchyCommand}"
-							/>
+						<Button Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0"
+						        Visibility="{Binding Collapsable, Converter={StaticResource BoolToCollapsedConverter}}" 
+						        Content="-"
+						        x:Name="_collapseButton"
+						        Style="{StaticResource ExpandoButtonStyle}"
+						        Command="{Binding ToggleCollapseHierarchyCommand}"
+						/>
 				</Grid>
-				</Border>
+			</Border>
 
 				
 			<ControlTemplate.Triggers>

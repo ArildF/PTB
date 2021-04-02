@@ -244,6 +244,7 @@ namespace Rogue.Ptb.UI.ViewModels
 				.Subscribe(_ =>
 				{
 					SelectedTask = parentTask;
+					SelectedTask.NotifyProgressChanged();
 					subscription?.Dispose();
 				});
 		}

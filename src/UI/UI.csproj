@@ -11,8 +11,6 @@
     <StartupObject>Rogue.Ptb.UI.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
