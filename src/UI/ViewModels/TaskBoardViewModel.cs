@@ -190,7 +190,11 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			_tasks.InPlaceSort();
 
-			_tasks.Select(t => new TaskViewModel(t, ViewModelMapper)).ForEach(Tasks.Add);
+			var taskViewModels = _tasks.Select(t => new TaskViewModel(t, ViewModelMapper));
+			foreach (var taskViewModel in taskViewModels)
+			{
+				Tasks.Add(taskViewModel);
+			}
 		}
 
 		private void OnCreateNewTask(CreateNewTask ignored)
@@ -269,7 +273,12 @@ namespace Rogue.Ptb.UI.ViewModels
 			{
 				return;
 			}
-			Tasks.Where(t => t.IsSelected).ForEach(t => t.Deselect());
+
+			var taskViewModels = Tasks.Where(t => t.IsSelected);
+			foreach (var taskViewModel in taskViewModels)
+			{
+				taskViewModel.Deselect();
+			}
 		}
 
 		public void CollapseHierarchy()

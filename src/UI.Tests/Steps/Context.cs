@@ -20,7 +20,6 @@ namespace Rogue.Ptb.UI.Tests.Steps
 	public class Context 
 	{
 		private readonly Container _container;
-		private readonly MockFactory _factory;
 		private readonly Provider _provider;
 		private readonly Mock<IDialogDisplayer> _dialogDisplayer;
 
@@ -30,16 +29,16 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			var bootStrapper = new Bootstrapper();
 			bootStrapper.Bootstrap(new string[]{});
 
-			_factory = new MockFactory(MockBehavior.Loose);
+			var repository = new MockRepository(MockBehavior.Loose);
 
-			_dialogDisplayer = _factory.Create<IDialogDisplayer>();
+			_dialogDisplayer = repository.Create<IDialogDisplayer>();
 
 
 
 			_container = bootStrapper.Container;
 			_provider = _container.GetInstance<Provider>();
 			_container.Inject<ISessionFactoryProvider>(_provider);
-			_container.Inject<IDialogDisplayer>(_dialogDisplayer.Object);
+			_container.Inject(_dialogDisplayer.Object);
 			_container.Inject(Options);
 
 			var settings = new Properties.Settings {LastRecentlyUsedTaskboards = null};
@@ -89,7 +88,6 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		public class Provider : SessionFactoryProvider
 		{
 			private readonly IContainer _container;
-			private ISessionFactory _sessionFactory;
 
 			public Provider(IDatabaseServices services, IEnumerable<IDatabaseInitializer> initializers, IContainer container) 
 				: base(services, initializers)
@@ -104,9 +102,9 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			public string DatabasePath { get; set; }
 
-			public IList<string> CreatedDatabases { get; private set; }
+			public IList<string> CreatedDatabases { get; }
 
-			public IList<string> OpenedDatabases { get; private set; }
+			public IList<string> OpenedDatabases { get; }
 
 			public class SqlStatementInterceptor : EmptyInterceptor
 			{
@@ -152,7 +150,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 					new SchemaExport(config).Execute(false, true, false, session.Connection, StreamWriter.Null);
 				}
 
-				return _sessionFactory = factory;
+				return  factory;
 			}
 
 
@@ -160,7 +158,6 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			{
 				CreatedDatabases.Add(path);
 
-				_sessionFactory = null;
 
 				base.CreateNewDatabase(path);
 			}
@@ -195,7 +192,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 			Get<IEventAggregator>().Listen<T>().Subscribe(handler);
 		}
 
-		public TaskViewModel FindTaskVM(string taskName)
+		public TaskViewModel FindTaskVm(string taskName)
 		{
 			return TaskBoardViewModel.Tasks.First(t => t.Title == taskName);
 		}

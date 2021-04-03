@@ -65,7 +65,10 @@ namespace Rogue.Ptb.UI
 		public IShellView CreateShell()
 		{
 			var startables = Container.Model.GetAllPossible<IStartable>();
-			startables.ForEach(startup => startup.Start());
+			foreach (var startable in startables)
+			{
+				startable.Start();
+			}
 
 			return Container.GetInstance<IShellView>();
 		}

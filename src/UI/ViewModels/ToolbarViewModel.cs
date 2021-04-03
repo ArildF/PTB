@@ -10,7 +10,6 @@ namespace Rogue.Ptb.UI.ViewModels
 	{
 		private readonly ICommandResolver _resolver;
 		private readonly ISettings _settings;
-		private IEnumerable<string> _lruPaths;
 
 		public ToolbarViewModel(ICommandResolver resolver, ISettings settings)
 		{

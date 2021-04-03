@@ -33,6 +33,8 @@ namespace Rogue.Ptb.UI.Commands
 			Execute();
 		}
 
+		public event EventHandler? CanExecuteChanged;
+
 		protected virtual void Execute()
 		{}
 
@@ -46,7 +48,6 @@ namespace Rogue.Ptb.UI.Commands
 			return true;
 		}
 
-		public event EventHandler CanExecuteChanged;
 	}
 
 	public abstract class CommandBase<T> : ICommand
@@ -57,6 +58,8 @@ namespace Rogue.Ptb.UI.Commands
 
 		}
 
+		public event EventHandler? CanExecuteChanged;
+
 		protected virtual void Execute(T parameter)
 		{
 		}
@@ -66,11 +69,10 @@ namespace Rogue.Ptb.UI.Commands
 			return CanExecute((T) parameter);
 		}
 
-		protected virtual bool CanExecute(T parameter)
+		private bool CanExecute(T parameter)
 		{
 			return true;
 		}
 
-		public event EventHandler CanExecuteChanged;
 	}
 }

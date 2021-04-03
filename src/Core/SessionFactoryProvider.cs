@@ -37,7 +37,10 @@ namespace Rogue.Ptb.Core
 
 			using (var session = GetSession())
 			{
-				_initializers.ForEach(i => i.Run(session));
+				foreach (var initializer in _initializers)
+				{
+					initializer.Run(session);
+				}
 
 				session.Flush();
 			}

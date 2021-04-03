@@ -146,7 +146,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[Given(@"I select task ""(.*)""")]
 		public void WhenISelectTaskYo(string taskTitle)
 		{
-			var vm = _context.FindTaskVM(taskTitle);
+			var vm = _context.FindTaskVm(taskTitle);
 
 			_context.TaskBoardViewModel.SelectedTask = vm;
 		}
@@ -156,7 +156,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[Given(@"I add a subtask ""(.*)"" to task ""(.*)""")]
 		public void WhenIAddASubtaskThree_AToTaskThree(string subtaskName, string task)
 		{
-			var vm = _context.FindTaskVM(task);
+			var vm = _context.FindTaskVm(task);
 
 			_context.TaskBoardViewModel.SelectedTask = vm;
 			_context.Publish<CreateNewSubTask>(null);
@@ -197,14 +197,14 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[Then(@"task ""(.*)"" should be expanded")]
 		public void ThenTaskTwoShouldBeCollapsable(string title)
 		{
-			var vm = _context.FindTaskVM(title);
+			var vm = _context.FindTaskVm(title);
 			vm.CanCollapse.Should().BeTrue();
 		}
 
 		[Then(@"task ""(.*)"" should be expandable")]
 		public void ThenTaskTwoShouldBeExpandable(string title)
 		{
-			var vm = _context.FindTaskVM(title);
+			var vm = _context.FindTaskVm(title);
 			vm.CanExpand.Should().BeTrue();
 		}
 
@@ -239,7 +239,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[Then(@"task ""(.*)"" should be selected")]
 		public void ThenTheSelectedTaskShouldBeTask(string title)
 		{
-			_context.FindTaskVM(title).Should().Be(_context.TaskBoardViewModel.SelectedTask);
+			_context.FindTaskVm(title).Should().Be(_context.TaskBoardViewModel.SelectedTask);
 		}
 
 

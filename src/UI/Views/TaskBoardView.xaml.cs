@@ -48,7 +48,11 @@ namespace Rogue.Ptb.UI.Views
 
 		private void InvalidateAdorners()
 		{
-			GetAdorners().Where(ad => ad != null).ForEach(ad => ad.InvalidateVisual());
+			var adorners = GetAdorners().Where(ad => ad != null);
+			foreach (var adorner in adorners)
+			{
+				adorner.InvalidateVisual();
+			}
 		}
 
 

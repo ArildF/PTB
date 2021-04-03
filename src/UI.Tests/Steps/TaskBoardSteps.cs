@@ -100,7 +100,10 @@ namespace Rogue.Ptb.UI.Tests.Steps
 
 			var tasks = table.Rows.Select(r => new Task {Title = r["Title"]});
 			var repos = _context.Get<IRepository<Task>>();
-			tasks.ForEach(repos.InsertNew);
+			foreach (var task in tasks)
+			{
+				repos.InsertNew(task);
+			}
 
 			var exporter = _context.Get<ITasksExporter>();
 			exporter.ExportAll(path);

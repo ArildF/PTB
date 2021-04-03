@@ -19,8 +19,8 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[When(@"I set task ""(.*)"" to be more important than task ""(.*)""")]
 		public void WhenISetTaskThreeToBeMoreImportantThanTaskOne(string firstTaskName, string secondTaskName)
 		{
-			var firstTask = _context.FindTaskVM(firstTaskName);
-			var secondTask = _context.FindTaskVM(secondTaskName);
+			var firstTask = _context.FindTaskVm(firstTaskName);
+			var secondTask = _context.FindTaskVm(secondTaskName);
 
 			_context.TaskBoardViewModel.DragCommand.Execute(
 				new DragCommandArgs(firstTask, secondTask));
@@ -59,7 +59,7 @@ namespace Rogue.Ptb.UI.Tests.Steps
 		[StepArgumentTransformation("(.*)")]
 		public TaskViewModel StringToTask(string taskName)
 		{
-			return _context.FindTaskVM(taskName);
+			return _context.FindTaskVm(taskName);
 		}
 
 	}

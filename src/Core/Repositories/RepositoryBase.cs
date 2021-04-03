@@ -27,7 +27,10 @@ namespace Rogue.Ptb.Core.Repositories
 		{
 			using (var tx = _session.BeginTransaction())
 			{
-				items.Cast<object>().ForEach(_session.SaveOrUpdate);
+				foreach (var item in items.Cast<object>())
+				{
+					_session.SaveOrUpdate(item);
+				}
 				tx.Commit();
 			}
 		}
