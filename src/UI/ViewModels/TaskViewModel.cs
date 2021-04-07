@@ -6,6 +6,7 @@ using ReactiveUI;
 using Rogue.Ptb.Core;
 using System;
 using System.Reactive;
+using Rogue.Ptb.UI.Views;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
@@ -14,15 +15,17 @@ namespace Rogue.Ptb.UI.ViewModels
 	{
 		private readonly Task _task;
 		private readonly Func<Task, TaskViewModel> _viewModelMapper;
+		private readonly NoteDisplayer _displayer;
 		private bool _isEditing;
 		private bool _isSelected;
 		private bool _isVisible;
 
 
-		public TaskViewModel(Task task, Func<Task, TaskViewModel> viewModelMapper)
+		public TaskViewModel(Task task, Func<Task, TaskViewModel> viewModelMapper, NoteDisplayer displayer)
 		{
 			_task = task;
 			_viewModelMapper = viewModelMapper;
+			_displayer = displayer;
 			_isEditing = false;
 			_isVisible = true;
 
@@ -31,7 +34,11 @@ namespace Rogue.Ptb.UI.ViewModels
 			cmd.Subscribe();
 
 			ToggleCollapseHierarchyCommand = cmd;
+
+			ShowNotesCommand = ReactiveCommand.Create<Unit>(_ => displayer.Display(_task));
 		}
+		
+		public ICommand ShowNotesCommand { get; }
 
 		public TaskState State
 		{
@@ -199,7 +206,7 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public TaskViewModel CreateSubTask()
 		{
-			return new(_task.CreateSubTask(), _viewModelMapper);
+			return new(_task.CreateSubTask(), _viewModelMapper, _displayer);
 		}
 
 		public void Select()

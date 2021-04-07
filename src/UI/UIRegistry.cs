@@ -1,4 +1,6 @@
-﻿using Rogue.Ptb.UI.Commands;
+﻿using System;
+using Rogue.Ptb.Core;
+using Rogue.Ptb.UI.Commands;
 using Rogue.Ptb.UI.Registration;
 using Rogue.Ptb.UI.Services;
 using Rogue.Ptb.UI.Views;
@@ -22,6 +24,7 @@ namespace Rogue.Ptb.UI
 			For<ICommandResolver>().Use<CommandResolver>();
 			ForConcreteType<CommandLineLoader>();
 			ForSingletonOf<Properties.Settings>().Use(c => Properties.Settings.Default);
+			
 
 		}
 	}

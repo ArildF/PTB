@@ -13,6 +13,7 @@ using NHibernate.Util;
 using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Behaviors;
 using Rogue.Ptb.UI.Commands;
+using Rogue.Ptb.UI.Views;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
@@ -22,14 +23,17 @@ namespace Rogue.Ptb.UI.ViewModels
 		private IRepository<Task> _repository;
 		private readonly IEventAggregator _bus;
 		private readonly ICommandResolver _commandResolver;
+		private readonly NoteDisplayer _displayer;
 		private List<Task> _tasks;
 		private TaskViewModel _selectedTask;
 
-		public TaskBoardViewModel(IRepositoryProvider repositoryProvider, IEventAggregator bus, ICommandResolver commandResolver)
+		public TaskBoardViewModel(IRepositoryProvider repositoryProvider, IEventAggregator bus, ICommandResolver commandResolver,
+			NoteDisplayer displayer)
 		{
 			_repositoryProvider = repositoryProvider;
 			_bus = bus;
 			_commandResolver = commandResolver;
+			_displayer = displayer;
 
 			var tasks = new ObservableCollectionExtended<TaskViewModel>();
 
@@ -190,7 +194,7 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			_tasks.InPlaceSort();
 
-			var taskViewModels = _tasks.Select(t => new TaskViewModel(t, ViewModelMapper));
+			var taskViewModels = _tasks.Select(t => new TaskViewModel(t, ViewModelMapper, _displayer));
 			foreach (var taskViewModel in taskViewModels)
 			{
 				Tasks.Add(taskViewModel);
@@ -203,7 +207,7 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			_repository.InsertNew(task);
 
-			var taskViewModel = new TaskViewModel(task, ViewModelMapper);
+			var taskViewModel = new TaskViewModel(task, ViewModelMapper, _displayer);
 			Tasks.Insert(0, taskViewModel);
 			_tasks.Add(task);
 

@@ -66,6 +66,7 @@
 							<RowDefinition Height="*"/>
 							<RowDefinition Height="Auto"/>
 							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto" />
 							<RowDefinition Height="Auto"/>
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
@@ -98,8 +99,13 @@
 						        IsEnabled="{Binding IsProgressEnabled}"
 						        Value="{Binding Progress}"
 						        Style="{DynamicResource ProgressSliderStyle}"/>
+						
+						<Button Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right"
+						        Background="{StaticResource Notes}"
+						        Command="{Binding ShowNotesCommand}">
+						</Button>
 					
-						<Button Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0"
+						<Button Grid.Row="4" Grid.ColumnSpan="3" Grid.Column="0"
 						        Visibility="{Binding Collapsable, Converter={StaticResource BoolToCollapsedConverter}}" 
 						        Content="-"
 						        x:Name="_collapseButton"

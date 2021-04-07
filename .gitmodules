@@ -1,0 +1,3 @@
+[submodule "src/MdXaml"]
+	path = src/MdXaml
+	url = https://github.com/ArildF/MdXaml.git

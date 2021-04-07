@@ -39,6 +39,8 @@ namespace Rogue.Ptb.UI
 							uc => 
 								Container.With(uc).With(c.GetInstance<IShellView>()).GetInstance<DialogHost>());
 					ce.For<Options>().Singleton().Use(options);
+					ce.For<Func<Task, NotesWindow>>().Use<Func<Task, NotesWindow>>(
+						c => task => Container.With(task).GetInstance<NotesWindow>());
 				});
 
 			// RxApp.GetFieldNameForPropertyNameFunc = propName => "_" + Char.ToLower(propName[0]) + propName.Substring(1);
