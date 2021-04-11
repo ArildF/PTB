@@ -29,11 +29,18 @@ namespace Rogue.Ptb.UI.ViewModels
 				.Throttle(TimeSpan.FromSeconds(5))
 				.Select(_ => new TaskModified()));
 
-			StartEditingCommand = ReactiveCommand.Create(() => IsEditing = true);
+			StartEditingCommand = ReactiveCommand.Create(() =>
+			{
+				IsEditing = true;
+				SelectedNoteViewModel?.DoFocus();
+				return true;
+			});
 			EndEditingCommand = ReactiveCommand.Create(() => IsEditing = false);
 
 			SelectedNoteViewModel = Notes.First();
 		}
+
+
 
 		public ReactiveCommand<Unit, bool> EndEditingCommand { get; }
 

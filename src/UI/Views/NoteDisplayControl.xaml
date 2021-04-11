@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mdXaml="clr-namespace:MdXaml;assembly=MdXaml"
              xmlns:viewModels="clr-namespace:Rogue.Ptb.UI.ViewModels"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Rogue.Ptb.UI.Behaviors"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=viewModels:NotesDisplayViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -26,7 +28,11 @@
 					</mdXaml:MarkdownScrollViewer>
 					<TextBox Text="{Binding Markdown, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"
 					         AcceptsReturn="True"
-					         x:Name="_editTextBox"/>
+					         x:Name="_editTextBox">
+						<b:Interaction.Behaviors>
+							<behaviors:FocusBindingBehavior Focus="{Binding Focus}"/>
+						</b:Interaction.Behaviors>
+					</TextBox>
 				</Grid>
 			</DockPanel>
 				

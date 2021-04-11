@@ -1,4 +1,6 @@
 using System;
+using System.Reactive;
+using System.Reactive.Subjects;
 using Rogue.Ptb.Core;
 
 namespace Rogue.Ptb.UI.ViewModels
@@ -6,6 +8,10 @@ namespace Rogue.Ptb.UI.ViewModels
 	public class NoteViewModel : ViewModelBase
 	{
 		private readonly Note _note;
+		
+		private readonly Subject<Unit> _focus = new Subject<Unit>();
+
+		public Subject<Unit> Focus => _focus;
 
 		public NoteViewModel(Note note)
 		{
@@ -24,5 +30,9 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public DateTime Created => _note.Created;
 
+		public void DoFocus()
+		{
+			_focus.OnNext(Unit.Default);
+		}
 	}
 }
