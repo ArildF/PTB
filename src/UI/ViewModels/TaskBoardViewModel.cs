@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -9,7 +8,6 @@ using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using Rogue.Ptb.Core;
-using NHibernate.Util;
 using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Behaviors;
 using Rogue.Ptb.UI.Commands;
@@ -44,9 +42,11 @@ namespace Rogue.Ptb.UI.ViewModels
 				.Throttle(TimeSpan.FromSeconds(5))
 				.Filter(_ =>  _repository != null)
 				.Filter(c => !c.IsEditing)
+				.Select(_ => Unit.Default)
+				.Merge(bus.Listen<TaskModified>().Select(_ => Unit.Default))
 				.ObserveOnDispatcher()
 				.Subscribe(_ => OnSaveAllTasks(null));
-
+			
 			ocs
 				.WhenPropertyChanged(t => t.IsSelected)
 				.Select(pv => pv.Sender)

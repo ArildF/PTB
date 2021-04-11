@@ -1,0 +1,45 @@
+<UserControl x:Class="Rogue.Ptb.UI.Views.NoteDisplayControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mdXaml="clr-namespace:MdXaml;assembly=MdXaml"
+             xmlns:viewModels="clr-namespace:Rogue.Ptb.UI.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=viewModels:NotesDisplayViewModel}"
+             d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Template>
+		<ControlTemplate>
+			
+			<DockPanel LastChildFill="True">
+				<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+					<Button x:Name="_startEditingButton" Command="{Binding StartEditingCommand}">Start _editing</Button>
+					<Button x:Name="_endEditingButton" Visibility="Collapsed" Command="{Binding EndEditingCommand}">End _editing</Button>
+				</StackPanel>
+				<Grid DataContext="{Binding SelectedNoteViewModel}">
+					<mdXaml:MarkdownScrollViewer 
+						VerticalScrollBarVisibility="Auto"
+						Markdown="{Binding Markdown}"
+						x:Name="_displayControl" Margin="10 10 10 10"
+						Foreground="White"
+						ClickAction="OpenBrowser" >
+					</mdXaml:MarkdownScrollViewer>
+					<TextBox Text="{Binding Markdown, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"
+					         AcceptsReturn="True"
+					         x:Name="_editTextBox"/>
+				</Grid>
+			</DockPanel>
+				
+			<ControlTemplate.Triggers>
+				<DataTrigger Binding="{Binding IsEditing}" Value="true">
+					<Setter TargetName="_startEditingButton" Property="Visibility"
+					        Value="Collapsed"/>
+					<Setter TargetName="_endEditingButton" Property="Visibility"
+					        Value="Visible"/>
+					<Setter TargetName="_editTextBox" Property="Visibility" Value="Visible"/>
+					<Setter TargetName="_displayControl" Property="Visibility" Value="Collapsed"/>
+				</DataTrigger>
+			</ControlTemplate.Triggers>
+		</ControlTemplate>
+	</UserControl.Template>
+</UserControl>

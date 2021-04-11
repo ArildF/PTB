@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Castle.Core;
 using NHibernate;
@@ -29,6 +30,7 @@ namespace Rogue.Ptb.Core.Repositories
 			{
 				foreach (var item in items.Cast<object>())
 				{
+					Debug.WriteLine($"Saving {item}");
 					_session.SaveOrUpdate(item);
 				}
 				tx.Commit();

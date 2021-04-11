@@ -16,6 +16,7 @@ namespace Rogue.Ptb.Core.Maps
 			Map(t => t.AbandonedDate);
 			Map(t => t.StateChangedDate);
 			Map(t => t.Progress);
+			HasMany(t => t.Notes).Cascade.All();
 			HasMany(t => t.Links).KeyColumn("Task_id").AsSet().Cascade.All().Fetch.Join();
 		}
 	}

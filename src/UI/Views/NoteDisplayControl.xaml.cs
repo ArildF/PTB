@@ -4,9 +4,9 @@ using System.Windows.Input;
 
 namespace Rogue.Ptb.UI.Views
 {
-	public partial class NotesDisplayControl : UserControl
+	public partial class NoteDisplayControl : UserControl
 	{
-		public NotesDisplayControl()
+		public NoteDisplayControl()
 		{
 			InitializeComponent();
 		}

@@ -56,6 +56,8 @@ namespace Rogue.Ptb.Core
 		{
 			get; protected internal set;
 		}
+		
+		public virtual ISet<Note> Notes { get; set; }
 
 		protected internal virtual ISet<Link> Links
 		{
@@ -222,6 +224,13 @@ namespace Rogue.Ptb.Core
 			}
 
 			return true;
+		}
+
+		public virtual Note CreateNote()
+		{
+			var note = new Note {Created = DateTime.Now, Markdown = ""};
+			Notes.Add(note);
+			return note;
 		}
 	}
 }

@@ -16,6 +16,8 @@
 	public class ApplicationIdle {}
 
 	public class TaskStateChanged{}
+	
+	public class TaskModified{}
 
 	public class CollapseAll : ICommandEvent{}
 }
