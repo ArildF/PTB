@@ -19,16 +19,21 @@
 			<ColumnDefinition Width="1*"/>
 			<ColumnDefinition Width="4*"/>
 		</Grid.ColumnDefinitions>
-		<ListBox Grid.Column="0" ItemsSource="{Binding Notes}"
-		         Background="Transparent" SelectedItem="{Binding SelectedNoteViewModel}">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<Grid>
-						<TextBlock Text="{Binding Created}"/>
-					</Grid>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
+		<DockPanel Grid.Column="0" LastChildFill="True" Margin="5 5 5 0">
+			<Button DockPanel.Dock="Bottom" HorizontalContentAlignment="Center"
+			        Command="{Binding AddNoteCommand}"
+			        HorizontalAlignment="Stretch" >+</Button>
+			<ListBox ItemsSource="{Binding Notes}" VerticalAlignment="Stretch" Margin="0 0 0 10"
+					 Background="Transparent" SelectedItem="{Binding SelectedNoteViewModel}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Grid>
+							<TextBlock Text="{Binding Created, ConverterCulture=no-nb}"/>
+						</Grid>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</DockPanel>
 		<local:NoteDisplayControl Grid.Column="1" />
 	</Grid>
 </fluentWpf:AcrylicWindow>

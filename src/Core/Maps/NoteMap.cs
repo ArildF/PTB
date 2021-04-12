@@ -6,7 +6,7 @@ namespace Rogue.Ptb.Core.Maps
 	{
 		public NoteMap()
 		{
-			Id(t => t.Id).GeneratedBy.Assigned();
+			Id(t => t.Id).GeneratedBy.Guid();
 			Map(n => n.Created);
 			Map(n => n.Markdown);
 			Map(n => n.Modified);

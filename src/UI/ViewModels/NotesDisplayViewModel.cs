@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Windows.Input;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -37,14 +38,23 @@ namespace Rogue.Ptb.UI.ViewModels
 			});
 			EndEditingCommand = ReactiveCommand.Create(() => IsEditing = false);
 
+			AddNoteCommand = ReactiveCommand.Create(AddNote);
+
 			SelectedNoteViewModel = Notes.First();
 		}
 
+		public ICommand AddNoteCommand { get; }
+
+		private void AddNote()
+		{
+			var note = _task.CreateNote();
+			Notes.Add(new NoteViewModel(note));
+		}
 
 
-		public ReactiveCommand<Unit, bool> EndEditingCommand { get; }
+		public ICommand EndEditingCommand { get; }
 
-		public ReactiveCommand<Unit, bool> StartEditingCommand { get; }
+		public ICommand StartEditingCommand { get; }
 
 		public NoteViewModel SelectedNoteViewModel
 		{
