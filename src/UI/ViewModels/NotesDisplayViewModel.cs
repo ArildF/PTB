@@ -2,23 +2,27 @@ using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Windows;
 using System.Windows.Input;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Infrastructure;
+using Rogue.Ptb.UI.Services;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
 	public class NotesDisplayViewModel : ViewModelBase
 	{
 		private readonly Task _task;
+		private readonly IMessageBoxService _messageBoxService;
 		private NoteViewModel _selectedNoteViewModel;
 
-		public NotesDisplayViewModel(Task task, IEventAggregator bus)
+		public NotesDisplayViewModel(Task task, IEventAggregator bus, IMessageBoxService messageBoxService)
 		{
 			_task = task;
+			_messageBoxService = messageBoxService;
 			Notes = new ObservableCollectionExtended<NoteViewModel>(task.Notes.Select(n => new NoteViewModel(n)));
 			if (!Notes.Any())
 			{
@@ -26,7 +30,8 @@ namespace Rogue.Ptb.UI.ViewModels
 			}
 
 			bus.AddSource(Notes.ToObservableChangeSet()
-				.WhenAnyPropertyChanged()
+				.WhenAnyPropertyChanged().Select(_ => Unit.Default)
+				.Merge(Notes.ObserveCollectionChanges().Select(_ => Unit.Default))
 				.Throttle(TimeSpan.FromSeconds(5))
 				.Select(_ => new TaskModified()));
 
@@ -40,7 +45,23 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			AddNoteCommand = ReactiveCommand.Create(AddNote);
 
+			DeleteCommand = ReactiveCommand.Create<NoteViewModel>(DeleteNote);
+
 			SelectedNoteViewModel = Notes.First();
+		}
+
+		public ReactiveCommand<NoteViewModel, Unit> DeleteCommand { get; set; }
+
+		private void DeleteNote(NoteViewModel obj)
+		{
+			if (_messageBoxService.ShowYesNoDialog("Delete note?") == MessageBoxResult.Yes)
+			{
+				var nextNote = Notes.SkipWhile(n => n != obj).Skip(1).FirstOrDefault();
+				_task.Notes.Remove(obj.Note);
+				Notes.Remove(obj);
+				SelectedNoteViewModel = nextNote ?? Notes.Last();
+			}
+			
 		}
 
 		public ICommand AddNoteCommand { get; }

@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows;
 using Microsoft.Xaml.Behaviors;
 
@@ -16,8 +18,10 @@ namespace Rogue.Ptb.UI.Behaviors
 			var behavior = (FocusBindingBehavior) d;
 			behavior._subscription?.Dispose();
 
-			var observable = (IObservable<Unit>) e.NewValue;
-			behavior._subscription = observable.Subscribe(_ => behavior.AssociatedObject?.Focus());
+			if (e.NewValue is IObservable<Unit> observable)
+			{
+				behavior._subscription = observable.Subscribe(_ => behavior.AssociatedObject?.Focus());
+			}
 		}
 
 		public IObservable<Unit> Focus

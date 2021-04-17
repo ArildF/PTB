@@ -29,6 +29,7 @@ namespace Rogue.Ptb.UI.ViewModels
 		}
 
 		public DateTime Created => _note.Created;
+		public Note Note => _note;
 
 		public void DoFocus()
 		{
