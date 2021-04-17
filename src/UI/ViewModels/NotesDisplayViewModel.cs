@@ -23,11 +23,8 @@ namespace Rogue.Ptb.UI.ViewModels
 		{
 			_task = task;
 			_messageBoxService = messageBoxService;
-			Notes = new ObservableCollectionExtended<NoteViewModel>(task.Notes.Select(n => new NoteViewModel(n)));
-			if (!Notes.Any())
-			{
-				Notes.Add(new NoteViewModel(task.CreateNote()));
-			}
+			Notes = new ObservableCollectionExtended<NoteViewModel>();
+			PopulateNotes();
 
 			bus.AddSource(Notes.ToObservableChangeSet()
 				.WhenAnyPropertyChanged().Select(_ => Unit.Default)
@@ -47,8 +44,37 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			DeleteCommand = ReactiveCommand.Create<NoteViewModel>(DeleteNote);
 
+			this.ObservableForProperty(vm => vm.ShowSubNotes)
+				.ObserveOnDispatcher()
+				.Subscribe(_ => PopulateNotes());
+
+		}
+
+		private void PopulateNotes()
+		{
+			Notes.Clear();
+			
+			var tasks = _showSubNotes
+				? _task.RecurseDepthFirst(t => t.SubTasks)
+				: _task.AsSingleItemEnumerable();
+			Notes.AddRange(tasks.SelectMany(t => t.Notes).Select(n => new NoteViewModel(n)));
+			
+			if (!Notes.Any())
+			{
+				Notes.Add(new NoteViewModel(_task.CreateNote()));
+			}
+
 			SelectedNoteViewModel = Notes.First();
 		}
+
+		private bool _showSubNotes;
+
+		public bool ShowSubNotes
+		{
+			get => _showSubNotes;
+			set => this.RaiseAndSetIfChanged(ref _showSubNotes, value);
+		}
+		
 
 		public ReactiveCommand<NoteViewModel, Unit> DeleteCommand { get; set; }
 

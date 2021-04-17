@@ -27,6 +27,11 @@
 			<Button DockPanel.Dock="Bottom" HorizontalContentAlignment="Center"
 			        Command="{Binding AddNoteCommand}"
 			        HorizontalAlignment="Stretch" >+</Button>
+			<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+				<Label VerticalAlignment="Center" Margin="5 0 5 0"
+				       Content="Show _subtask notes" Target="{Binding ElementName=CheckBox}"></Label>
+				<CheckBox x:Name="CheckBox" VerticalAlignment="Center" IsChecked="{Binding ShowSubNotes}"/>
+			</StackPanel>
 			<ListBox ItemsSource="{Binding Notes}" VerticalAlignment="Stretch" Margin="0 0 0 10"
 			         Padding="0"
 					 Background="Transparent" SelectedItem="{Binding SelectedNoteViewModel}">

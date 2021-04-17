@@ -17,6 +17,7 @@ namespace Rogue.Ptb.Core
 			Id = Guid.NewGuid();
 			_title = "";
 			Links = new HashSet<Link>();
+			Notes = new HashSet<Note>();
 		}
 
 		public virtual Guid Id { get; protected internal set; }
