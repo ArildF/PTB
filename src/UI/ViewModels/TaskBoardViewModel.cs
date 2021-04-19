@@ -238,6 +238,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			var indexToInsert = Tasks.IndexOf(SelectedTask) + 1;
 			Tasks.Insert(indexToInsert, newTaskViewModel);
 			_tasks.Add(newTaskViewModel.Task);
+			SelectedTask.NewChildAdded();
 
 			var parentTask = SelectedTask;
 
@@ -252,7 +253,6 @@ namespace Rogue.Ptb.UI.ViewModels
 				.Subscribe(_ =>
 				{
 					SelectedTask = parentTask;
-					SelectedTask.NotifyProgressChanged();
 					subscription?.Dispose();
 				});
 		}

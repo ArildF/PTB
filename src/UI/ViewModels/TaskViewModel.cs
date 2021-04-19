@@ -268,5 +268,13 @@ namespace Rogue.Ptb.UI.ViewModels
 			this.RaisePropertyChanged(vm => vm.CanCollapse);
 			this.RaisePropertyChanged(vm => vm.CanExpand);
 		}
+
+		public void NewChildAdded()
+		{
+			this.RaisePropertyChanged(vm => vm.Progress);
+			this.RaisePropertyChanged(vm => vm.Collapsable);
+			this.RaisePropertyChanged(vm => vm.CanCollapse);
+			this.RaisePropertyChanged(vm => vm.CanExpand);
+		}
 	}
 }
