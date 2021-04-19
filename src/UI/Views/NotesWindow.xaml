@@ -53,9 +53,10 @@
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
-							<!-- <Border Grid.Row="1" Background="Fuchsia" Grid.ColumnSpan="1"/> -->
-							<TextBlock Grid.ColumnSpan="1" Grid.Row="1"
+							<TextBlock Grid.Row="1" Text="{Binding Title}" HorizontalAlignment="Center"/>
+							<TextBlock Grid.Column="0" Grid.Row="2" FontSize="10" HorizontalAlignment="Left"
 							           Text="{Binding Created, ConverterCulture=no-nb}"/>
 							<Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top"
 							        VerticalContentAlignment="Top"
@@ -79,5 +80,6 @@
 			</ListBox>
 		</DockPanel>
 		<local:NoteDisplayControl Grid.Column="1" />
+		<GridSplitter Grid.Column="0" Width="3"/>
 	</Grid>
 </fluentWpf:AcrylicWindow>

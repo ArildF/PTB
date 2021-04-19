@@ -57,11 +57,14 @@ namespace Rogue.Ptb.UI.ViewModels
 			var tasks = _showSubNotes
 				? _task.RecurseDepthFirst(t => t.SubTasks)
 				: _task.AsSingleItemEnumerable();
-			Notes.AddRange(tasks.SelectMany(t => t.Notes).Select(n => new NoteViewModel(n)));
+			Notes.AddRange(
+				from t in tasks
+				from n in t.Notes
+				select new NoteViewModel(n, t));
 			
 			if (!Notes.Any())
 			{
-				Notes.Add(new NoteViewModel(_task.CreateNote()));
+				Notes.Add(new NoteViewModel(_task.CreateNote(), _task));
 			}
 
 			SelectedNoteViewModel = Notes.First();
@@ -95,7 +98,7 @@ namespace Rogue.Ptb.UI.ViewModels
 		private void AddNote()
 		{
 			var note = _task.CreateNote();
-			Notes.Add(new NoteViewModel(note));
+			Notes.Add(new NoteViewModel(note, _task));
 		}
 
 

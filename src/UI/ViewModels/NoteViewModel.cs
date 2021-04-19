@@ -8,14 +8,16 @@ namespace Rogue.Ptb.UI.ViewModels
 	public class NoteViewModel : ViewModelBase
 	{
 		private readonly Note _note;
-		
-		private readonly Subject<Unit> _focus = new Subject<Unit>();
+		private readonly Task _task;
+
+		private readonly Subject<Unit> _focus = new();
 
 		public Subject<Unit> Focus => _focus;
 
-		public NoteViewModel(Note note)
+		public NoteViewModel(Note note, Task task)
 		{
 			_note = note;
+			_task = task;
 		}
 
 		public string Markdown
@@ -27,6 +29,8 @@ namespace Rogue.Ptb.UI.ViewModels
 				this.RaisePropertyChanged(vm => vm.Markdown);
 			}
 		}
+
+		public string Title => _task.Title;
 
 		public DateTime Created => _note.Created;
 		public Note Note => _note;
