@@ -26,6 +26,7 @@
 	</UserControl.Triggers>
 	<b:Interaction.Behaviors>
 		<Behaviors:CommandForEventBehavior Event="PreviewMouseDown" Passthrough="True" Action="Deselect"/>
+		<Behaviors:KeyCommandBehavior Key="Escape" Action="StopEditingOrDeselect"/>
 	</b:Interaction.Behaviors>
 	
 	<Grid IsSharedSizeScope="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">

@@ -311,6 +311,18 @@ namespace Rogue.Ptb.UI.ViewModels
 			SelectedTask = null;
 		}
 
+		public void StopEditingOrDeselect()
+		{
+			if (SelectedTask?.IsEditing == true)
+			{
+				SelectedTask.IsEditing = false;
+			}
+			else
+			{
+				Deselect();
+			}
+		}
+
 		public void CollapseHierarchy()
 		{
 			if (SelectedTask == null)
