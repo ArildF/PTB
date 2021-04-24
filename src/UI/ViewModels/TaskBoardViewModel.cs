@@ -42,8 +42,8 @@ namespace Rogue.Ptb.UI.ViewModels
 				.Throttle(TimeSpan.FromSeconds(5))
 				.Filter(_ =>  _repository != null)
 				.Filter(c => !c.IsEditing)
-				.Select(_ => Unit.Default)
-				.Merge(bus.Listen<TaskModified>().Select(_ => Unit.Default))
+				.ToUnit()
+				.Merge(bus.Listen<TaskModified>().ToUnit())
 				.ObserveOnDispatcher()
 				.Subscribe(_ => OnSaveAllTasks(null));
 			
