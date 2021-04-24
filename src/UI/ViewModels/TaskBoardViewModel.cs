@@ -307,6 +307,8 @@ namespace Rogue.Ptb.UI.ViewModels
 			{
 				taskViewModel.Deselect();
 			}
+
+			SelectedTask = null;
 		}
 
 		public void CollapseHierarchy()

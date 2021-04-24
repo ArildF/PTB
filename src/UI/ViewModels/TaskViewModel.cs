@@ -222,6 +222,7 @@ namespace Rogue.Ptb.UI.ViewModels
 		public void Deselect()
 		{
 			IsSelected = false;
+			IsEditing = false;
 		}
 
 		public void NotifyStateChanged()
