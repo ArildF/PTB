@@ -45,7 +45,7 @@
 
 
 			<Border Margin="10" BorderBrush="{DynamicResource SystemControlForegroundBaseHighBrush}" CornerRadius="5" 
-									BorderThickness="1"
+									BorderThickness="4"
 									Background = "{StaticResource BlackBackground}"
 									x:Name="_border"
 									MinHeight="80"
@@ -121,11 +121,11 @@
 					<Setter TargetName="_border" Property="BorderBrush" Value="Yellow"/>
 				</DataTrigger>
 				<DataTrigger Binding="{Binding State}" Value="Complete">
-					<Setter TargetName="_border" Property="BorderBrush" Value="Green"/>
+					<Setter TargetName="_border" Property="BorderBrush" Value="LightGreen"/>
 					<Setter TargetName="_check" Property="Visibility" Value="Visible"/>
 				</DataTrigger>
 				<DataTrigger Binding="{Binding State}" Value="NotStarted">
-					<Setter TargetName="_border" Property="BorderBrush" Value="Blue"/>
+					<Setter TargetName="_border" Property="BorderBrush" Value="LightBlue"/>
 				</DataTrigger>
 				<DataTrigger Binding="{Binding State}" Value="Abandoned">
 					<Setter TargetName="_border" Property="BorderBrush" Value="Black"/>
@@ -133,7 +133,7 @@
 				</DataTrigger>
 				<DataTrigger Binding="{Binding IsSelected}" Value="true">
 					<!-- <Setter TargetName="_border" Property="BorderBrush" Value="{DynamicResource SystemControlForegroundAccentBrush}"></Setter> -->
-					<Setter TargetName="_border" Property="BorderThickness" Value="2.5"/>
+					<Setter TargetName="_border" Property="BorderThickness" Value="5"/>
 				</DataTrigger>
 				<DataTrigger Binding="{Binding IsEditing}" Value="true">
 					<Setter TargetName="_textBlock" Property="Visibility" Value="Collapsed"/>
