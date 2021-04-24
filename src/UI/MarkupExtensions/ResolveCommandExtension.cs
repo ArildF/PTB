@@ -92,14 +92,30 @@ namespace Rogue.Ptb.UI.MarkupExtensions
 				_name = name;
 
 				FrameworkElement = frameworkElement;
+				CommandOnCanExecuteChanged(this, EventArgs.Empty);
 			}
 
 			private void FrameworkElementOnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 			{
+				if (Command != null)
+				{
+					Command.CanExecuteChanged -= CommandOnCanExecuteChanged;
+				}
+
 				if (CanExecuteChanged != null)
 				{
 					CanExecuteChanged(this, EventArgs.Empty);
 				}
+
+				if (Command != null)
+				{
+					Command.CanExecuteChanged += CommandOnCanExecuteChanged;
+				}
+			}
+
+			private void CommandOnCanExecuteChanged(object? sender, EventArgs e)
+			{
+				CanExecuteChanged?.Invoke(this, e);
 			}
 
 			public void Execute(object parameter)

@@ -3,14 +3,14 @@ using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.Commands
 {
-	public class CreateTaskBoard : NoParameterCommandBase
+	public class CreateTaskBoard : NoParameterCommandBase<CreateTaskBoard>
 	{
 		private readonly ISessionFactoryProvider _sessionFactoryProvider;
 		private readonly IEventAggregator _bus;
 		private readonly IDialogDisplayer _dialogDisplayer;
 
-		public CreateTaskBoard(ISessionFactoryProvider sessionFactoryProvider, IEventAggregator bus, 
-			IDialogDisplayer dialogDisplayer)
+		public CreateTaskBoard(ISessionFactoryProvider sessionFactoryProvider, IEventAggregator bus,
+			IDialogDisplayer dialogDisplayer) : base(bus)
 		{
 			_sessionFactoryProvider = sessionFactoryProvider;
 			_bus = bus;

@@ -3,13 +3,14 @@ using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.Commands
 {
-	public class ImportTaskBoard : NoParameterCommandBase
+	public class ImportTaskBoard : NoParameterCommandBase<ImportTaskBoard>
 	{
 		private readonly ITasksImporter _importer;
 		private readonly IEventAggregator _eventAggregator;
 		private readonly IDialogDisplayer _dialogDisplayer;
 
-		public ImportTaskBoard(ITasksImporter importer, IEventAggregator eventAggregator, IDialogDisplayer dialogDisplayer)
+		public ImportTaskBoard(ITasksImporter importer, IEventAggregator eventAggregator, IDialogDisplayer dialogDisplayer) 
+			: base(eventAggregator)
 		{
 			_importer = importer;
 			_eventAggregator = eventAggregator;

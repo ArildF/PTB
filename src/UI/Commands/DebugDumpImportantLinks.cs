@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Rogue.Ptb.Core;
+using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.Commands
 {
-	public class DebugDumpImportantLinks : NoParameterCommandBase
+	public class DebugDumpImportantLinks : NoParameterCommandBase<DebugDumpImportantLinks>
 	{
 		private readonly IRepositoryProvider _provider;
 		private readonly IDebugService _debugService;
 
-		public DebugDumpImportantLinks(IRepositoryProvider provider, IDebugService debugService)
+		public DebugDumpImportantLinks(IRepositoryProvider provider, IDebugService debugService,
+			IEventAggregator bus) 
+			: base(bus)
 		{
 			_provider = provider;
 			_debugService = debugService;

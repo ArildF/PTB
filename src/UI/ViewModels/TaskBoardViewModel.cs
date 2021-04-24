@@ -74,6 +74,29 @@ namespace Rogue.Ptb.UI.ViewModels
 			_bus.AddSource(ocs.WhenPropertyChanged(t => t.State)
 				.Select(_ => new TaskStateChanged()));
 
+			var propertyChangedOrStartup = this.WhenAnyPropertyChanged()
+				.ToUnit()
+				.Merge(bus.Listen<ApplicationIdle>().ToUnit());
+			bus.AddSource(propertyChangedOrStartup
+				.Select(_ => new CommandCanExecute<EventCommand<CreateNewTask>>(_repository != null)));
+			
+			bus.AddSource(propertyChangedOrStartup
+				.Select(_ => new CommandCanExecute<EventCommand<CollapseAll>>(_repository != null)));
+			
+			bus.AddSource(propertyChangedOrStartup
+				.Select(_ => new CommandCanExecute<EventCommand<SaveAllTasks>>(_repository != null)));
+			
+			bus.AddSource(propertyChangedOrStartup
+				.Select(_ => new CommandCanExecute<EventCommand<CreateNewSubTask>>(SelectedTask != null)));
+			
+			bus.AddSource(propertyChangedOrStartup
+				.Select(_ => new CommandCanExecute<EventCommand<ReSort>>(_repository != null)));
+			
+			bus.AddSource(propertyChangedOrStartup
+				.Select(_ => new CommandCanExecute<DebugDumpImportantLinks>(_repository != null)));
+			bus.AddSource(propertyChangedOrStartup
+				.Select(_ => new CommandCanExecute<ExportTaskBoard>(_repository != null)));
+
 			DragCommand = ReactiveCommand.Create<DragCommandArgs>(OnNext);
 		}
 
@@ -179,6 +202,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			Reload();
 
 			OnCollapseAll();
+			this.RaisePropertyChanged(vm => vm.Tasks);
 		}
 
 		private void Reload()

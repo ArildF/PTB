@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reactive.Linq;
 using System.Windows.Input;
+using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.Commands
 {
@@ -26,8 +29,20 @@ namespace Rogue.Ptb.UI.Commands
 		public event EventHandler CanExecuteChanged;
 	}
 
-	public abstract class NoParameterCommandBase : ICommand
+	[DebuggerDisplay("{GetType()}")]
+	public abstract class NoParameterCommandBase<T> : ICommand
 	{
+		private bool _canExecute = true;
+
+		protected NoParameterCommandBase(IEventAggregator bus)
+		{
+			bus.Listen<CommandCanExecute<T>>()
+				.ObserveOnDispatcher()
+				.Do(cce => _canExecute = cce.CanExecute)
+				.Subscribe(_ => CanExecuteChanged?.Invoke(this, EventArgs.Empty));
+
+		}
+
 		void ICommand.Execute(object parameter)
 		{
 			Execute();
@@ -45,7 +60,7 @@ namespace Rogue.Ptb.UI.Commands
 
 		protected virtual bool CanExecute()
 		{
-			return true;
+			return _canExecute;
 		}
 
 	}

@@ -16,7 +16,8 @@ namespace Rogue.Ptb.UI.Registration
 					continue;
 				}
 
-				registry.AddType(typeof(ICommand), type, type.Name);
+				registry.ForSingletonOf<ICommand>().Configure(pg => pg.AddType(type, type.Name));
+
 			}
 		}
 	}

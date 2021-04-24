@@ -1,12 +1,14 @@
-﻿using Rogue.Ptb.Infrastructure;
+﻿using System.Diagnostics;
+using Rogue.Ptb.Infrastructure;
 
 namespace Rogue.Ptb.UI.Commands
 {
-	public class EventCommand<T> : NoParameterCommandBase
+	[DebuggerDisplay("EventCommand<{typeof(T)}>")]
+	public class EventCommand<T> : NoParameterCommandBase<EventCommand<T>>
 	{
 		private readonly IEventAggregator _bus;
 
-		public EventCommand(IEventAggregator bus)
+		public EventCommand(IEventAggregator bus) : base(bus)
 		{
 			_bus = bus;
 		}

@@ -20,4 +20,14 @@
 	public class TaskModified{}
 
 	public class CollapseAll : ICommandEvent{}
+
+	public class CommandCanExecute<T>
+	{
+		public CommandCanExecute(bool canExecute)
+		{
+			CanExecute = canExecute;
+		}
+
+		public bool CanExecute { get; }
+	}
 }
