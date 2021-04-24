@@ -127,6 +127,7 @@ namespace Rogue.Ptb.Core
 			State = TaskState.Complete;
 			CompletedDate = DateTimeHelper.Now;
 			AbandonedDate = null;
+			Progress = 100;
 
 			StateChanged();
 		}

@@ -73,6 +73,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			if (value == TaskState.Complete)
 			{
 				_task.Complete();
+				NotifyProgressChanged();
 			}
 			if (value == TaskState.Abandoned)
 			{
