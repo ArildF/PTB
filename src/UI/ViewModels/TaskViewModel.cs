@@ -73,7 +73,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			if (value == TaskState.Complete)
 			{
 				_task.Complete();
-				NotifyProgressChanged();
+				Progress = _task.Progress ?? 0;
 			}
 			if (value == TaskState.Abandoned)
 			{
@@ -83,6 +83,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			if (value == TaskState.NotStarted)
 			{
 				_task.NotStarted();
+				Progress = _task.Progress ?? 0;
 			}
 
 		}
@@ -155,6 +156,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			set
 			{
 				_task.Progress = value;
+				NotifyProgressChanged();
 				if (_task.Parent != null)
 				{
 					var parentVM = _viewModelMapper(_task.Parent);
@@ -165,7 +167,10 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public void NotifyProgressChanged()
 		{
-			this.RaisePropertyChanged(vm => vm.Progress);	
+			var parentVM = _viewModelMapper(_task.Parent);
+			parentVM?.NotifyProgressChanged();
+			this.RaisePropertyChanged(vm => vm.Progress);
+			
 		}
 
 		public ICommand ToggleCollapseHierarchyCommand { get; private set; }

@@ -116,10 +116,7 @@ namespace Rogue.Ptb.Core
 
 			StateChanged();
 
-			if (Parent != null)
-			{
-				Parent.Start();
-			}
+			Parent?.Start();
 		}
 
 		public virtual void Complete()
@@ -147,6 +144,8 @@ namespace Rogue.Ptb.Core
 			StartedDate = null;
 			CompletedDate = null;
 			AbandonedDate = null;
+
+			Progress = 0;
 
 			StateChanged();
 		}
