@@ -148,11 +148,15 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public bool IsProgressEnabled => _task.IsLeaf;
 
+		private IEnumerable<TaskViewModel> NonAbandonedChildVMs => ChildVMs().Where(cvm => cvm.State != TaskState.Abandoned);
+
 		public double Progress
 		{
-			get => _task.IsLeaf 
-				? _task.Progress ?? 0 
-				: ChildVMs().Sum(vm => vm.Progress) / ChildVMs().Count();
+			get => _task.IsLeaf
+				? _task.Progress ?? 0
+				: NonAbandonedChildVMs.Any()
+					? NonAbandonedChildVMs.Sum(vm => vm.Progress) / NonAbandonedChildVMs.Count()
+					: 100;
 			set
 			{
 				_task.Progress = value;
