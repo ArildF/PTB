@@ -62,6 +62,7 @@ namespace Rogue.Ptb.UI.ViewModels
 			Notes.AddRange(
 				from t in tasks
 				from n in t.Notes
+				orderby n.Created descending 
 				select new NoteViewModel(n, t, _bus));
 			
 			if (!Notes.Any())
@@ -101,7 +102,7 @@ namespace Rogue.Ptb.UI.ViewModels
 		{
 			var note = _task.CreateNote();
 			var noteViewModel = new NoteViewModel(note, _task, _bus);
-			Notes.Add(noteViewModel);
+			Notes.Insert(0, noteViewModel);
 
 			SelectedNoteViewModel = noteViewModel;
 		}
