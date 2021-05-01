@@ -18,13 +18,16 @@ namespace Rogue.Ptb.UI.ViewModels
 		private readonly Task _task;
 		private readonly IEventAggregator _bus;
 		private readonly IMessageBoxService _messageBoxService;
+		private readonly INoteViewModelFactory _noteViewModelFactory;
 		private NoteViewModel _selectedNoteViewModel;
 
-		public NotesDisplayViewModel(Task task, IEventAggregator bus, IMessageBoxService messageBoxService)
+		public NotesDisplayViewModel(Task task, IEventAggregator bus, IMessageBoxService messageBoxService,
+			INoteViewModelFactory noteViewModelFactory)
 		{
 			_task = task;
 			_bus = bus;
 			_messageBoxService = messageBoxService;
+			_noteViewModelFactory = noteViewModelFactory;
 			Notes = new ObservableCollectionExtended<NoteViewModel>();
 			PopulateNotes();
 
@@ -63,11 +66,11 @@ namespace Rogue.Ptb.UI.ViewModels
 				from t in tasks
 				from n in t.Notes
 				orderby n.Created descending 
-				select new NoteViewModel(n, t, _bus));
+				select _noteViewModelFactory.CreateNoteViewModel(n, t));
 			
 			if (!Notes.Any())
 			{
-				Notes.Add(new NoteViewModel(_task.CreateNote(), _task, _bus));
+				Notes.Add(_noteViewModelFactory.CreateNoteViewModel(_task.CreateNote(), _task));
 			}
 
 			SelectedNoteViewModel = Notes.First();
@@ -101,7 +104,7 @@ namespace Rogue.Ptb.UI.ViewModels
 		private void AddNote()
 		{
 			var note = _task.CreateNote();
-			var noteViewModel = new NoteViewModel(note, _task, _bus);
+			var noteViewModel = _noteViewModelFactory.CreateNoteViewModel(note, _task);
 			Notes.Insert(0, noteViewModel);
 
 			SelectedNoteViewModel = noteViewModel;

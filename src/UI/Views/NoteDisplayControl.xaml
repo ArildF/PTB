@@ -19,6 +19,20 @@
 					<Button x:Name="_endEditingButton" Visibility="Collapsed" Command="{Binding EndEditingCommand}">End _editing</Button>
 				</StackPanel>
 				<Grid DataContext="{Binding SelectedNoteViewModel}">
+					<Grid.Resources>
+						
+						<ControlTemplate TargetType="{x:Type ContentControl}" x:Key="ImageContentPresenterTemplate">
+							<Button Content="{TemplateBinding Content}" Command="{Binding ShowImageCommand}"
+							        CommandParameter="{TemplateBinding Content}"
+							        Cursor="Hand">
+								<Button.Template>
+									<ControlTemplate TargetType="{x:Type Button}">
+										<ContentPresenter MaxHeight="500" MaxWidth="500" Content="{TemplateBinding Content}"/>
+									</ControlTemplate>
+								</Button.Template>
+							</Button>
+						</ControlTemplate>
+					</Grid.Resources>
 					<mdXaml:MarkdownScrollViewer 
 						VerticalScrollBarVisibility="Auto"
 						Markdown="{Binding Markdown}"

@@ -1,9 +1,13 @@
 using System;
 using System.Reactive;
 using System.Reactive.Subjects;
+using System.Windows.Controls;
+using System.Windows.Input;
+using ReactiveUI;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Behaviors;
+using Rogue.Ptb.UI.Views;
 
 namespace Rogue.Ptb.UI.ViewModels
 {
@@ -17,12 +21,16 @@ namespace Rogue.Ptb.UI.ViewModels
 
 		public Subject<Unit> Focus => _focus;
 
-		public NoteViewModel(Note note, Task task, IEventAggregator bus)
+		public NoteViewModel(Note note, Task task, IEventAggregator bus, ImageDisplayer displayer)
 		{
 			_note = note;
 			_task = task;
 			_bus = bus;
+
+			ShowImageCommand = ReactiveCommand.Create<Image>(displayer.Show);
 		}
+
+		public ICommand ShowImageCommand { get; }
 
 		public string Markdown
 		{
