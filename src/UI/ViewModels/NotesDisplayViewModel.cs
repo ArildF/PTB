@@ -100,7 +100,10 @@ namespace Rogue.Ptb.UI.ViewModels
 		private void AddNote()
 		{
 			var note = _task.CreateNote();
-			Notes.Add(new NoteViewModel(note, _task, _bus));
+			var noteViewModel = new NoteViewModel(note, _task, _bus);
+			Notes.Add(noteViewModel);
+
+			SelectedNoteViewModel = noteViewModel;
 		}
 
 
