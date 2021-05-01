@@ -193,6 +193,7 @@ namespace Rogue.Ptb.UI.ViewModels
 		{
 			var tasks = Tasks.Select(t => t.Task);
 			_repository.SaveAll(tasks);
+			_bus.Publish<TasksSaved>();
 		}
 
 		private void OnDatabaseChanged(DatabaseChanged databaseChanged)

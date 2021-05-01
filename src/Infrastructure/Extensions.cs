@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Rogue.Ptb.Infrastructure
 {
@@ -56,6 +59,22 @@ namespace Rogue.Ptb.Infrastructure
 				return func(self);
 			}
 			return default(TRet);
+		}
+
+		public static async System.Threading.Tasks.Task PublishAndWait<TSend, TAnswer>(this IEventAggregator bus, 
+			TSend message)
+		{
+			var semaphore = new SemaphoreSlim(0, 1);
+			IDisposable subscription = null;
+			subscription = bus.Listen<TAnswer>()
+				.ObserveOn(TaskPoolScheduler.Default)
+				.Subscribe(_ =>
+				{
+					semaphore.Release();
+					subscription?.Dispose();
+				});
+			bus.Publish(message);
+			await semaphore.WaitAsync();
 		}
 	}
 }

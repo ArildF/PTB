@@ -10,6 +10,7 @@ namespace Rogue.Ptb.Core.Maps
 			Map(n => n.Created);
 			Map(n => n.Markdown);
 			Map(n => n.Modified);
+			HasMany(t => t.Attachments).Cascade.All();
 		}
 	}
 }

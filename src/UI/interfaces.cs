@@ -1,10 +1,7 @@
-﻿
-
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
+using Rogue.Ptb.Infrastructure;
 using Rogue.Ptb.UI.Commands;
 
 namespace Rogue.Ptb.UI
@@ -58,10 +55,7 @@ namespace Rogue.Ptb.UI
 		IEnumerable<string> LastRecentlyUsedTaskBoards { get; }
 	}
 
-	public interface IStartable
-	{
-		void Start();
-	}
+	
 
 	public interface IDebugService
 	{

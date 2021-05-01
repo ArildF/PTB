@@ -31,6 +31,7 @@
 					         x:Name="_editTextBox">
 						<b:Interaction.Behaviors>
 							<behaviors:FocusBindingBehavior Focus="{Binding Focus}"/>
+							<behaviors:PasteToMarkdownBehavior Note="{Binding}"/>
 						</b:Interaction.Behaviors>
 					</TextBox>
 				</Grid>

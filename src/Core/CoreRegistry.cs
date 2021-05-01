@@ -22,6 +22,7 @@ namespace Rogue.Ptb.Core
 
 			For<ISession>().Use(c => c.GetInstance<ISessionFactoryProvider>().GetSessionFactory().OpenSession());
 			ForSingletonOf<ISessionFactoryProvider>().Use<SessionFactoryProvider>();
+			ForSingletonOf<PtbNoteAttachmentWebRequestFactory>().Use<PtbNoteAttachmentWebRequestFactory>();
 			For(typeof (IRepository<>)).Use(typeof (RepositoryBase<>));
 			For<IDatabaseServices>().Use<SqlLiteDatabaseServices>();
 
