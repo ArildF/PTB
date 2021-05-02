@@ -30,6 +30,7 @@
 	</b:Interaction.Behaviors>
 	
 	<Grid IsSharedSizeScope="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+		<Image Source="../Resources/Art/Icon.png"/>
 		
 		
 
