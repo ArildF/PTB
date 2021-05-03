@@ -34,9 +34,8 @@
 		
 		
 
-		<ScrollViewer VerticalScrollBarVisibility="Auto" >
-		<StackPanel d:DataContext="{StaticResource DesignDataContext}" >
-			<Grid HorizontalAlignment="Stretch">
+		<DockPanel LastChildFill="True" d:DataContext="{StaticResource DesignDataContext}">
+			<Grid HorizontalAlignment="Stretch" DockPanel.Dock="Top">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="{Binding ElementName=CDNotStarted, Path=Width}" />
 					<ColumnDefinition Width="{Binding ElementName=CDInProgress, Path=Width}" />
@@ -49,6 +48,7 @@
 				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="2" TextAlignment="Center"><Run Text="Completed"/></TextBlock>
 				<TextBlock Style="{DynamicResource SubtitleTextBlockStyle}" Grid.Column="3" TextAlignment="Center"><Run Text="Abandoned"/></TextBlock>
 			</Grid>
+			<ScrollViewer VerticalScrollBarVisibility="Auto" >
 			<ItemsControl ItemsSource="{Binding Tasks}" x:Name="_itemsControl" 
 				>
 				<b:Interaction.Behaviors>
@@ -195,8 +195,8 @@
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-		</StackPanel>
-	</ScrollViewer>
+			</ScrollViewer>
+		</DockPanel>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" x:Name="CDNotStarted"/>
