@@ -9,10 +9,10 @@ using Rogue.Ptb.Core;
 
 namespace Rogue.Ptb.UI.Behaviors
 {
-	public class PasteToMarkdownBehavior : Behavior<TextBox>
+	public class PasteImageToMarkdownBehavior : Behavior<TextBox>
 	{
 		public static readonly DependencyProperty NoteProperty = DependencyProperty.Register(
-			"Note", typeof(IAmMarkdownNote), typeof(PasteToMarkdownBehavior), new PropertyMetadata(default(IAmMarkdownNote)));
+			"Note", typeof(IAmMarkdownNote), typeof(PasteImageToMarkdownBehavior), new PropertyMetadata(default(IAmMarkdownNote)));
 
 		public IAmMarkdownNote Note
 		{
