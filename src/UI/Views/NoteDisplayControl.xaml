@@ -27,7 +27,11 @@
 							        Cursor="Hand">
 								<Button.Template>
 									<ControlTemplate TargetType="{x:Type Button}">
-										<ContentPresenter MaxHeight="500" MaxWidth="500" Content="{TemplateBinding Content}"/>
+										<Image DataContext="{TemplateBinding Content}"
+										       MaxHeight="500" MaxWidth="500"
+										       StretchDirection="DownOnly"
+										       Stretch="Uniform"
+										       Source="{Binding Source}"/>
 									</ControlTemplate>
 								</Button.Template>
 							</Button>
