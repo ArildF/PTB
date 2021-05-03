@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -39,12 +40,13 @@ namespace Rogue.Ptb.UI.ViewModels
 
 			var ocs = tasks.ToObservableChangeSet();
 			ocs
-				.Throttle(TimeSpan.FromSeconds(5))
-				.Filter(_ =>  _repository != null)
-				.Filter(c => !c.IsEditing)
 				.ToUnit()
+				.Merge(ocs.WhenAnyPropertyChanged().ToUnit())
+				.Throttle(TimeSpan.FromSeconds(5))
+				.Where(_ =>  _repository != null)
 				.Merge(bus.Listen<TaskModified>().ToUnit())
 				.ObserveOnDispatcher()
+				.Do(_ => Debug.WriteLine("saving tasks"))
 				.Subscribe(_ => OnSaveAllTasks(null));
 			
 			ocs
