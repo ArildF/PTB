@@ -46,6 +46,7 @@
 					</mdXaml:MarkdownScrollViewer>
 					<TextBox Text="{Binding Markdown, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"
 					         AcceptsReturn="True"
+					         TextWrapping="Wrap"
 					         x:Name="_editTextBox">
 						<b:Interaction.Behaviors>
 							<behaviors:FocusBindingBehavior Focus="{Binding Focus}"/>
