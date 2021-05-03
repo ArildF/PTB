@@ -64,6 +64,8 @@ namespace Rogue.Ptb.UI.Behaviors
 				};
 				await Note.AddAttachment(attachment);
 				AssociatedObject.SelectedText = $"![ResourceImage](ptbnoteattachment://{attachment.Id})";
+				AssociatedObject.SelectionStart = AssociatedObject.SelectionStart + AssociatedObject.SelectionLength;
+				AssociatedObject.SelectionLength = 0;
 			}
 
 		}
