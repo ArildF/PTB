@@ -8,5 +8,7 @@ namespace Rogue.Ptb.Core
 		public virtual string ContentType { get; set; }
 		public virtual byte[] Content { get; set; }
 		public virtual string Name { get; set; }
+		
+		public virtual DateTime Created { get; set; } = DateTime.Now;
 	}
 }

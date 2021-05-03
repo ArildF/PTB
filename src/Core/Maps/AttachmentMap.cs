@@ -10,6 +10,7 @@ namespace Rogue.Ptb.Core.Maps
 			Map(a => a.Content);
 			Map(a => a.ContentType);
 			Map(a => a.Name);
+			Map(a => a.Created);
 		}
 	}
 }
