@@ -62,7 +62,7 @@ namespace Rogue.Ptb.Core
 				}
 
 				var attachment = _repository.FindAll().SingleOrDefault(a => a.Id == guid);
-				if (attachment == null)
+				if (attachment?.Content == null)
 				{
 					return Stream.Null;
 				}

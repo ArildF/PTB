@@ -6,7 +6,7 @@ namespace Rogue.Ptb.Core
 {
 	public class TaskComparer : IComparer<Task>
 	{
-		private static readonly Dictionary<TaskState, int> _sortKeys = new Dictionary<TaskState, int>
+		private static readonly Dictionary<TaskState, int> SortKeys = new()
 		{
 			{TaskState.InProgress, 10},
 			{TaskState.NotStarted, 8},
@@ -14,14 +14,27 @@ namespace Rogue.Ptb.Core
 			{TaskState.Abandoned, 1}
 		};
 
-		public int Compare(Task x, Task y)
+		public int Compare(Task? x, Task? y)
 		{
-			if (x.Parent == y)
+			var check = (x, y) switch
+			{
+				(null, null) => 0,
+				(null, { }) => 1,
+				({ }, null) => -1,
+				_ => (int?)null,
+			};
+			
+			if (check != null)
+			{
+				return check.Value;
+			}
+			
+			if (x!.Parent == y)
 			{
 				return 1;
 			}
 
-			if (y.Parent == x)
+			if (y!.Parent == x)
 			{
 				return -1;
 			}
@@ -62,7 +75,7 @@ namespace Rogue.Ptb.Core
 
 			if (x.State != y.State)
 			{
-				return _sortKeys[y.State] - _sortKeys[x.State];
+				return SortKeys[y.State] - SortKeys[x.State];
 			}
 
 			if (x.LessImportantTasksTransitively().Contains(y))
@@ -99,7 +112,7 @@ namespace Rogue.Ptb.Core
 		{
 			if (x.State != y.State)
 			{
-				return _sortKeys[y.State] - _sortKeys[x.State];
+				return SortKeys[y.State] - SortKeys[x.State];
 			}
 
 			// same state, sort by relevant date

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using Rogue.Ptb.Infrastructure;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Rogue.Ptb.Core.Export
 {
 	public class TaskDto
 	{
 		public Guid Id { get; set; }
-		public string Title { get; set; }
+		public string? Title { get; set; }
 
 		public TaskState State { get; set; }
 
@@ -25,12 +26,12 @@ namespace Rogue.Ptb.Core.Export
 
 		public void FixUpMissingData()
 		{
-			if (CreatedDate == default(DateTime))
+			if (CreatedDate == default)
 			{
 				CreatedDate = DateTimeHelper.Now;
 			}
 
-			if (ModifiedDate == default(DateTime))
+			if (ModifiedDate == default)
 			{
 				ModifiedDate = DateTimeHelper.Now;
 			}

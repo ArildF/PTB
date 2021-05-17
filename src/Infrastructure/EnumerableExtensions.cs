@@ -20,5 +20,10 @@ namespace Rogue.Ptb.Infrastructure
 				yield return subItem;
 			}
 		}
+
+		public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> self) where T : class
+		{
+			return self.Where(t => t != null)!;
+		}
 	}
 }

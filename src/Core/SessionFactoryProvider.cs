@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using System.Linq;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using NHibernate.Util;
 using Rogue.Ptb.Core.Initializers;
 
 namespace Rogue.Ptb.Core
 {
 	public class SessionFactoryProvider : ISessionFactoryProvider
 	{
-		private ISessionFactory _factory;
+		private ISessionFactory? _factory;
 		private readonly IDatabaseServices _databaseServices;
 		private readonly IEnumerable<IDatabaseInitializer> _initializers;
 
@@ -77,9 +75,9 @@ namespace Rogue.Ptb.Core
 		{
 			path = Path.GetFullPath(path);
 
-			string configurationFile = Path.Combine(Path.GetDirectoryName(path), 
-				Path.GetFileNameWithoutExtension(path) + ".nhconfiguration");
-			var serializer = new BinaryFormatter();
+			// string configurationFile = Path.Combine(Path.GetDirectoryName(path), 
+			// 	Path.GetFileNameWithoutExtension(path) + ".nhconfiguration");
+			// var serializer = new BinaryFormatter();
 
 			// if (!createSchema && File.Exists(configurationFile))
 			// {

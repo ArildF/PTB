@@ -1,4 +1,8 @@
 ﻿using System;
+// ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable VirtualMemberCallInConstructor
 
 namespace Rogue.Ptb.Core
 {
@@ -16,7 +20,7 @@ namespace Rogue.Ptb.Core
 			
 		}
 
-		public virtual Task LinkTo
+		public virtual Task? LinkTo
 		{
 			get; protected internal set;
 		}
@@ -28,6 +32,6 @@ namespace Rogue.Ptb.Core
 		}
 
 		public virtual Guid Id { get; protected internal set; }
-		public virtual Task Task { get; protected internal set; }
+		public virtual Task? Task { get; protected internal set; }
 	}
 }

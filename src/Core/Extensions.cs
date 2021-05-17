@@ -18,7 +18,7 @@ namespace Rogue.Ptb.Core
 
 		public static IEnumerable<Task> Ancestors(this Task self)
 		{
-			Task current = self;
+			Task? current = self;
 			while ((current = current.Parent) != null)
 			{
 				yield return current;

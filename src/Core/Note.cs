@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace Rogue.Ptb.Core
 {
 	public class Note
 	{
 		public virtual Guid Id { get; protected internal set; }
-		public virtual string Markdown { get; set; }
+		public virtual string? Markdown { get; set; }
 		public virtual DateTime Created { get; set; }
 		public virtual DateTime Modified { get; set; }
 		

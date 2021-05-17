@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Rogue.Ptb.Infrastructure;
+// ReSharper disable VirtualMemberCallInConstructor
 
 namespace Rogue.Ptb.Core
 {
@@ -24,7 +25,7 @@ namespace Rogue.Ptb.Core
 
 		public virtual string Title
 		{
-			get { return _title; }
+			get => _title;
 			set
 			{
 				_title = value;
@@ -69,32 +70,15 @@ namespace Rogue.Ptb.Core
 
 		public virtual DateTime? StateChangedDate { get; protected internal set; }
 
-		public virtual IEnumerable<Task> LessImportantTasks
-		{
-			get
-			{
-				return Links.Where(link => link.Type == LinkType.MoreImportantThan)
-					.Select(link => link.LinkTo);
-			}
-		}
+		public virtual IEnumerable<Task> LessImportantTasks =>
+			Links.Where(link => link.Type == LinkType.MoreImportantThan)
+				.Select(link => link.LinkTo).WhereNotNull();
 
-		public virtual IEnumerable<Task> MoreImportantTasks
-		{
-			get
-			{
-				return FindRelatedTasks(LinkType.LessImportantThan);
-			}
-		}
+		public virtual IEnumerable<Task> MoreImportantTasks => FindRelatedTasks(LinkType.LessImportantThan);
 
-		public virtual IEnumerable<Task> SubTasks
-		{
-			get { return FindRelatedTasks(LinkType.Child); }
-		}
+		public virtual IEnumerable<Task> SubTasks => FindRelatedTasks(LinkType.Child);
 
-		public virtual Task Parent
-		{
-			get { return FindRelatedTasks(LinkType.Parent).FirstOrDefault(); }
-		}
+		public virtual Task? Parent => FindRelatedTasks(LinkType.Parent).FirstOrDefault();
 
 		public virtual bool IsLeaf => !SubTasks.Any();
 		
@@ -159,7 +143,7 @@ namespace Rogue.Ptb.Core
 		private IEnumerable<Task> FindRelatedTasks(LinkType linkType)
 		{
 			return Links.Where(link => link.Type == linkType)
-				.Select(link => link.LinkTo);
+				.Select(link => link.LinkTo).WhereNotNull();
 		}
 
 		private void Modified()
