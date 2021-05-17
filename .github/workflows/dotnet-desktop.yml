@@ -66,8 +66,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: Checkout submodules
-      uses: textbook/git-checkout-submodule-action@master
+        submodules: recursive
 
     # Install the .NET Core workload
     - name: Install .NET Core
