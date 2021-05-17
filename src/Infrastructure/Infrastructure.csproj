@@ -6,6 +6,7 @@
     <AssemblyName>Rogue.Ptb.Infrastructure</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="4.4.1" />

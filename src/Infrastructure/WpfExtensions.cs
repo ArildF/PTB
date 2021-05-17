@@ -7,12 +7,16 @@ namespace Rogue.Ptb.Infrastructure
 {
 	public static class WpfExtensions
 	{
-		public static FrameworkElement FindVisualChild<T>(this UIElement element, string name) where T:FrameworkElement
+		public static FrameworkElement? FindVisualChild<T>(this UIElement? element, string name) where T:FrameworkElement
 		{
+			if (element == null)
+			{
+				return null;
+			}
 			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
 			{
 				DependencyObject child = VisualTreeHelper.GetChild(element, i);
-				FrameworkElement elt = child as T;
+				FrameworkElement? elt = child as T;
 				if (elt != null && elt.Name == name)
 				{
 					return elt;
@@ -26,7 +30,7 @@ namespace Rogue.Ptb.Infrastructure
 			return null;
 		}
 
-		public static VisualChildPath FindVisualChildPath<T>(this UIElement element, string name)  where T:FrameworkElement
+		public static VisualChildPath? FindVisualChildPath<T>(this UIElement element, string name)  where T:FrameworkElement
 		{
 			var stack = new Stack<int>();
 
@@ -39,7 +43,7 @@ namespace Rogue.Ptb.Infrastructure
 
 		}
 
-        public static T FindParentOfType<T>(this DependencyObject obj) where T: DependencyObject
+        public static T? FindParentOfType<T>(this DependencyObject obj) where T: DependencyObject
         {
             var parent = VisualTreeHelper.GetParent(obj);
             if (parent == null)
@@ -47,9 +51,9 @@ namespace Rogue.Ptb.Infrastructure
                 return null;
             }
 
-            if (parent is T)
+            if (parent is T o)
             {
-                return (T) parent;
+                return o;
             }
 
             return FindParentOfType<T>(parent);
@@ -62,7 +66,7 @@ namespace Rogue.Ptb.Infrastructure
 				stack.Push(i);
 
 				DependencyObject child = VisualTreeHelper.GetChild(element, i);
-				FrameworkElement elt = child as T;
+				FrameworkElement? elt = child as T;
 				if (elt != null && elt.Name == name)
 				{
 					return true;
@@ -87,7 +91,7 @@ namespace Rogue.Ptb.Infrastructure
 			_path = path;
 		}
 
-		public FrameworkElement FindElement(DependencyObject inReferenceTo)
+		public FrameworkElement? FindElement(DependencyObject inReferenceTo)
 		{
 			DependencyObject current = inReferenceTo;
 			foreach (var i in _path)

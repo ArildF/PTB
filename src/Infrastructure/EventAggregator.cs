@@ -6,7 +6,7 @@ namespace Rogue.Ptb.Infrastructure
 {
 	public class EventAggregator : IEventAggregator
 	{
-		private readonly Dictionary<Type, object> _events = new Dictionary<Type, object>();
+		private readonly Dictionary<Type, object> _events = new();
 
 		public IObservable<T> Listen<T>()
 		{
@@ -14,7 +14,7 @@ namespace Rogue.Ptb.Infrastructure
 			return subject;
 		}
 
-		public void Publish<T>(T message = default(T))
+		public void Publish<T>(T? message = default)
 		{
 			var subject = GetSubject<T>();
 			subject.OnNext(message);
@@ -28,7 +28,7 @@ namespace Rogue.Ptb.Infrastructure
 
 		private Subject<T> GetSubject<T>()
 		{
-			object subject;
+			object? subject;
 			lock (_events)
 			{
 				if (!_events.TryGetValue(typeof (T), out subject))

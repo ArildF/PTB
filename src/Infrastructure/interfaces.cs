@@ -9,7 +9,7 @@ namespace Rogue.Ptb.Infrastructure
 	public interface IEventAggregator
 	{
 		IObservable<T> Listen<T>();
-		void Publish<T>(T message = default(T));
+		void Publish<T>(T? message = default);
 		void AddSource<T>(IObservable<T> observable);
 	}
 }

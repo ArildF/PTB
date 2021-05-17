@@ -33,7 +33,7 @@ namespace Rogue.Ptb.Infrastructure
 
 		public static bool In<T>(this T self, params T[] candidates)
 		{
-			return candidates.Any(c => c.Equals(self));
+			return candidates.Any(c => (c == null && self == null) || (c?.Equals(self) ?? false));
 		}
 
 		//public static void ForEach<T>(this IEnumerable<T> self, Action<T> action)
@@ -44,7 +44,7 @@ namespace Rogue.Ptb.Infrastructure
 		//    }
 		//}
 
-		public static void DoIfNotNull<T>(this T self, Action<T> action) where T : class
+		public static void DoIfNotNull<T>(this T? self, Action<T> action) where T : class
 		{
 			if (self != null)
 			{
@@ -52,20 +52,16 @@ namespace Rogue.Ptb.Infrastructure
 			}
 		}
 
-		public static TRet IfNotNull<T, TRet>(this T self, Func<T, TRet> func) where T : class
+		public static TRet? IfNotNull<T, TRet>(this T? self, Func<T, TRet> func) where T : class
 		{
-			if (self != null)
-			{
-				return func(self);
-			}
-			return default(TRet);
+			return self != null ? func(self) : default;
 		}
 
 		public static async System.Threading.Tasks.Task PublishAndWait<TSend, TAnswer>(this IEventAggregator bus, 
 			TSend message)
 		{
 			var semaphore = new SemaphoreSlim(0, 1);
-			IDisposable subscription = null;
+			IDisposable? subscription = null;
 			subscription = bus.Listen<TAnswer>()
 				.ObserveOn(TaskPoolScheduler.Default)
 				.Subscribe(_ =>
