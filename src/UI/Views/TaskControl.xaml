@@ -78,14 +78,17 @@
 								   Fill="{StaticResource ResourceKey=thatsmyboy_Simple_Red_Checkmark}"/>
 						<TextBlock TextAlignment="Center" Text="{Binding Title}" Margin="2" 
 						           Grid.ColumnSpan="3"
-								   x:Name="_textBlock" Cursor="IBeam" TextWrapping="Wrap" VerticalAlignment="Center">
+								   x:Name="_textBlock" TextWrapping="Wrap" VerticalAlignment="Center">
 							<b:Interaction.Behaviors>
-								<Behaviors:CommandForEventBehavior Event="MouseDown" Action="BeginEdit"/>
+								<Behaviors:CommandForEventBehavior Event="MouseLeftButtonDown" 
+								                                   ClickCount="2"
+								                                   Action="BeginEdit"/>
 							</b:Interaction.Behaviors>
 						</TextBlock>
 					<TextBox TextWrapping="Wrap" x:Name="_textBox" Grid.ColumnSpan="3"
 								 VerticalAlignment="Center" 
 								TextAlignment="Center"
+								 Cursor="IBeam"
 								 Text="{Binding Title}"
 								 Visibility="Collapsed"
 								>

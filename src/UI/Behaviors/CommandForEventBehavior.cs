@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Rogue.Ptb.UI.Behaviors
 {
@@ -18,6 +19,8 @@ namespace Rogue.Ptb.UI.Behaviors
 				ImportantPropertyChanged();
 			}
 		}
+
+		public int? ClickCount { get; set; }
 
 		public bool Passthrough { get; set; }
 
@@ -51,6 +54,12 @@ namespace Rogue.Ptb.UI.Behaviors
 
 		private void OnEvent(object sender, EventArgs e)
 		{
+			if (ClickCount != null && 
+			    e is MouseButtonEventArgs mbea && ClickCount > mbea.ClickCount)
+			{
+				return;
+			}
+			
 			bool handled = InvokeCommandOrAction();
 
 			if (handled)
