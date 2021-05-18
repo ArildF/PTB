@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using DynamicData.Kernel;
 using ReactiveUI;
 using Rogue.Ptb.Core;
 using Rogue.Ptb.Infrastructure;
@@ -30,17 +31,20 @@ namespace Rogue.Ptb.UI
 			{
 				_settings.LastRecentlyUsedTaskboards = new StringCollection();
 			}
-			if (!LastRecentlyUsedTaskBoards.Any(tb => tb.Equals(databaseChanged.Path, StringComparison.CurrentCultureIgnoreCase)))
+
+			var index = LastRecentlyUsedTaskBoards
+				.Select((Taskboard, Index) => new{Taskboard, Index})
+				.FirstOrDefault(tb => tb.Taskboard.Equals(databaseChanged.Path, StringComparison.CurrentCultureIgnoreCase));
+			if (index != null)
 			{
-				_settings.LastRecentlyUsedTaskboards.Insert(0, databaseChanged.Path);
-				_settings.Save();
+				_settings.LastRecentlyUsedTaskboards.RemoveAt(index.Index);
 			}
+			_settings.LastRecentlyUsedTaskboards.Insert(0, databaseChanged.Path);
+			_settings.Save();
 		}
 
-		public IEnumerable<string> LastRecentlyUsedTaskBoards
-		{
-			get { return (_settings.LastRecentlyUsedTaskboards ?? 
-				(_settings.LastRecentlyUsedTaskboards = new StringCollection())).Cast<string>(); }
-		}
+		public IEnumerable<string> LastRecentlyUsedTaskBoards =>
+			(_settings.LastRecentlyUsedTaskboards ?? 
+			 (_settings.LastRecentlyUsedTaskboards = new StringCollection())).Cast<string>();
 	}
 }

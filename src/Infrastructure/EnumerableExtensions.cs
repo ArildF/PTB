@@ -11,7 +11,7 @@ namespace Rogue.Ptb.Infrastructure
 			yield return self;
 		}
 
-		public static IEnumerable<T> RecurseDepthFirst<T>(this T self, 
+		public static IEnumerable<T> RecurseDepthFirst<T>(this T self,
 			Func<T, IEnumerable<T>> recurse)
 		{
 			yield return self;
@@ -24,6 +24,11 @@ namespace Rogue.Ptb.Infrastructure
 		public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> self) where T : class
 		{
 			return self.Where(t => t != null)!;
+		}
+
+		public static IEnumerable<T?> AsNullable<T>(this IEnumerable<T> self) where T : struct
+		{
+			return self.Select(t => (T?) t);
 		}
 	}
 }
