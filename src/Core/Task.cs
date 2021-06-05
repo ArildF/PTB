@@ -5,6 +5,7 @@ using System.Linq;
 using Rogue.Ptb.Infrastructure;
 // ReSharper disable VirtualMemberCallInConstructor
 
+
 namespace Rogue.Ptb.Core
 {
 	[DebuggerDisplay("{Title}: Id: {Id}")]
