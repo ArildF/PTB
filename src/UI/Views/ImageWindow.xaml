@@ -12,5 +12,8 @@
                          Icon="../Resources/Art/Icon.png"
                          SizeToContent="WidthAndHeight"
                          Title="Image" >
+	<fluentWpf:AcrylicWindow.CommandBindings>
+		<CommandBinding Command="Copy" Executed="CommandBinding_OnExecuted"></CommandBinding>
+	</fluentWpf:AcrylicWindow.CommandBindings>
 	<Image Margin="30" x:Name="Image" Stretch="None"/>
 </fluentWpf:AcrylicWindow>
