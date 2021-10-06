@@ -7,11 +7,9 @@ namespace Rogue.Ptb.UI.Views
 {
 	public partial class ImageWindow
 	{
-		private readonly Image _image;
 
 		public ImageWindow(Image image)
 		{
-			_image = image;
 			InitializeComponent();
 			Image.Source = image.Source;
 		}
@@ -22,7 +20,11 @@ namespace Rogue.Ptb.UI.Views
 			{
 				Clipboard.SetImage(bs);
 			}
+		}
 
+		private void CommandBinding_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = Image.Source is BitmapSource;
 		}
 	}
 }

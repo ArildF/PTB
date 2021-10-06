@@ -13,7 +13,16 @@
                          SizeToContent="WidthAndHeight"
                          Title="Image" >
 	<fluentWpf:AcrylicWindow.CommandBindings>
-		<CommandBinding Command="Copy" Executed="CommandBinding_OnExecuted"></CommandBinding>
+		<CommandBinding Command="Copy" Executed="CommandBinding_OnExecuted" CanExecute="CommandBinding_OnCanExecute"></CommandBinding>
 	</fluentWpf:AcrylicWindow.CommandBindings>
-	<Image Margin="30" x:Name="Image" Stretch="None"/>
+	<Image Margin="30" x:Name="Image" Stretch="None">
+		<Image.ContextMenu>
+			<ContextMenu>
+				<ContextMenu.CommandBindings>
+					<CommandBinding Command="Copy" Executed="CommandBinding_OnExecuted" CanExecute="CommandBinding_OnCanExecute"></CommandBinding>
+				</ContextMenu.CommandBindings>
+				<MenuItem Header="Copy Image" Command="Copy"/>
+			</ContextMenu>
+		</Image.ContextMenu>
+	</Image>
 </fluentWpf:AcrylicWindow>
